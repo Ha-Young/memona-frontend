@@ -1,12 +1,23 @@
+import "react-hot-loader/patch";
+
+import App from "components/App";
+import { basename } from "config";
 import React from "react";
-import ReactDOM from "react-dom";
+import { render } from "react-dom";
+import { BrowserRouter } from "react-router-dom";
 
-import App from "./App";
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+const renderApp = () => (
+  <BrowserRouter basename={basename}>
+    <App />
+  </BrowserRouter>
+);
 
-ReactDOM.render(<App />, document.getElementById("root"));
+const root = document.getElementById("app");
+render(renderApp(), root);
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://cra.link/PWA
-serviceWorkerRegistration.unregister();
+if (module.hot) {
+  module.hot.accept("components/App", () => {
+    require("components/App");
+    render(renderApp(), root);
+  });
+}
