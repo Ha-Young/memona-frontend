@@ -1,6 +1,7 @@
 {
   "extends": "react-app",
   "plugins": ["simple-import-sort"],
+  "ignorePatterns": ["/stories/*.js"],
   "rules": {
     "quotes": [
       "error",
