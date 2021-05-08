@@ -25,6 +25,7 @@ const Wrapper = styled.div`
   @media screen and (max-width: 640px) {
     padding: 0.5rem;
     border: none;
+    background-color: ${({ theme }) => theme.genericBackgroundColor};
   }
 `;
 
