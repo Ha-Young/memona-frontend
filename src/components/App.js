@@ -3,6 +3,7 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 
+import LoginPage from "../pages/LoginPage";
 import theme from "./themes";
 
 const USER_TEST = gql`
@@ -27,7 +28,10 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Switch>
-        <Route path="/"><div>{JSON.stringify(data)}</div></Route>
+        <Route path="/" exact><div>{JSON.stringify(data)}</div></Route>
+        <Route path="/login">
+          <LoginPage />
+        </Route>
       </Switch>
     </ThemeProvider>
   );

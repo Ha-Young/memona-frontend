@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import Link from "react-router-dom/Link";
+import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { font, palette } from "styled-theme";
 import { ifProp, prop } from "styled-tools";
