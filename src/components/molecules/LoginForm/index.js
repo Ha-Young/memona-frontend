@@ -1,76 +1,57 @@
-import {
-  Badge,
-  Heading,
-  Icon,
-  Link,
-  Paragraph,
-  PreformattedText,
-} from "components";
-import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { ifProp } from "styled-tools";
+import { palette } from "styled-theme";
+import { prop } from "styled-tools";
+
+import GoogleLoginButton from "../../atoms/GoogleLoginButton";
+import Heading from "../../atoms/Heading";
+import Label from "../../atoms/Label";
+
+const borderColor = palette("grayscale", 0);
 
 const Wrapper = styled.div`
-  position: relative;
   display: flex;
-  padding: 1rem;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0 3rem;
+  width: ${prop("width", "auto")};
+  height: ${prop("height", "auto")};
+  border: 1px solid ${borderColor};
   box-sizing: border-box;
-  opacity: ${ifProp("soon", 0.4, 1)};
+
   @media screen and (max-width: 640px) {
     padding: 0.5rem;
+    border: none;
   }
 `;
 
-const StyledIcon = styled(Icon)`
-  flex: none;
+const StyledHeading = styled(Heading)`
   @media screen and (max-width: 640px) {
-    width: 32px;
+    font-size: 2.5rem;
   }
 `;
 
-const Text = styled.div`
-  margin-left: 1rem;
-  overflow: auto;
-  > :first-child {
-    margin: 0;
-  }
+const StyledLabel = styled(Label)`
+  margin-bottom: 40px;
 `;
 
-const StyledBadge = styled(Badge)`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  @media screen and (max-width: 640px) {
-    top: 0.5rem;
-    right: 0.5rem;
-  }
-`;
-
-const LoginForm = ({ icon, title, link, code, children, ...props }) => {
-  const { soon } = props;
+const LoginForm = ({
+  title,
+  information,
+  onLoginSuccess,
+  onLoginFailure,
+  ...props
+}) => {
   return (
     <Wrapper {...props}>
-      {icon && <StyledIcon icon={icon} width={64} />}
-      <Text>
-        <Heading level={2}>
-          {link ? <Link href={link}>{title}</Link> : title}
-        </Heading>
-        <Paragraph>{children}</Paragraph>
-        {code && <PreformattedText block>{code}</PreformattedText>}
-      </Text>
-      {soon && <StyledBadge palette="grayscale">soon</StyledBadge>}
+      <StyledHeading level={1}>{title}</StyledHeading>
+      <StyledLabel>{information}</StyledLabel>
+      <GoogleLoginButton
+        onSuccess={onLoginSuccess}
+        onFailure={onLoginFailure}
+      />
     </Wrapper>
   );
-};
-
-LoginForm.propTypes = {
-  title: PropTypes.string.isRequired,
-  icon: PropTypes.string,
-  link: PropTypes.string,
-  soon: PropTypes.bool,
-  children: PropTypes.any,
-  code: PropTypes.node,
 };
 
 export default LoginForm;
