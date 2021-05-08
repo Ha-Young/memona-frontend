@@ -1,20 +1,28 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import { key } from "styled-theme";
+
+console.log("asdf", key("genericBackgroundColor"));
 
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  padding-top: 3.75rem;
-  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: ${({ theme }) => theme.genericBackgroundColor};
   box-sizing: border-box;
 `;
 
 const Content = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   box-sizing: border-box;
-  margin: 2rem auto;
-  max-width: 920px;
+  margin: 0 auto;
+  width: 80vw;
+  min-width: 980px;
 `;
 
 const GenericTemplate = ({ children, ...props }) => {
