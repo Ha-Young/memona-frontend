@@ -7,7 +7,7 @@ import theme from "./themes";
 
 const USER_TEST = gql`
   query getUsers {
-    userfs {
+    users {
       _id
       email
       username
