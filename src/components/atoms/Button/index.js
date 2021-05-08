@@ -23,7 +23,7 @@ const styles = css`
   font-family: ${font("primary")};
   align-items: center;
   white-space: nowrap;
-  font-size: ${fontSize};
+  font-size: ${prop("fontSize", fontSize)};
   border: 0.0625em solid ${ifProp("transparent", "currentcolor", "transparent")};
   height: 2.5em;
   width: ${prop("width", "auto")};
@@ -31,7 +31,7 @@ const styles = css`
   text-decoration: none;
   cursor: ${ifProp("disabled", "default", "pointer")};
   appearance: none;
-  padding: 0 1em;
+  padding: ${prop("padding", "0 1em")};
   border-radius: 0.125em;
   box-sizing: border-box;
   pointer-events: ${ifProp("disabled", "none", "auto")};
