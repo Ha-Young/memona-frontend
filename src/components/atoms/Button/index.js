@@ -3,7 +3,7 @@ import React from "react";
 import Link from "react-router-dom/Link";
 import styled, { css } from "styled-components";
 import { font, palette } from "styled-theme";
-import { ifProp } from "styled-tools";
+import { ifProp, prop } from "styled-tools";
 
 const fontSize = ({ height }) => `${height / 40}rem`;
 
@@ -26,6 +26,7 @@ const styles = css`
   font-size: ${fontSize};
   border: 0.0625em solid ${ifProp("transparent", "currentcolor", "transparent")};
   height: 2.5em;
+  width: ${prop("width", "auto")};
   justify-content: center;
   text-decoration: none;
   cursor: ${ifProp("disabled", "default", "pointer")};
