@@ -7,9 +7,13 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  width: 100vw;
   background-color: ${({ theme }) => theme.genericBackgroundColor};
   box-sizing: border-box;
+
+  @media (orientation: landscape) and (max-width: 640px),
+    (orientation: landscape) and (max-height: 620px) {
+    height: auto;
+  }
 `;
 
 const Content = styled.section`
