@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1rem 0 4rem;
+  padding: 1rem;
   width: ${prop("width", "auto")};
   height: ${prop("height", "auto")};
   border: 1px solid ${borderColor};
@@ -26,12 +26,17 @@ const Wrapper = styled.div`
     padding: 0.5rem;
     border: none;
     background-color: ${({ theme }) => theme.genericBackgroundColor};
+
+    @media (orientation: landscape){
+      height: auto;
+    }
   }
 `;
 
 const StyledHeading = styled(Heading)`
   font-size: 2rem;
   margin-bottom: 30px;
+
   @media screen and (max-width: 640px) {
     font-size: 2.5rem;
   }
