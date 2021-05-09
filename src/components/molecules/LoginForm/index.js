@@ -49,7 +49,7 @@ const StyledLabel = styled(Label)`
 const LoginForm = ({
   title,
   information,
-  onLoginSuccess,
+  onLogin,
   onLoginFailure,
   ...props
 }) => {
@@ -58,7 +58,7 @@ const LoginForm = ({
       <StyledHeading level={1}>{title}</StyledHeading>
       <StyledLabel>{information}</StyledLabel>
       <GoogleLoginButton
-        onSuccess={onLoginSuccess}
+        onSuccess={onLogin}
         onFailure={onLoginFailure}
       />
     </Wrapper>
