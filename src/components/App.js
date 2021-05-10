@@ -13,7 +13,10 @@ const USER_TEST = gql`
       email
       username
       nickname
-      avatar
+      imageUrl
+      friends {
+        _id
+      }
     }
   }
 `;

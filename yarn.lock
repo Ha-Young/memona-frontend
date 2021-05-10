@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@apollo/client@^3.3.16":
+"@apollo/client@>=2.0.0", "@apollo/client@^3.3.16", "@apollo/client@latest":
   version "3.3.16"
   resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.3.16.tgz#e4a51b0f86583b18ab81723660e381ef616536c1"
   integrity sha512-EPTiNpmiU6/vvxpl4lXWQDqS3YddweC1sh/ewCuVP9IK0+xlVGb5vR1yhM/7T3PIJqwz52dGpZyJskmbTfENfQ==
@@ -20,6 +20,13 @@
     ts-invariant "^0.7.0"
     tslib "^1.10.0"
     zen-observable "^0.8.14"
+
+"@apollo/react-testing@>=3.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@apollo/react-testing/-/react-testing-4.0.0.tgz#9fd1991584510c2ac051d986547ceccbc9c0a30a"
+  integrity sha512-P7Z/flUHpRRZYc3FkIqxZH9XD3FuP2Sgks1IXqGq2Zb7qI0aaTfVeRsLYmZNUcFOh2pTHxs0NXgPnH1VfYOpig==
+  dependencies:
+    "@apollo/client" latest
 
 "@babel/code-frame@7.10.4":
   version "7.10.4"
@@ -2048,7 +2055,7 @@
     prop-types "^15.7.2"
     regenerator-runtime "^0.13.7"
 
-"@storybook/addons@6.2.9":
+"@storybook/addons@6.2.9", "@storybook/addons@^6":
   version "6.2.9"
   resolved "https://registry.yarnpkg.com/@storybook/addons/-/addons-6.2.9.tgz#b7ba2b9f0e15b852c7d6b57d04fb0a493c57477c"
   integrity sha512-GnmEKbJwiN1jncN9NSA8CuR1i2XAlasPcl/Zn0jkfV9WitQeczVcJCPw86SGH84AD+tTBCyF2i9UC0KaOV1YBQ==
@@ -2063,7 +2070,7 @@
     global "^4.4.0"
     regenerator-runtime "^0.13.7"
 
-"@storybook/api@6.2.9":
+"@storybook/api@6.2.9", "@storybook/api@^6":
   version "6.2.9"
   resolved "https://registry.yarnpkg.com/@storybook/api/-/api-6.2.9.tgz#a9b46569192ad5d8da6435c9d63dc4b0c8463b51"
   integrity sha512-okkA3HAScE9tGnYBrjTOcgzT+L1lRHNoEh3ZfGgh1u/XNEyHGNkj4grvkd6nX7BzRcYQ/l2VkcKCqmOjUnSkVQ==
@@ -2219,7 +2226,7 @@
     core-js "^3.8.2"
     global "^4.4.0"
 
-"@storybook/components@6.2.9":
+"@storybook/components@6.2.9", "@storybook/components@^6":
   version "6.2.9"
   resolved "https://registry.yarnpkg.com/@storybook/components/-/components-6.2.9.tgz#7189f9715b05720fe083ae8ad014849f14e98e73"
   integrity sha512-hnV1MI2aB2g1sJ7NJphpxi7TwrMZQ/tpCJeHnkjmzyC6ez1MXqcBXGrEEdSXzRfAxjQTOEpu6H1mnns0xMP0Ag==
@@ -13062,6 +13069,18 @@ store2@^2.12.0:
   version "2.12.0"
   resolved "https://registry.yarnpkg.com/store2/-/store2-2.12.0.tgz#e1f1b7e1a59b6083b2596a8d067f6ee88fd4d3cf"
   integrity sha512-7t+/wpKLanLzSnQPX8WAcuLCCeuSHoWdQuh9SB3xD0kNOM38DNf+0Oa+wmvxmYueRzkmh6IcdKFtvTa+ecgPDw==
+
+storybook-addon-apollo-client@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/storybook-addon-apollo-client/-/storybook-addon-apollo-client-4.0.8.tgz#9a1e2938594280d72815bc96bbed52b24e067ee0"
+  integrity sha512-EmsQkhAFPNEv2jDg8Dzlz7MpyyRzjyEfTH5Ckw8HP3G52JWZQHiJE+Dl5WDiszlKnPKo/ZwOCcQ336t4XCm6GQ==
+  dependencies:
+    "@storybook/addons" "^6"
+    "@storybook/api" "^6"
+    "@storybook/components" "^6"
+  optionalDependencies:
+    "@apollo/client" ">=2.0.0"
+    "@apollo/react-testing" ">=3.0.0"
 
 stream-browserify@^2.0.1:
   version "2.0.2"
