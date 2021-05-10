@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { RiCloseCircleLine, RiCompass3Line, RiHome4Fill, RiMap2Line, RiUser3Fill } from "react-icons/ri";
+import { HiLocationMarker } from "react-icons/hi";
+import { RiArrowGoBackFill, RiBrushFill, RiCamera3Fill, RiCloseCircleLine, RiCompass3Line, RiGroupFill, RiHome4Fill, RiMap2Line, RiMapPin4Fill, RiText, RiUser3Fill } from "react-icons/ri";
 import styled from "styled-components";
 import { palette } from "styled-theme";
 import { ifProp } from "styled-tools";
@@ -42,6 +43,27 @@ const Icon = ({ icon, ...props }) => {
       break;
     case "user":
       svg = <RiUser3Fill />;
+      break;
+    case "marker":
+      svg = <HiLocationMarker />;
+      break;
+    case "camera":
+      svg = <RiCamera3Fill />;
+      break;
+    case "friends":
+      svg = <RiGroupFill />;
+      break;
+    case "brush":
+      svg = <RiBrushFill />;
+      break;
+    case "pin":
+      svg = <RiMapPin4Fill />;
+      break;
+    case "text":
+      svg = <RiText />;
+      break;
+    case "back":
+      svg = <RiArrowGoBackFill />;
       break;
     default:
       svg = <RiCloseCircleLine />;
