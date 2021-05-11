@@ -6,6 +6,7 @@ import PostCard from "../../molecules/PostCard";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  padding-right: 30px;
 `;
 
 const PostItem = styled(PostCard)`
