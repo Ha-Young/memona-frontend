@@ -5,8 +5,10 @@ import { palette } from "styled-theme";
 import defaultImg from "../../../assets/images/examplePostImage.jpeg";
 import Icon from "../../atoms/Icon";
 import Img from "../../atoms/Img";
+import PostTitle from "../../molecules/PostTitle";
+import PostContent from "../PostContent";
 
-const Wrapper = styled.div`
+const Wrapper = styled.article`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -19,17 +21,10 @@ const Wrapper = styled.div`
   }
 `;
 
-const StyledIcon = styled(Icon)`
-  flex: none;
-  margin-right: 10px;
-  border: 1px solid ${palette("grayscale", 0)};
-  border-radius: 50%;
-`;
-
 const Header = styled.header`
   display: flex;
   align-items: center;
-  padding: .5rem;
+  padding: 0.5rem;
   width: 100%;
   border-bottom: 1px solid ${palette("grayscale", 4)};
   font-size: 1.2rem;
@@ -47,38 +42,18 @@ const ContentWrapper = styled.div`
   min-height: 100px;
 `;
 
-const ContentIconWrapper = styled.div`
-  display: flex;
-  padding: .5rem;
-  width: 200px;
-  svg {
-    cursor: pointer;
-  }
-`;
-
-const ContentTextWrapper = styled.div`
-  padding: .5rem 1rem;
-`;
-
-const PostCard = ({ userImgUrl, postDate, postImageUrl, content, ...props }) => {
-  const imgSrc = postImageUrl || defaultImg;
+const PostCard = ({ post, ...props }) => {
+  const imgSrc = post.postImageUrl || defaultImg;
   return (
     <Wrapper {...props}>
       <Header>
-        {userImgUrl || <StyledIcon icon="user" width={32} />}
-        {postDate}
+        <PostTitle post={post} />
       </Header>
       <ImageWrapper>
         <Img src={imgSrc} width="100%" height="100%" />
       </ImageWrapper>
       <ContentWrapper>
-        <ContentIconWrapper>
-          <Icon width={32}/>
-          <Icon width={32}/>
-        </ContentIconWrapper>
-        <ContentTextWrapper>
-          {content}
-        </ContentTextWrapper>
+        <PostContent post={post} />
       </ContentWrapper>
     </Wrapper>
   );
