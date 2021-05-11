@@ -6,17 +6,18 @@ import { size } from "styled-theme";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 3.75rem;
+  padding-top: 3rem;
   min-height: 100vh;
   box-sizing: border-box;
   @media screen and (max-width: 640px) {
-    padding-top: 3.25rem;
+    padding-top: 2rem;
   }
 `;
 
 const Header = styled.header`
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
   z-index: 1;
 `;
