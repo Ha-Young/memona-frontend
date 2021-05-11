@@ -21,7 +21,7 @@ const EntryWrapper = styled.ul`
   list-style: none;
 `;
 
-const FriendsEntry = ({ friends = [], ...props }) => {
+const FriendsEntry = ({ friends, ...props }) => {
   return (
     <Wrapper {...props}>
       친구 리스트

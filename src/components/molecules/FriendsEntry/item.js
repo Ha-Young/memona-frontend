@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { palette } from "styled-theme";
 
+import Avatar from "../../atoms/Avatar";
 import Icon from "../../atoms/Icon";
 
 const Wrapper = styled.li`
@@ -29,7 +30,7 @@ const StyledIcon = styled(Icon)`
 const FriendItem = ({ friend }) => {
   return (
     <Wrapper>
-      {friend.imageUrl || <StyledIcon icon="user" width={32} />}
+      {friend ? <Avatar src={friend.imageUrl} alt={friend.username} /> : <StyledIcon icon="user" width={32} />}
       <FriendName>{friend.username}</FriendName>
     </Wrapper>
   );
