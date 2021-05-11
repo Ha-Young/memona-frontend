@@ -20,7 +20,7 @@ const InnerWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 10px;
+  padding: 0 10pxf;
   width: 100%;
   max-width: ${size("maxWidth")};
   > :not(:first-child) {

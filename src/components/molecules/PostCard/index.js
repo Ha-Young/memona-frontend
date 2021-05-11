@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { palette } from "styled-theme";
-import { ifProp } from "styled-tools";
 
 import defaultImg from "../../../assets/images/examplePostImage.jpeg";
 import Icon from "../../atoms/Icon";
@@ -14,7 +13,6 @@ const Wrapper = styled.div`
   width: 614px;
   border: 1px solid ${palette("grayscale", 4)};
   box-sizing: border-box;
-  opacity: ${ifProp("soon", 0.4, 1)};
   @media screen and (max-width: 614px) {
     padding: 0.5rem;
     width: 100%;

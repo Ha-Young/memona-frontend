@@ -17,6 +17,7 @@ const Wrapper = styled.div`
   align-items: center;
   padding: 1rem;
   width: ${prop("width", "auto")};
+  max-width: ${prop("max-width", "500px")};
   height: ${prop("height", "auto")};
   border: 1px solid ${borderColor};
   background-color: ${backgroundColor};
