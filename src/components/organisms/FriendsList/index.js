@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { palette } from "styled-theme";
 
+import Avatar from "../../atoms/Avatar";
 import Icon from "../../atoms/Icon";
 import FriendsEntry from "../../molecules/FriendsEntry";
 
@@ -27,27 +28,33 @@ const StyledIcon = styled(Icon)`
 const Header = styled.header`
   display: flex;
   align-items: center;
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem 0.5rem 2rem;
   width: 100%;
   border-bottom: 1px solid ${palette("grayscale", 4)};
   font-size: 1.2rem;
   box-sizing: border-box;
   cursor: pointer;
+  img {
+    margin-right: 30px;
+  }
 `;
 
 const UserName = styled.span`
   margin-left: 10px;
 `;
 
-
-const FriendsList = ({ userImgUrl, userName, friends = [], ...props }) => {
+const FriendsList = ({ user, ...props }) => {
   return (
     <Wrapper {...props}>
       <Header>
-        {userImgUrl || <StyledIcon icon="user" width={48} />}
-        <UserName>{userName}</UserName>
+        {user ? (
+          <Avatar src={user.imageUrl} alt={user.username} size={"48px"}/>
+        ) : (
+          <StyledIcon icon="user" width={48} />
+        )}
+        <UserName>{user.username}</UserName>
       </Header>
-      <FriendsEntry friends={friends} />
+      <FriendsEntry friends={user.friends} />
     </Wrapper>
   );
 };
