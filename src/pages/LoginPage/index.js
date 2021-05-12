@@ -22,6 +22,14 @@ const LandingForms = styled.div`
   justify-content: center;
   width: 350px;
   height: 580px;
+
+  @media screen and (max-width: 840px) {
+    padding-right: 2rem;
+  }
+
+  @media screen and (max-width: 640px) {
+    padding-right: 0;
+  }
 `;
 
 const LOGIN_USER = gql`
