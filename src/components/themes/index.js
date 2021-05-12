@@ -34,6 +34,7 @@ theme.fonts = {
 theme.sizes = {
   maxWidth: "1024px",
   postMaxWidth: "614px",
+  postListWidth: "644px",
 };
 
 export default theme;
