@@ -7,7 +7,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 20px;
+  padding-top: 1.5rem;
   width: 100%;
   max-width: ${size("friendsListWidth")};
   font-size: 1rem;

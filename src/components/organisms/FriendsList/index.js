@@ -24,9 +24,9 @@ const StyledIcon = styled(Icon)`
 const Header = styled.header`
   display: flex;
   align-items: center;
-  padding: 0.5rem 0.5rem 0.5rem 2rem;
+  padding: 0.5rem 0.5rem 1.5rem 2rem;
   width: 100%;
-  border-bottom: 1px solid ${palette("grayscale", 4)};
+  border-bottom: 1px solid ${palette("grayscale", 5)};
   font-size: 1.2rem;
   box-sizing: border-box;
   cursor: pointer;
