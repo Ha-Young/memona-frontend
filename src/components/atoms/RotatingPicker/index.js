@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useState } from "react";
 
 import { getSlidesCss, WHEEL_ITEM_RADIUS } from "./wheelUtils";
 
-const RotatingPicker = ({ label, perspective, loop, slides }) => {
+const RotatingPicker = ({ label, perspective, loop, slides, valueRef }) => {
   const [isArray, slideCount] = Array.isArray(slides)
     ? [true, slides.length]
     : [false, slides];
@@ -38,7 +38,12 @@ const RotatingPicker = ({ label, perspective, loop, slides }) => {
     if (!embla) return;
     const rotation = slideCount * WHEEL_ITEM_RADIUS - rotationOffset;
     setWheelRotation(rotation * embla.scrollProgress());
-  }, [setWheelRotation, slideCount, rotationOffset, embla]);
+
+    const currentIndex = Math.round(embla.scrollProgress() * slideCount);
+
+    valueRef.current = isArray ? slides[currentIndex] : currentIndex;
+
+  }, [embla, slideCount, rotationOffset, valueRef, isArray, slides]);
 
   useEffect(() => {
     if (!embla) return;
