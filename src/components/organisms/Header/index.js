@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   justify-content: center;
   padding: 1rem;
   background-color: ${palette("grayscale", 0, true)};
-  border: 1px solid ${palette("grayscale", 4)};
+  border-bottom: 1px solid ${palette("grayscale", 5)};
 
   @media screen and (max-width: 640px) {
     display: flex;
