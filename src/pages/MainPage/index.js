@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { size } from "styled-theme";
+import { palette, size } from "styled-theme";
 
 import defaultImg from "../../assets/images/examplePostImage.jpeg";
+import Button from "../../components/atoms/Button";
+import LocationInfo from "../../components/molecules/LocationInfo";
 import SeasonPicker from "../../components/molecules/SeasonPicker";
 import FriendsList from "../../components/organisms/FriendsList";
 import Header from "../../components/organisms/Header";
@@ -29,18 +31,38 @@ const Sider = styled.div`
 `;
 
 const ContentTop = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem;
   margin-bottom: 2rem;
   height: 200px;
+  background-color: ${palette("grayscale", 0, true)};
+  border: 1px solid ${palette("grayscale", 5)};
 
   @media screen and (max-width: ${size("maxWidth")}) {
     margin-bottom: 1.5rem;
+    padding: .5rem;
   }
 
   @media screen and (max-width: ${size("mobileWidth")}) {
     margin-bottom: 1rem;
+    padding: 0;
+    height: 180px;
+  }
+`;
+
+const StyledButton = styled(Button)`
+  position: absolute;
+  bottom : 5px;
+  right: 5px;
+  z-index: 1;
+
+  @media screen and (max-width: ${size("mobileWidth")}) {
+    height: 24px;
+    width: 28px;
+    font-size: .6rem;
   }
 `;
 
@@ -111,6 +133,14 @@ const MainPage = () => {
     setSiderLeftPos(siderleftPos);
   }
 
+  function handleApplyBtnClick() {
+    console.log(yearValueRef.current);
+    console.log(seasonValueRef.current);
+  }
+
+  const yearValueRef = useRef();
+  const seasonValueRef = useRef();
+
   return (
     <PageTemplate
       viewMode={viewMode}
@@ -120,7 +150,9 @@ const MainPage = () => {
     >
       <PageContent>
         <ContentTop>
-          <SeasonPicker />
+          <LocationInfo areaName="역삼/선릉" />
+          <SeasonPicker yearValueRef={yearValueRef} seasonValueRef={seasonValueRef}/>
+          <StyledButton height={30} onClick={handleApplyBtnClick}>적용</StyledButton>
         </ContentTop>
         <PostList posts={mockPosts} />
       </PageContent>

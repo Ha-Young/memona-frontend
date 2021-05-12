@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
-import { palette } from "styled-theme";
-import { ifProp, prop } from "styled-tools";
+import { palette, size } from "styled-theme";
+import { prop } from "styled-tools";
 
 import generateYearList from "../../../utils/generateYearList";
 import Button from "../../atoms/Button";
@@ -10,11 +10,21 @@ import RotatingPicker from "../../atoms/RotatingPicker";
 const Wrapper = styled.div`
   position: relative;
   margin: 0 auto;
-  height: ${ifProp("isMobile", "170px", "200px")};
-  width: ${ifProp("isMobile", "230px", "300px")};
+  height: ${prop("height", "200px")};
+  width: ${prop("width", "300px")};
   max-width: 300px;
   background-color: ${palette("grayscale", 0, true)};
   z-index: 0;
+
+  @media screen and (max-width: ${size("maxWidth")}) {
+    height: 180px;
+    width: 250px;
+  }
+
+  @media screen and (max-width: ${size("mobileWidth")}) {
+    height: 160px;
+    width: 220px;
+  }
 `;
 
 const Wheels = styled.div`
@@ -29,13 +39,6 @@ const Wheels = styled.div`
   background-color: ${palette("grayscale", 0, true)};
 `;
 
-const StyledButton = styled(Button)`
-  position: absolute;
-  bottom : 5px;
-  right: 5px;
-  z-index: 1;
-`;
-
 const years = generateYearList(50);
 const seasons = [
   "Spring",
@@ -48,21 +51,9 @@ const seasons = [
   "Winter"
 ];
 
-const SeasonPicker = ({ isMobile, ...props }) => {
-  console.log("isMobile", isMobile);
-  const yearValueRef = useRef();
-  const seasonValueRef = useRef();
-
-  const fontSize = isMobile ? ".8rem" : ".9rem";
-  const btnSize = isMobile ? 20 : 25;
-
-  function handleApplyBtnClick() {
-    console.log(yearValueRef.current);
-    console.log(seasonValueRef.current);
-  }
-
+const SeasonPicker = ({ yearValueRef, seasonValueRef, ...props }) => {
   return (
-    <Wrapper isMobile={!!isMobile} {...props}>
+    <Wrapper {...props}>
       <Wheels>
         <div className="embla__wheels__shadow embla__wheels__shadow--start" />
         <div className="embla__wheels__shadow embla__wheels__shadow--end" />
@@ -72,7 +63,6 @@ const SeasonPicker = ({ isMobile, ...props }) => {
           loop={true}
           label=""
           valueRef={yearValueRef}
-          fontSize={fontSize}
         />
         <RotatingPicker
           slides={seasons}
@@ -80,10 +70,8 @@ const SeasonPicker = ({ isMobile, ...props }) => {
           loop={true}
           label=""
           valueRef={seasonValueRef}
-          fontSize={fontSize}
         />
       </Wheels>
-      <StyledButton height={btnSize} onClick={handleApplyBtnClick}>적용</StyledButton>
     </Wrapper>
   );
 };

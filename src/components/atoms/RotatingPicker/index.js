@@ -14,7 +14,7 @@ const SlideValues = styled.div`
   left: 0 !important;
   width: 100%;
   height: 100%;
-  font-size: ${prop("fontSize", "18px")};
+  font-size: ${prop("fontSize", "1em")};
   text-align: center;
   display: flex;
   align-items: center;
@@ -26,7 +26,7 @@ const SlideValues = styled.div`
 const SlideLabel = styled.div`
   font-weight: bold;
   pointer-events: none;
-  font-size: ${prop("fontSize", "18px")};
+  font-size: ${prop("fontSize", "1em")};
 `;
 
 const RotatingPicker = ({
