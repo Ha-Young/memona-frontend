@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { size } from "styled-theme";
 
 import PostCard from "../../molecules/PostCard";
 
@@ -9,21 +10,23 @@ const Wrapper = styled.div`
 `;
 
 const PostItem = styled(PostCard)`
-  margin-bottom: 20px;
-
-  @media (min-width: 640px) {
-    margin-bottom: 60px;
+  &:not(:last-child) {
+    margin-bottom: 2.5rem;
   }
 
-  @media (max-width: 735px) {
-    margin-bottom: 15px;
+  @media (max-width: ${size("maxWidth")}) {
+    &:not(:last-child) {
+      margin-bottom: 1.75rem;
+    }
   }
 `;
 
 const PostList = ({ posts = [], ...props }) => {
   return (
     <Wrapper {...props}>
-      {posts.map((post) => <PostItem post={post} />)}
+      {posts.map((post) => (
+        <PostItem post={post} />
+      ))}
     </Wrapper>
   );
 };

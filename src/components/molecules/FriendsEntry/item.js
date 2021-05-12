@@ -8,7 +8,7 @@ import Icon from "../../atoms/Icon";
 const Wrapper = styled.li`
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 1rem;
   color: ${palette("grayscale", 0)};
   cursor: pointer;
 `;
@@ -17,7 +17,7 @@ const FriendName = styled.span`
   display: flex;
   justify-content: center;
   height: 100%;
-  width: 40%;
+  width: 55%;
 `;
 
 const StyledIcon = styled(Icon)`

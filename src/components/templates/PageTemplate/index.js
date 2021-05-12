@@ -32,8 +32,7 @@ const Content = styled.section`
   max-width: ${size("maxWidth")};
 
   @media screen and (max-width: ${size("maxWidth")}) {
-    padding-top: 1.75rem;
-    margin: 0;
+    margin: 1.5rem 0;
     justify-content: center;
   }
 `;

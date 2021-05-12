@@ -52,7 +52,7 @@ const mockUser = {
         "https://lh3.googleusercontent.com/a/AATXAJyu9yYaEXDkC30xWzNlO59Uhzdyt_ELAuinPyY1=s96-c",
     },
     {
-      username: "친구2",
+      username: "친구2입니다",
       imageUrl:
         "https://lh3.googleusercontent.com/a/AATXAJyu9yYaEXDkC30xWzNlO59Uhzdyt_ELAuinPyY1=s96-c",
     },
