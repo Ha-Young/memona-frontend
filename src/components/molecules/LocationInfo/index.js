@@ -30,7 +30,7 @@ const Content = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  margin: 1rem;
+  margin-right: 1rem;
 
   @media screen and (max-width: ${size("mobileWidth")}) {
     margin: 0;
