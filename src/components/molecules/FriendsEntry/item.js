@@ -30,7 +30,7 @@ const StyledIcon = styled(Icon)`
 const FriendItem = ({ friend }) => {
   return (
     <Wrapper>
-      {friend ? <Avatar src={friend.imageUrl} alt={friend.username} /> : <StyledIcon icon="user" width={32} />}
+      {friend && friend.imageUrl ? <Avatar src={friend.imageUrl} alt={friend.username} /> : <StyledIcon icon="user" width={32} />}
       <FriendName>{friend.username}</FriendName>
     </Wrapper>
   );

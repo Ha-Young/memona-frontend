@@ -12,10 +12,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   width: 300px;
   box-sizing: border-box;
-
-  @media screen and (max-width: 614px) {
-    display: none;
-  }
 `;
 
 const StyledIcon = styled(Icon)`

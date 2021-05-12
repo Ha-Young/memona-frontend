@@ -1,7 +1,22 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { HiLocationMarker } from "react-icons/hi";
-import { RiArrowGoBackFill, RiBrushFill, RiCamera3Fill, RiChat3Line, RiCloseCircleLine, RiCompass3Line, RiGroupFill, RiHeartsFill, RiHeartsLine, RiHome4Fill, RiMap2Line, RiMapPin4Fill, RiText, RiUser3Fill } from "react-icons/ri";
+import {
+  RiArrowGoBackFill,
+  RiBrushFill,
+  RiCamera3Fill,
+  RiCharacterRecognitionFill,
+  RiChat3Line,
+  RiCloseCircleLine,
+  RiCompass3Line,
+  RiGroupFill,
+  RiHeartsFill,
+  RiHeartsLine,
+  RiHome4Fill,
+  RiMap2Line,
+  RiMapPin4Fill,
+  RiUser3Fill,
+} from "react-icons/ri";
 import styled from "styled-components";
 import { palette } from "styled-theme";
 import { ifProp } from "styled-tools";
@@ -60,7 +75,7 @@ const Icon = ({ icon, ...props }) => {
       svg = <RiMapPin4Fill />;
       break;
     case "text":
-      svg = <RiText />;
+      svg = <RiCharacterRecognitionFill />;
       break;
     case "back":
       svg = <RiArrowGoBackFill />;
