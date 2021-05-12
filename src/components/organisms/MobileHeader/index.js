@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   height: 3.75rem;
   box-sizing: border-box;
 
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: ${size("mobileWidth")}) {
     height: 2.75rem;
   }
 `;
