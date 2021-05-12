@@ -2,16 +2,20 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { palette } from "styled-theme";
+import { palette, size } from "styled-theme";
+import { ifProp } from "styled-tools";
 
 import Icon from "../../atoms/Icon";
 
 const Nav = styled.nav`
   display: flex;
+  justify-content: ${ifProp("mobileType", "space-between", "auto")};
   align-items: center;
   list-style: none;
+  width: ${ifProp("mobileType", "100%", "auto")};
+  max-width: ${size("maxWidth")};
   > :not(:first-child) {
-    margin-left: 1rem;
+    margin-left: ${ifProp("mobileType", "0", "1rem")};
   }
   a {
     color: ${palette("grayscale", 0)};
@@ -21,27 +25,34 @@ const Nav = styled.nav`
   }
 `;
 
-const PrimaryNavigation = ({ iconSize = 25, ...props }) => {
+const PrimaryNavigation = ({ iconSize = 25, mobileType, ...props }) => {
   return (
-    <Nav {...props}>
+    <Nav mobileType={mobileType} {...props}>
       <li>
         <Link to="/" exact activeClassName="active">
-          <Icon icon="home" size={iconSize}/>
+          <Icon icon="home" size={iconSize} />
         </Link>
       </li>
       <li>
         <Link to="/" activeClassName="active">
-          <Icon icon="compas" size={iconSize}/>
+          <Icon icon="compas" size={iconSize} />
+        </Link>
+      </li>
+      {mobileType && (
+        <li>
+          <Link to="/" activeClassName="active">
+            <Icon icon="camera" size={iconSize} />
+          </Link>
+        </li>
+      )}
+      <li>
+        <Link to="/" activeClassName="active">
+          <Icon icon="map" size={iconSize} />
         </Link>
       </li>
       <li>
         <Link to="/" activeClassName="active">
-          <Icon icon="map" size={iconSize}/>
-        </Link>
-      </li>
-      <li>
-        <Link to="/" activeClassName="active">
-          <Icon icon="user" size={iconSize}/>
+          <Icon icon="user" size={iconSize} />
         </Link>
       </li>
     </Nav>

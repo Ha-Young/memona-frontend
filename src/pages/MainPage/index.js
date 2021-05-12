@@ -6,6 +6,7 @@ import defaultImg from "../../assets/images/examplePostImage.jpeg";
 import FriendsList from "../../components/organisms/FriendsList";
 import Header from "../../components/organisms/Header";
 import MobileHeader from "../../components/organisms/MobileHeader";
+import MobileNavigator from "../../components/organisms/MobileNavigator";
 import PostList from "../../components/organisms/PostList";
 import PageTemplate from "../../components/templates/PageTemplate";
 import Theme from "../../components/themes";
@@ -88,6 +89,7 @@ const MainPage = () => {
       viewMode={viewMode}
       header={<Header />}
       mobileHeader={<MobileHeader />}
+      mobileNavigator={<MobileNavigator />}
     >
       <PostList posts={mockPosts} />
       <Sider left={siderLeftPos}>
