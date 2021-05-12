@@ -25,7 +25,7 @@ const PostList = ({ posts = [], ...props }) => {
   return (
     <Wrapper {...props}>
       {posts.map((post) => (
-        <PostItem post={post} />
+        <PostItem key={post._id} post={post} />
       ))}
     </Wrapper>
   );

@@ -24,6 +24,7 @@ const Sider = styled.div`
 
 const mockPosts = [
   {
+    _id: 1,
     postDate: "2021-05-30",
     author: {
       imageUrl:
@@ -33,6 +34,7 @@ const mockPosts = [
     content: "테스트입니다. 테스트 posts mock 데이터입니다",
   },
   {
+    _id: 2,
     postDate: "2021-05-30",
     author: {
       imageUrl:
@@ -49,16 +51,19 @@ const mockUser = {
     "https://lh3.googleusercontent.com/a/AATXAJwtCFYAlDYjooMIEVhBD8VZsJ35X164RKn034hc=s96-c",
   friends: [
     {
+      _id: 1,
       username: "친구1",
       imageUrl:
         "https://lh3.googleusercontent.com/a/AATXAJyu9yYaEXDkC30xWzNlO59Uhzdyt_ELAuinPyY1=s96-c",
     },
     {
+      _id: 2,
       username: "친구2입니다",
       imageUrl:
         "https://lh3.googleusercontent.com/a/AATXAJyu9yYaEXDkC30xWzNlO59Uhzdyt_ELAuinPyY1=s96-c",
     },
     {
+      _id: 3,
       username: "친구3",
       imageUrl:
         "https://lh3.googleusercontent.com/a/AATXAJyu9yYaEXDkC30xWzNlO59Uhzdyt_ELAuinPyY1=s96-c",

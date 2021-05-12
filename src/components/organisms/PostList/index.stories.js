@@ -6,6 +6,7 @@ import PostList from ".";
 
 const mockPosts = [
   {
+    _id: 1,
     postDate: "2021-05-30",
     author: {
       imageUrl: "https://lh3.googleusercontent.com/a/AATXAJwtCFYAlDYjooMIEVhBD8VZsJ35X164RKn034hc=s96-c",
@@ -14,6 +15,7 @@ const mockPosts = [
     content: "테스트입니다. 테스트 posts mock 데이터입니다",
   },
   {
+    _id: 2,
     postDate: "2021-05-30",
     author: {
       imageUrl: "https://lh3.googleusercontent.com/a/AATXAJwtCFYAlDYjooMIEVhBD8VZsJ35X164RKn034hc=s96-c",
@@ -22,6 +24,7 @@ const mockPosts = [
     content: "테스트입니다. 테스트 posts mock 데이터입니다",
   },
   {
+    _id: 3,
     postDate: "2021-05-30",
     author: {
       imageUrl: "https://lh3.googleusercontent.com/a/AATXAJwtCFYAlDYjooMIEVhBD8VZsJ35X164RKn034hc=s96-c",
@@ -30,6 +33,7 @@ const mockPosts = [
     content: "테스트입니다. 테스트 posts mock 데이터입니다",
   },
   {
+    _id: 4,
     postDate: "2021-05-30",
     author: {
       imageUrl: "https://lh3.googleusercontent.com/a/AATXAJwtCFYAlDYjooMIEVhBD8VZsJ35X164RKn034hc=s96-c",

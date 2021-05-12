@@ -5,18 +5,22 @@ import FriendsList from ".";
 
 const mockFriends = [
   {
+    _id: 1,
     username: "test1",
     imageUrl: "https://lh3.googleusercontent.com/a/AATXAJyu9yYaEXDkC30xWzNlO59Uhzdyt_ELAuinPyY1=s96-c",
   },
   {
+    _id: 2,
     username: "test2",
     imageUrl: "https://lh3.googleusercontent.com/a/AATXAJyu9yYaEXDkC30xWzNlO59Uhzdyt_ELAuinPyY1=s96-c",
   },
   {
+    _id: 3,
     username: "test3",
     imageUrl: "https://lh3.googleusercontent.com/a/AATXAJyu9yYaEXDkC30xWzNlO59Uhzdyt_ELAuinPyY1=s96-c",
   },
   {
+    _id: 4,
     username: "test4",
     imageUrl: "https://lh3.googleusercontent.com/a/AATXAJyu9yYaEXDkC30xWzNlO59Uhzdyt_ELAuinPyY1=s96-c",
   }

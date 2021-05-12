@@ -29,29 +29,29 @@ const PrimaryNavigation = ({ iconSize = 25, mobileType, ...props }) => {
   return (
     <Nav mobileType={mobileType} {...props}>
       <li>
-        <Link to="/" exact activeClassName="active">
+        <Link to="/">
           <Icon icon="home" size={iconSize} />
         </Link>
       </li>
       <li>
-        <Link to="/" activeClassName="active">
+        <Link to="/">
           <Icon icon="compas" size={iconSize} />
         </Link>
       </li>
       {mobileType && (
         <li>
-          <Link to="/" activeClassName="active">
+          <Link to="/">
             <Icon icon="camera" size={iconSize} />
           </Link>
         </li>
       )}
       <li>
-        <Link to="/" activeClassName="active">
+        <Link to="/">
           <Icon icon="map" size={iconSize} />
         </Link>
       </li>
       <li>
-        <Link to="/" activeClassName="active">
+        <Link to="/">
           <Icon icon="user" size={iconSize} />
         </Link>
       </li>

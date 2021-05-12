@@ -26,7 +26,7 @@ const FriendsEntry = ({ friends, ...props }) => {
     <Wrapper {...props}>
       친구 리스트
       <EntryWrapper>
-        {friends.map((friend) => <FriendItem friend={friend} />)}
+        {friends.map((friend) => <FriendItem key={friend._id} friend={friend} />)}
       </EntryWrapper>
     </Wrapper>
   );
