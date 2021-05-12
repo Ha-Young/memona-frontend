@@ -34,5 +34,5 @@ const mockUser = {
 
 storiesOf("FriendsList", module)
   .add("default", () => (
-    <FriendsList user={mockUser} />
+    <FriendsList user={mockUser} width="300px"/>
   ));

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { palette, size } from "styled-theme";
+import { prop } from "styled-tools";
 
 import defaultImg from "../../../assets/images/examplePostImage.jpeg";
 import Img from "../../atoms/Img";
@@ -11,7 +12,7 @@ const Wrapper = styled.article`
   position: relative;
   display: flex;
   flex-direction: column;
-  width: ${size("postMaxWidth")};
+  width: ${prop("width", size("postMaxWidth"))};
   border: 1px solid ${palette("grayscale", 4)};
   background-color: ${palette("grayscale", 0, true)};
   box-sizing: border-box;

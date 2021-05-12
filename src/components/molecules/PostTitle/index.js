@@ -29,7 +29,7 @@ const PostTitleContent = styled.span`
 const PostTitle = ({ post, ...props }) => {
   return (
     <Wrapper {...props}>
-      {post.author ? (
+      {post.author?.imageUrl ? (
         <StyledAvatar src={post.author.imageUrl} alt={post.author.username} />
       ) : (
         <StyledIcon icon="user" width={32} />
