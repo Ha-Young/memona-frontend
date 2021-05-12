@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function useToken() {
+function useToken() {
   const [token, setToken] = useState(getToken());
 
   function getToken() {
@@ -26,3 +26,5 @@ export default function useToken() {
     deleteToken,
   };
 }
+
+export default useToken;

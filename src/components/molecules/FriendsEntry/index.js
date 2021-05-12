@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { palette } from "styled-theme";
+import { palette, size } from "styled-theme";
 
 import FriendItem from "./item";
 
@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   align-items: center;
   padding-top: 20px;
   width: 100%;
-  max-width: 300px;
+  max-width: ${size("friendsListWidth")};
   font-size: 1rem;
   color: ${palette("grayscale", 2)};
 `;

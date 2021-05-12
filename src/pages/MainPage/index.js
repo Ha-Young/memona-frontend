@@ -13,7 +13,7 @@ import calcAddPixel from "../../utils/calcAddPixel";
 
 const Sider = styled.div`
   position: fixed;
-  left: ${({ left }) => `${left}`};
+  left: ${({ left }) => `${left}px`};
 
   @media screen and (max-width: ${size("maxWidth")}) {
     display: none;
@@ -69,12 +69,12 @@ const MainPage = () => {
   const viewMode = useViewMode();
 
   useEffect(() => {
-    setSliderPosition(viewMode.width);
+    setSiderPosition(viewMode.width);
   }, [viewMode]);
 
-  function setSliderPosition(clientWidth) {
-    const left = calcAddPixel(clientWidth, Theme.sizes.postListWidth) / 2;
-    setSiderLeftPos(left + "px");
+  function setSiderPosition(clientWidth) {
+    const siderleftPos = calcAddPixel(clientWidth, Theme.sizes.postListWidth, `-${Theme.sizes.friendsListWidth}`) / 2;
+    setSiderLeftPos(siderleftPos);
   }
 
   return (

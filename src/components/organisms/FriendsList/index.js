@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { palette } from "styled-theme";
+import { palette, size } from "styled-theme";
 
 import Avatar from "../../atoms/Avatar";
 import Icon from "../../atoms/Icon";
@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: ${size("friendsListWidth")};
   box-sizing: border-box;
 `;
 

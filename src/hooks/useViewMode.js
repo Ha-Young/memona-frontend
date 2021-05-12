@@ -5,7 +5,7 @@ import theme from "../components/themes";
 import { viewType as viewTypeConstant } from "../constants";
 import { viewModeVar } from "../store";
 
-export default function useViewMode() {
+function useViewMode() {
   const viewMode = useReactiveVar(viewModeVar);
 
   useEffect(() => {
@@ -32,3 +32,5 @@ export default function useViewMode() {
 
   return viewMode;
 }
+
+export default useViewMode;
