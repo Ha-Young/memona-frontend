@@ -10,8 +10,10 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   padding: 1rem;
+  height: 3.75rem;
   background-color: ${palette("grayscale", 0, true)};
   border-bottom: 1px solid ${palette("grayscale", 5)};
+  box-sizing: border-box;
 
   @media screen and (max-width: 640px) {
     display: flex;
