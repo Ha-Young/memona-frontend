@@ -2,4 +2,7 @@ import { makeVar } from "@apollo/client";
 
 import { viewType } from "./constants";
 
-export const viewMode = makeVar(viewType.PC);
+export const viewModeVar = makeVar({
+  viewType,
+  width: "0px",
+});

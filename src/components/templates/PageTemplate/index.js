@@ -43,29 +43,10 @@ const Footer = styled.footer`
 `;
 
 const PageTemplate = ({ header, children, footer, onResize, ...props }) => {
-  const contentElementRef = useRef();
-
-  useEffect(() => {
-    function handleResize() {
-      onResize(contentElementRef.current);
-    }
-
-    if (onResize) {
-      onResize(contentElementRef.current);
-      window.addEventListener("resize", handleResize);
-    }
-
-    return () => {
-      if (onResize) {
-        window.removeEventListener("resize", handleResize);
-      }
-    };
-  }, [onResize]);
-
   return (
     <Wrapper {...props}>
       <Header>{header}</Header>
-      <Content ref={contentElementRef}>{children}</Content>
+      <Content>{children}</Content>
       {footer && <Footer>{footer}</Footer>}
     </Wrapper>
   );
