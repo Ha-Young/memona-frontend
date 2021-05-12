@@ -78,7 +78,7 @@ const MainPage = () => {
   }
 
   return (
-    <PageTemplate header={<Header />}>
+    <PageTemplate viewMode={viewMode} header={<Header />}>
       <PostList posts={mockPosts} />
       <Sider left={siderLeftPos}>
         <FriendsList user={mockUser} />
