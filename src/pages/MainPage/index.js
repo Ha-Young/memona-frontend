@@ -1,4 +1,3 @@
-import { useReactiveVar } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { size } from "styled-theme";
@@ -9,8 +8,7 @@ import Header from "../../components/organisms/Header";
 import PostList from "../../components/organisms/PostList";
 import PageTemplate from "../../components/templates/PageTemplate";
 import Theme from "../../components/themes";
-import { viewType as viewTypeConstant } from "../../constants";
-import { viewModeVar } from "../../store";
+import useViewMode from "../../hooks/useViewMode";
 import calcAddPixel from "../../utils/calcAddPixel";
 
 const Sider = styled.div`
@@ -68,29 +66,7 @@ const mockUser = {
 
 const MainPage = () => {
   const [siderLeftPos, setSiderLeftPos] = useState();
-  const viewMode = useReactiveVar(viewModeVar);
-
-  useEffect(() => {
-    function handleResize() {
-      const width = document.body.clientWidth;
-      const viewType =
-        width <= Theme.sizes.maxWidth
-          ? viewTypeConstant.MOBILE
-          : viewTypeConstant.PC;
-
-      viewModeVar({
-        width,
-        viewType,
-      });
-    }
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  const viewMode = useViewMode();
 
   useEffect(() => {
     setSliderPosition(viewMode.width);
