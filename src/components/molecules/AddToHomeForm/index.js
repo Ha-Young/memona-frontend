@@ -18,6 +18,7 @@ const Wrapper = styled.div`
 
 const StyledLabel = styled(Label)`
   margin-bottom: 20px;
+  font-size: .9em;
 `;
 
 const AddToHomeForm = ({

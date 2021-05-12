@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import { size } from "styled-theme";
 
 const Wrapper = styled.div`
   display: flex;
@@ -23,8 +24,7 @@ const Content = styled.section`
   width: 100%;
   box-sizing: border-box;
   margin: 0 auto;
-  width: 80vw;
-  min-width: 980px;
+  max-width: ${size("maxWidth")};
 `;
 
 const GenericTemplate = ({ children, ...props }) => {

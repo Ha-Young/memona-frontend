@@ -35,16 +35,17 @@ const Wrapper = styled.div`
 `;
 
 const StyledHeading = styled(Heading)`
-  font-size: 2rem;
+  font-size: 2em;
   margin-bottom: 30px;
 
   @media screen and (max-width: 640px) {
-    font-size: 2.5rem;
+    font-size: 2.5em;
   }
 `;
 
 const StyledLabel = styled(Label)`
   margin-bottom: 80px;
+  font-size: 1em;
 `;
 
 const LoginForm = ({
