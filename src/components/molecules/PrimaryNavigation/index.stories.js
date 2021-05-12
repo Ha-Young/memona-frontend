@@ -14,4 +14,9 @@ storiesOf("PrimaryNavigation", module)
     <BrowserRouter>
       <PrimaryNavigation reverse />
     </BrowserRouter>
+  ))
+  .add("mobileType", () => (
+    <BrowserRouter>
+      <PrimaryNavigation mobileType />
+    </BrowserRouter>
   ));

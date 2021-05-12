@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { size } from "styled-theme";
+import { palette, size } from "styled-theme";
 
 import { viewType as viewTypeConstant } from "../../../constants";
 
@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.genericBackgroundColor};
 
   @media screen and (max-width: 640px) {
-    padding-top: 1.75rem;
+    padding: 1.75rem 0;
   }
 `;
 
@@ -24,6 +24,8 @@ const Header = styled.header`
   left: 0;
   width: 100%;
   z-index: 1;
+  background-color: ${palette("grayscale", 0, true)};
+  border-bottom: 1px solid ${palette("grayscale", 5)};
 `;
 
 const Content = styled.section`
@@ -43,7 +45,26 @@ const Footer = styled.footer`
   margin-top: auto;
 `;
 
-const PageTemplate = ({ viewMode, header, mobileHeader, mobileNavigator, children, footer, onResize, ...props }) => {
+const MobileNavigator = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  background-color: ${palette("grayscale", 0, true)};
+  border-top: 1px solid ${palette("grayscale", 5)};
+`;
+
+const PageTemplate = ({
+  viewMode,
+  header,
+  mobileHeader,
+  mobileNavigator,
+  children,
+  footer,
+  onResize,
+  ...props
+}) => {
   const viewType = viewMode.viewType;
 
   return (
@@ -52,7 +73,9 @@ const PageTemplate = ({ viewMode, header, mobileHeader, mobileNavigator, childre
         {viewType === viewTypeConstant.MOBILE ? mobileHeader : header}
       </Header>
       <Content>{children}</Content>
-      {viewType === viewTypeConstant.MOBILE && mobileNavigator}
+      {viewType === viewTypeConstant.MOBILE && (
+        <MobileNavigator>{mobileNavigator}</MobileNavigator>
+      )}
       {footer && <Footer>{footer}</Footer>}
     </Wrapper>
   );
