@@ -12,6 +12,7 @@ const Wrapper = styled.div`
   padding: 1rem;
   height: 3.75rem;
   box-sizing: border-box;
+  z-index: 2;
 `;
 
 const InnerWrapper = styled.div`

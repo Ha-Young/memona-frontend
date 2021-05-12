@@ -3,10 +3,40 @@ import "./index.css";
 import { useEmblaCarousel } from "embla-carousel/react";
 import { setupWheelGestures } from "embla-carousel-wheel-gestures";
 import React, { useCallback, useEffect, useState } from "react";
+import styled from "styled-components";
+import { prop } from "styled-tools";
 
 import { getSlidesCss, WHEEL_ITEM_RADIUS } from "./wheelUtils";
 
-const RotatingPicker = ({ label, perspective, loop, slides, valueRef }) => {
+const SlideValues = styled.div`
+  position: absolute;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100%;
+  height: 100%;
+  font-size: ${prop("fontSize", "18px")};
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  opacity: 0;
+`;
+
+const SlideLabel = styled.div`
+  font-weight: bold;
+  pointer-events: none;
+  font-size: ${prop("fontSize", "18px")};
+`;
+
+const RotatingPicker = ({
+  label,
+  perspective,
+  loop,
+  slides,
+  valueRef,
+  fontSize,
+}) => {
   const [isArray, slideCount] = Array.isArray(slides)
     ? [true, slides.length]
     : [false, slides];
@@ -41,8 +71,9 @@ const RotatingPicker = ({ label, perspective, loop, slides, valueRef }) => {
 
     const currentIndex = Math.round(embla.scrollProgress() * slideCount);
 
-    valueRef.current = isArray ? slides[currentIndex] : currentIndex;
-
+    if (valueRef) {
+      valueRef.current = isArray ? slides[currentIndex] : currentIndex;
+    }
   }, [embla, slideCount, rotationOffset, valueRef, isArray, slides]);
 
   useEffect(() => {
@@ -62,29 +93,29 @@ const RotatingPicker = ({ label, perspective, loop, slides, valueRef }) => {
 
   return (
     <>
-      <div className="embla__wheels__shadow embla__wheels__shadow--start" />
-      <div className="embla__wheels__shadow embla__wheels__shadow--end" />
       <div className={`embla__wheel embla__wheel--perspective-${perspective}`}>
         <div className="embla__wheel__scene">
           <div className="embla__wheel__viewport" ref={viewportRef}>
             <div className="embla__wheel__container">
               {slideStyles.map((slideStyle, index) => (
-                <div
+                <SlideValues
                   key={index}
-                  className="embla__wheel__slide"
                   style={
                     wheelReady
                       ? slideStyle
                       : { transform: "none", position: "static" }
                   }
+                  fontSize={fontSize}
                 >
                   {isArray ? slides[index] : index}
-                </div>
+                </SlideValues>
               ))}
             </div>
           </div>
         </div>
-        <div className="embla__wheel__label">{label}</div>
+        <SlideLabel className="embla__wheel__label" fontSize={fontSize}>
+          {label}
+        </SlideLabel>
       </div>
     </>
   );

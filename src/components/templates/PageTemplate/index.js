@@ -13,12 +13,8 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   background-color: ${({ theme }) => theme.genericBackgroundColor};
 
-  @media screen and (max-width: ${size("maxWidth")}) {
-    padding: 2.75rem 0;
-  }
-
   @media screen and (max-width: ${size("mobileWidth")}) {
-    padding: 1.75rem 0;
+    padding: 2.75rem 0;
   }
 `;
 
@@ -42,6 +38,10 @@ const Content = styled.section`
   @media screen and (max-width: ${size("maxWidth")}) {
     margin: 1.5rem 0;
     justify-content: center;
+  }
+
+  @media screen and (max-width: ${size("mobileWidth")}) {
+    margin: 1rem 0;
   }
 `;
 

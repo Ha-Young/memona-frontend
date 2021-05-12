@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
 import { palette } from "styled-theme";
+import { ifProp, prop } from "styled-tools";
 
 import generateYearList from "../../../utils/generateYearList";
 import Button from "../../atoms/Button";
@@ -8,13 +9,12 @@ import RotatingPicker from "../../atoms/RotatingPicker";
 
 const Wrapper = styled.div`
   position: relative;
-  padding-left: 20px;
-  padding-right: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  height: 200px;
-  max-width: 470px;
+  margin: 0 auto;
+  height: ${ifProp("isMobile", "170px", "200px")};
+  width: ${ifProp("isMobile", "230px", "300px")};
+  max-width: 300px;
   background-color: ${palette("grayscale", 0, true)};
+  z-index: 0;
 `;
 
 const Wheels = styled.div`
@@ -22,6 +22,7 @@ const Wheels = styled.div`
   display: flex;
   margin-left: auto;
   margin-right: auto;
+  padding-left: 10px;
   width: 100%;
   height: 100%;
   max-width: 300px;
@@ -31,7 +32,7 @@ const Wheels = styled.div`
 const StyledButton = styled(Button)`
   position: absolute;
   bottom : 5px;
-  right: 100px;
+  right: 5px;
   z-index: 1;
 `;
 
@@ -47,9 +48,13 @@ const seasons = [
   "Winter"
 ];
 
-const SeasonPicker = ({ post, ...props }) => {
+const SeasonPicker = ({ isMobile, ...props }) => {
+  console.log("isMobile", isMobile);
   const yearValueRef = useRef();
   const seasonValueRef = useRef();
+
+  const fontSize = isMobile ? ".8rem" : ".9rem";
+  const btnSize = isMobile ? 20 : 25;
 
   function handleApplyBtnClick() {
     console.log(yearValueRef.current);
@@ -57,24 +62,28 @@ const SeasonPicker = ({ post, ...props }) => {
   }
 
   return (
-    <Wrapper>
+    <Wrapper isMobile={!!isMobile} {...props}>
       <Wheels>
+        <div className="embla__wheels__shadow embla__wheels__shadow--start" />
+        <div className="embla__wheels__shadow embla__wheels__shadow--end" />
         <RotatingPicker
           slides={years}
           perspective="left"
           loop={true}
           label=""
           valueRef={yearValueRef}
+          fontSize={fontSize}
         />
         <RotatingPicker
           slides={seasons}
-          perspective="left"
+          perspective="right"
           loop={true}
           label=""
           valueRef={seasonValueRef}
+          fontSize={fontSize}
         />
       </Wheels>
-      <StyledButton height={25} onClick={handleApplyBtnClick}>적용</StyledButton>
+      <StyledButton height={btnSize} onClick={handleApplyBtnClick}>적용</StyledButton>
     </Wrapper>
   );
 };

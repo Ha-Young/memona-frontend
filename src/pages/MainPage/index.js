@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { size } from "styled-theme";
 
 import defaultImg from "../../assets/images/examplePostImage.jpeg";
+import SeasonPicker from "../../components/molecules/SeasonPicker";
 import FriendsList from "../../components/organisms/FriendsList";
 import Header from "../../components/organisms/Header";
 import MobileHeader from "../../components/organisms/MobileHeader";
@@ -13,12 +14,33 @@ import Theme from "../../components/themes";
 import useViewMode from "../../hooks/useViewMode";
 import calcAddPixel from "../../utils/calcAddPixel";
 
+const PageContent = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const Sider = styled.div`
   position: fixed;
   left: ${({ left }) => `${left}px`};
 
   @media screen and (max-width: ${size("maxWidth")}) {
     display: none;
+  }
+`;
+
+const ContentTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  height: 200px;
+
+  @media screen and (max-width: ${size("maxWidth")}) {
+    margin-bottom: 1.5rem;
+  }
+
+  @media screen and (max-width: ${size("mobileWidth")}) {
+    margin-bottom: 1rem;
   }
 `;
 
@@ -96,7 +118,12 @@ const MainPage = () => {
       mobileHeader={<MobileHeader />}
       mobileNavigator={<MobileNavigator />}
     >
-      <PostList posts={mockPosts} />
+      <PageContent>
+        <ContentTop>
+          <SeasonPicker />
+        </ContentTop>
+        <PostList posts={mockPosts} />
+      </PageContent>
       <Sider left={siderLeftPos}>
         <FriendsList user={mockUser} />
       </Sider>

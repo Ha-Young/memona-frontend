@@ -5,6 +5,8 @@ import SeasonPicker from ".";
 
 storiesOf("SeasonPicker", module)
   .add("default", () => (
-    <SeasonPicker
-    />
+    <SeasonPicker/>
+  ))
+  .add("isMobile", () => (
+    <SeasonPicker isMobile/>
   ));
