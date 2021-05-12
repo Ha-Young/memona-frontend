@@ -4,15 +4,16 @@ import { ThemeProvider } from "styled-components";
 
 import LoginPage from "../pages/LoginPage";
 import MainPage from "../pages/MainPage";
+import AuthRoute from "./AuthRoute";
 import theme from "./themes";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <Switch>
-        <Route path="/" exact>
+        <AuthRoute path="/" exact>
           <MainPage />
-        </Route>
+        </AuthRoute>
         <Route path="/login">
           <LoginPage />
         </Route>
