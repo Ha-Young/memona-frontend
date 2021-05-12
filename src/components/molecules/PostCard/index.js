@@ -16,7 +16,6 @@ const Wrapper = styled.article`
   background-color: ${palette("grayscale", 0, true)};
   box-sizing: border-box;
   @media screen and (max-width: ${size("postMaxWidth")}) {
-    padding: 0.5rem;
     width: 100%;
   }
 `;

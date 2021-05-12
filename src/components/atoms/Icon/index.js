@@ -21,13 +21,14 @@ import styled from "styled-components";
 import { palette } from "styled-theme";
 import { ifProp } from "styled-tools";
 
-const fontSize = ({ width, height }) => {
-  const size = width || height;
-  return size ? `${size / 16}rem` : "1.25em";
+const fontSize = ({ width, height, size }) => {
+  const remSize = width || height || size;
+  return remSize ? `${remSize / 16}rem` : "1.25em";
 };
 
 const Wrapper = styled.span`
-  display: inline-block;
+  display: flex;
+  align-items: center;
   font-size: ${fontSize};
   color: ${ifProp("palette", palette({ grayscale: 0 }, 1), "currentcolor")};
   width: 1em;
