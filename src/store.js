@@ -6,3 +6,10 @@ export const viewModeVar = makeVar({
   viewType,
   width: "0px",
 });
+
+// {
+//   latitude,
+//   longitude,
+//   altitude,
+// }
+export const locationVar = makeVar(null);
