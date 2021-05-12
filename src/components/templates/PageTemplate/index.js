@@ -13,7 +13,11 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   background-color: ${({ theme }) => theme.genericBackgroundColor};
 
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: ${size("maxWidth")}) {
+    padding: 2.75rem 0;
+  }
+
+  @media screen and (max-width: ${size("mobileWidth")}) {
     padding: 1.75rem 0;
   }
 `;

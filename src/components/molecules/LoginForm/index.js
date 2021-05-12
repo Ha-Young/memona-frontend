@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { palette } from "styled-theme";
+import { palette, size } from "styled-theme";
 import { prop } from "styled-tools";
 
 import GoogleLoginButton from "../../atoms/GoogleLoginButton";
@@ -23,7 +23,7 @@ const Wrapper = styled.div`
   background-color: ${backgroundColor};
   box-sizing: border-box;
 
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: ${size("mobileWidth")}) {
     padding: 0.5rem;
     border: none;
     background-color: ${({ theme }) => theme.genericBackgroundColor};
@@ -38,7 +38,7 @@ const StyledHeading = styled(Heading)`
   font-size: 2em;
   margin-bottom: 30px;
 
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: ${size("mobileWidth")}) {
     font-size: 2.5em;
   }
 `;

@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.genericBackgroundColor};
   box-sizing: border-box;
 
-  @media (orientation: landscape) and (max-width: 640px),
+  @media (orientation: landscape) and (max-width: ${size("mobileWidth")}),
     (orientation: landscape) and (max-height: 620px) {
     height: auto;
   }

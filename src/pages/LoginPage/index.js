@@ -2,6 +2,7 @@ import { gql, useMutation } from "@apollo/client";
 import React from "react";
 import { Redirect } from "react-router";
 import styled from "styled-components";
+import { size } from "styled-theme";
 
 import defaultImage from "../../assets/images/landingPhone.png";
 import Img from "../../components/atoms/Img";
@@ -11,7 +12,7 @@ import GenericTemplate from "../../components/templates/GenericTemplate";
 import useToken from "../../hooks/useToken";
 
 const LandingImages = styled.div`
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: ${size("mobileWidth")}) {
     display: none;
   }
 `;
@@ -27,7 +28,7 @@ const LandingForms = styled.div`
     padding-right: 2rem;
   }
 
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: ${size("mobileWidth")}) {
     padding-right: 0;
   }
 `;

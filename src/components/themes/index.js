@@ -33,6 +33,7 @@ theme.fonts = {
 
 theme.sizes = {
   maxWidth: "944px",
+  mobileWidth: "640px",
   postMaxWidth: "614px",
   postListWidth: "644px",
   friendsListWidth: "300px",
