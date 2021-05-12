@@ -1,3 +1,4 @@
+import { useLazyQuery, useReactiveVar } from "@apollo/client";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { palette, size } from "styled-theme";
@@ -14,7 +15,10 @@ import PostList from "../../components/organisms/PostList";
 import PageTemplate from "../../components/templates/PageTemplate";
 import Theme from "../../components/themes";
 import useViewMode from "../../hooks/useViewMode";
+import { locationVar } from "../../store";
 import calcAddPixel from "../../utils/calcAddPixel";
+import getGeolocation from "../../utils/getGeolocation";
+import { GET_MAINPAGE_LOAD_DATA } from "./query";
 
 const PageContent = styled.div`
   display: flex;
@@ -43,7 +47,7 @@ const ContentTop = styled.div`
 
   @media screen and (max-width: ${size("maxWidth")}) {
     margin-bottom: 1.5rem;
-    padding: .5rem;
+    padding: 0.5rem;
   }
 
   @media screen and (max-width: ${size("mobileWidth")}) {
@@ -55,14 +59,14 @@ const ContentTop = styled.div`
 
 const StyledButton = styled(Button)`
   position: absolute;
-  bottom : 5px;
+  bottom: 5px;
   right: 5px;
   z-index: 1;
 
   @media screen and (max-width: ${size("mobileWidth")}) {
     height: 24px;
     width: 28px;
-    font-size: .6rem;
+    font-size: 0.6rem;
   }
 `;
 
@@ -118,10 +122,20 @@ const mockUser = {
 const MainPage = () => {
   const [siderLeftPos, setSiderLeftPos] = useState();
   const viewMode = useViewMode();
+  const location = useReactiveVar(locationVar);
+  const yearValueRef = useRef();
+  const seasonValueRef = useRef();
+  const [getLoadData, { loading, data }] = useLazyQuery(GET_MAINPAGE_LOAD_DATA);
 
   useEffect(() => {
     setSiderPosition(viewMode.width);
   }, [viewMode]);
+
+  useEffect(() => {
+    if (location) {
+      getLoadData({ variables: { ...location } });
+    }
+  }, [getLoadData, location]);
 
   function setSiderPosition(clientWidth) {
     const siderleftPos =
@@ -138,9 +152,6 @@ const MainPage = () => {
     console.log(seasonValueRef.current);
   }
 
-  const yearValueRef = useRef();
-  const seasonValueRef = useRef();
-
   return (
     <PageTemplate
       viewMode={viewMode}
@@ -150,9 +161,14 @@ const MainPage = () => {
     >
       <PageContent>
         <ContentTop>
-          <LocationInfo areaName="역삼/선릉" />
-          <SeasonPicker yearValueRef={yearValueRef} seasonValueRef={seasonValueRef}/>
-          <StyledButton height={30} onClick={handleApplyBtnClick}>적용</StyledButton>
+          <LocationInfo areaName={data && data.myArea.name} />
+          <SeasonPicker
+            yearValueRef={yearValueRef}
+            seasonValueRef={seasonValueRef}
+          />
+          <StyledButton height={30} onClick={handleApplyBtnClick}>
+            적용
+          </StyledButton>
         </ContentTop>
         <PostList posts={mockPosts} />
       </PageContent>

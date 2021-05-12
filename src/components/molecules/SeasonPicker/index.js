@@ -1,10 +1,9 @@
-import React, { useRef } from "react";
+import React from "react";
 import styled from "styled-components";
 import { palette, size } from "styled-theme";
 import { prop } from "styled-tools";
 
 import generateYearList from "../../../utils/generateYearList";
-import Button from "../../atoms/Button";
 import RotatingPicker from "../../atoms/RotatingPicker";
 
 const Wrapper = styled.div`
