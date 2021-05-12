@@ -1,22 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { size } from "styled-theme";
 
 import defaultImg from "../../assets/images/examplePostImage.jpeg";
 import FriendsList from "../../components/organisms/FriendsList";
 import Header from "../../components/organisms/Header";
 import PostList from "../../components/organisms/PostList";
 import PageTemplate from "../../components/templates/PageTemplate";
-
-const Content = styled.div`
-  display: flex;
-`;
-
-const MainContent = styled.div`
-
-`;
+import calcAddPixel from "../../utils/calcAddPixel";
+import getElementStyle from "../../utils/getElementStyle";
 
 const Sider = styled.div`
+  position: fixed;
+  left: ${({ left }) => left};
+  right: 100px;
 
+  @media screen and (max-width: ${size("maxWidth")}) {
+    display: none;
+  }
 `;
 
 
@@ -59,19 +60,24 @@ const mockUser = {
 };
 
 const MainPage = () => {
+  const [siderLeftPos, setSiderLeftPos] = useState();
+
+  function handleTemplateResize(contentElement) {
+    const left = calcAddPixel(644, getElementStyle(contentElement, "margin-left"));
+    setSiderLeftPos(left);
+  }
+
   return (
     <PageTemplate
+      onResize={handleTemplateResize}
       header={<Header />}
     >
-      <Content>
-        <MainContent>
-          <PostList posts={mockPosts}/>
-        </MainContent>
-        <Sider>
-          <FriendsList
-            user={mockUser}/>
-        </Sider>
-      </Content>
+      <PostList posts={mockPosts}/>
+      <Sider left={siderLeftPos}>
+        <FriendsList
+          user={mockUser}
+        />
+      </Sider>
     </PageTemplate>
   );
 };

@@ -10,9 +10,16 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   padding: 1rem;
-  border: 1px solid ${palette("grayscale", 0)};;
+  background-color: ${palette("grayscale", 0, true)};
+  border: 1px solid ${palette("grayscale", 4)};
+
   @media screen and (max-width: 640px) {
-    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    width: 100%;
+    height: 44px;
   }
 `;
 
@@ -20,7 +27,6 @@ const InnerWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 10pxf;
   width: 100%;
   max-width: ${size("maxWidth")};
   > :not(:first-child) {

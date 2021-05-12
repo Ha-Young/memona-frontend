@@ -1,9 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { palette } from "styled-theme";
+import { palette, size } from "styled-theme";
 
 import defaultImg from "../../../assets/images/examplePostImage.jpeg";
-import Icon from "../../atoms/Icon";
 import Img from "../../atoms/Img";
 import PostTitle from "../../molecules/PostTitle";
 import PostContent from "../PostContent";
@@ -12,10 +11,11 @@ const Wrapper = styled.article`
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 614px;
+  width: ${size("postMaxWidth")};
   border: 1px solid ${palette("grayscale", 4)};
+  background-color: ${palette("grayscale", 0, true)};
   box-sizing: border-box;
-  @media screen and (max-width: 614px) {
+  @media screen and (max-width: ${size("postMaxWidth")}) {
     padding: 0.5rem;
     width: 100%;
   }
@@ -32,8 +32,8 @@ const Header = styled.header`
 `;
 
 const ImageWrapper = styled.div`
-  max-width: 614px;
-  max-height: 614px;
+  max-width: ${size("postMaxWidth")};
+  max-height: ${size("postMaxWidth")};
   width: 100%;
   height: 100%;
 `;
