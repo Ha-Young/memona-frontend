@@ -32,9 +32,10 @@ theme.fonts = {
 };
 
 theme.sizes = {
-  maxWidth: "1024px",
+  maxWidth: "944px",
   postMaxWidth: "614px",
   postListWidth: "644px",
+  friendsListWidth: "300px",
 };
 
 export default theme;
