@@ -13,5 +13,5 @@ const mockData = {
 
 storiesOf("PostCard", module)
   .add("default", () => (
-    <PostCard post={mockData}/>
+    <PostCard post={mockData} width="640px"/>
   ));

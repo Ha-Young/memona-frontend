@@ -5944,6 +5944,18 @@ elliptic@^6.5.3:
     minimalistic-assert "^1.0.1"
     minimalistic-crypto-utils "^1.0.1"
 
+embla-carousel-wheel-gestures@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/embla-carousel-wheel-gestures/-/embla-carousel-wheel-gestures-1.1.1.tgz#30c23e17d45c9b25a022524a0e382f2d03fd0b28"
+  integrity sha512-qdTg3oDg5pGOjj4sUAxIAMiecVvl3bE+vtczzHRfoyc6Fg4O2WzP3EmAcA2IfRNJEvnyWNkjN9aaL16AItVTxw==
+  dependencies:
+    wheel-gestures "^2.2.5"
+
+embla-carousel@^4.5.1:
+  version "4.5.1"
+  resolved "https://registry.yarnpkg.com/embla-carousel/-/embla-carousel-4.5.1.tgz#db4b44c8f7e96ab4af1ee4afaa1bb22c06b51065"
+  integrity sha512-E55z44S/gduwUNq8APVYAvzFUrIuzgBckx0Dl/j6QFdwWSkRbPkqmEI9WSMvtpAeGEz5xFBdnYeb5eXWsmCGoA==
+
 emittery@^0.7.1:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/emittery/-/emittery-0.7.2.tgz#25595908e13af0f5674ab419396e2fb394cdfa82"
@@ -14536,6 +14548,11 @@ whatwg-url@^8.0.0, whatwg-url@^8.5.0:
     lodash "^4.7.0"
     tr46 "^2.0.2"
     webidl-conversions "^6.1.0"
+
+wheel-gestures@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/wheel-gestures/-/wheel-gestures-2.2.5.tgz#d4a7cdcd402500de26f65aabc8553b657515fb7d"
+  integrity sha512-01BlXRjBVt5Gy0VH2rRqMeccHruTGq2Gd1fx0UqCPN8KDeDCmlTXsRGc/hXJk6W+wnO9CNJp2xfntMNRArBxKQ==
 
 which-boxed-primitive@^1.0.2:
   version "1.0.2"
