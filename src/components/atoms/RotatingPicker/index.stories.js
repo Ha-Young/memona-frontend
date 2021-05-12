@@ -47,4 +47,11 @@ storiesOf("RotatingPicker", module)
         <RotatingPicker slides={seasons} perspective="left" loop={true} />
       </div>
     </div>
+  ))
+  .add("fontSize", () => (
+    <div className="embla">
+      <div className="embla__wheels">
+        <RotatingPicker slides={seasons} perspective="left" loop={true} fontSize=".9rem" />
+      </div>
+    </div>
   ));
