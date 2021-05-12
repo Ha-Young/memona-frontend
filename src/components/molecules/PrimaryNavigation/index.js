@@ -8,41 +8,40 @@ import Icon from "../../atoms/Icon";
 
 const Nav = styled.nav`
   display: flex;
+  align-items: center;
   list-style: none;
   > :not(:first-child) {
     margin-left: 1rem;
   }
   a {
-    font-weight: 300;
     color: ${palette("grayscale", 0)};
-    font-size: 1.25rem;
     &.active {
       color: ${palette("grayscale", 0)};
     }
   }
 `;
 
-const PrimaryNavigation = (props) => {
+const PrimaryNavigation = ({ iconSize = 25, ...props }) => {
   return (
     <Nav {...props}>
       <li>
         <Link to="/" exact activeClassName="active">
-          <Icon icon="home" />
+          <Icon icon="home" size={iconSize}/>
         </Link>
       </li>
       <li>
         <Link to="/" activeClassName="active">
-          <Icon icon="compas" />
+          <Icon icon="compas" size={iconSize}/>
         </Link>
       </li>
       <li>
         <Link to="/" activeClassName="active">
-          <Icon icon="map" />
+          <Icon icon="map" size={iconSize}/>
         </Link>
       </li>
       <li>
         <Link to="/" activeClassName="active">
-          <Icon icon="user" />
+          <Icon icon="user" size={iconSize}/>
         </Link>
       </li>
     </Nav>
@@ -50,6 +49,7 @@ const PrimaryNavigation = (props) => {
 };
 
 PrimaryNavigation.propTypes = {
+  iconSize: PropTypes.number,
   reverse: PropTypes.bool,
 };
 

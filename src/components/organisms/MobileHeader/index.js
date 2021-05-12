@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { palette, size } from "styled-theme";
 
 import Heading from "../../atoms/Heading";
+import Icon from "../../atoms/Icon";
 import PrimaryNavigation from "../../molecules/PrimaryNavigation";
 
 const Wrapper = styled.div`
@@ -31,25 +32,38 @@ const InnerWrapper = styled.div`
   align-items: center;
   width: 100%;
   max-width: ${size("maxWidth")};
+  > :not(:first-child) {
+    margin-left: 1rem;
+  }
 
   a {
     text-decoration: none;
+    color: ${palette("grayscale", 0)};
+
+    &.active {
+      color: ${palette("grayscale", 0)};
+    }
   }
 `;
 
-const Header = (props) => {
+const MobileHeader = (props) => {
   return (
     <Wrapper {...props}>
       <InnerWrapper>
+        <Link to="/">
+          <Icon icon="camera" size={25}/>
+        </Link>
         <Link to="/">
           <Heading level={1} margin={0}>
             Memona
           </Heading>
         </Link>
-        <PrimaryNavigation />
+        <Link to="/">
+          <Icon icon="friends" size={25}/>
+        </Link>
       </InnerWrapper>
     </Wrapper>
   );
 };
 
-export default Header;
+export default MobileHeader;

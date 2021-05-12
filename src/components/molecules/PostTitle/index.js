@@ -21,6 +21,11 @@ const StyledIcon = styled(Icon)`
   border-radius: 50%;
 `;
 
+const PostTitleContent = styled.span`
+  padding-top: .2rem;
+  box-sizing: border-box;
+`;
+
 const PostTitle = ({ post, ...props }) => {
   return (
     <Wrapper {...props}>
@@ -29,7 +34,9 @@ const PostTitle = ({ post, ...props }) => {
       ) : (
         <StyledIcon icon="user" width={32} />
       )}
-      {post.postDate}
+      <PostTitleContent>
+        {post.postDate}
+      </PostTitleContent>
     </Wrapper>
   );
 };

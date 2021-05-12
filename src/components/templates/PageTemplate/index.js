@@ -3,6 +3,8 @@ import React from "react";
 import styled from "styled-components";
 import { size } from "styled-theme";
 
+import { viewType as viewTypeConstant } from "../../../constants";
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -42,10 +44,15 @@ const Footer = styled.footer`
 `;
 
 const PageTemplate = ({ viewMode, header, mobileHeader, mobileNavigator, children, footer, onResize, ...props }) => {
+  const viewType = viewMode.viewType;
+
   return (
     <Wrapper {...props}>
-      <Header>{header}</Header>
+      <Header>
+        {viewType === viewTypeConstant.MOBILE ? mobileHeader : header}
+      </Header>
       <Content>{children}</Content>
+      {viewType === viewTypeConstant.MOBILE && mobileNavigator}
       {footer && <Footer>{footer}</Footer>}
     </Wrapper>
   );
