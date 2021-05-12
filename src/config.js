@@ -6,6 +6,7 @@ const config = {
     isDev: process.env.NODE_ENV !== "production",
     basename: process.env.PUBLIC_PATH,
     isBrowser: typeof window !== "undefined",
+    resizeThrottleWaitTime: 300,
   },
   test: {},
   development: {},
