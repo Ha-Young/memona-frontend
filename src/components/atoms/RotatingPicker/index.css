@@ -1,9 +1,9 @@
 .embla {
-  height: 232px;
+  height: 200px;
   background-color: #f7f7f7;
   padding-left: 20px;
-  padding-right: 20px;
-  max-width: 670px;
+  padding-right: 10px;
+  max-width: 470px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -35,6 +35,8 @@
     rgba(247, 247, 247, 0.99) 100%
   );
   border-bottom: 0.5px solid rgba(0, 0, 0, 0.3);
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
 }
 
 .embla__wheels__shadow--end {
@@ -44,6 +46,8 @@
     rgba(247, 247, 247, 0.99) 100%
   );
   border-top: 0.5px solid rgba(0, 0, 0, 0.3);
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 
 .embla__wheel {
