@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import styled from "styled-components";
 import { size } from "styled-theme";
 
@@ -42,7 +42,7 @@ const Footer = styled.footer`
   margin-top: auto;
 `;
 
-const PageTemplate = ({ header, children, footer, onResize, ...props }) => {
+const PageTemplate = ({ viewMode, header, mobileHeader, mobileNavigator, children, footer, onResize, ...props }) => {
   return (
     <Wrapper {...props}>
       <Header>{header}</Header>

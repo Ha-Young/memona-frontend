@@ -14,7 +14,7 @@ function useViewMode() {
     const handleResize = throttleOnRendering(() => {
       const width = document.body.clientWidth;
       const viewType =
-        width <= theme.sizes.maxWidth
+        width <= parseInt(theme.sizes.maxWidth)
           ? viewTypeConstant.MOBILE
           : viewTypeConstant.PC;
 
