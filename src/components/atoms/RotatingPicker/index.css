@@ -31,23 +31,23 @@
   top: -0.5px;
   background: linear-gradient(
     to top,
-    rgba(247, 247, 247, 0.6) 0%,
-    rgba(247, 247, 247, 0.99) 100%
+    rgba(247, 247, 247, 0) 0%,
+    rgba(247, 247, 247, 0.4) 100%
   );
   border-bottom: 0.5px solid rgba(0, 0, 0, 0.3);
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
 .embla__wheels__shadow--end {
   bottom: -0.5px;
   background: linear-gradient(
-    rgba(247, 247, 247, 0.6) 0%,
-    rgba(247, 247, 247, 0.99) 100%
+    rgba(247, 247, 247, 0) 0%,
+    rgba(247, 247, 247, 0.4) 100%
   );
   border-top: 0.5px solid rgba(0, 0, 0, 0.3);
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 .embla__wheel {

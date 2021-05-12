@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { size } from "styled-theme";
 import { prop } from "styled-tools";
 
 import Icon from "../../atoms/Icon";
@@ -9,10 +10,15 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
+  margin: 0 auto;
   width: ${prop("width", "auto")};
   height: 100%;
   box-sizing: border-box;
+
+  @media screen and (max-width: ${size("mobileWidth")}) {
+    flex-direction: column;
+    height: auto;
+  }
 `;
 
 const Content = styled.div`
@@ -25,6 +31,10 @@ const Content = styled.div`
 
 const StyledIcon = styled(Icon)`
   margin: 1rem;
+
+  @media screen and (max-width: ${size("mobileWidth")}) {
+    margin: 0;
+  }
 `;
 
 const LageLabel = styled(Label)`
