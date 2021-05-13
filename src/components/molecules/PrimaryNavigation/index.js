@@ -25,7 +25,12 @@ const Nav = styled.nav`
   }
 `;
 
-const PrimaryNavigation = ({ iconSize = 25, mobileType, ...props }) => {
+const PrimaryNavigation = ({
+  iconSize = 25,
+  mobileType,
+  onCameraBtnClick = () => {},
+  ...props
+}) => {
   return (
     <Nav mobileType={mobileType} {...props}>
       <li>
@@ -40,9 +45,7 @@ const PrimaryNavigation = ({ iconSize = 25, mobileType, ...props }) => {
       </li>
       {mobileType && (
         <li>
-          <Link to="/camera">
-            <Icon icon="camera" size={iconSize} />
-          </Link>
+          <Icon icon="camera" size={iconSize} onClick={onCameraBtnClick}/>
         </li>
       )}
       <li>
