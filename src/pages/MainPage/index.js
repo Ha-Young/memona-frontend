@@ -14,9 +14,12 @@ import MobileNavigator from "../../components/organisms/MobileNavigator";
 import PostList from "../../components/organisms/PostList";
 import PageTemplate from "../../components/templates/PageTemplate";
 import Theme from "../../components/themes";
+import useMobileDeviceCheck from "../../hooks/useMobileDeviceCheck";
 import useViewMode from "../../hooks/useViewMode";
 import { locationVar } from "../../store";
 import calcAddPixel from "../../utils/calcAddPixel";
+import checkARAvaiable from "../../utils/checkARAvaiable";
+import startAR from "../../utils/startAR";
 import { GET_MAINPAGE_LOAD_DATA } from "./query";
 
 const PageContent = styled.div`
@@ -121,6 +124,7 @@ const mockUser = {
 const MainPage = () => {
   const [siderLeftPos, setSiderLeftPos] = useState();
   const viewMode = useViewMode();
+  const isMobileDevice = useMobileDeviceCheck();
   const location = useReactiveVar(locationVar);
   const yearValueRef = useRef();
   const seasonValueRef = useRef();
@@ -151,30 +155,46 @@ const MainPage = () => {
     console.log(seasonValueRef.current);
   }
 
+  async function handleCameraBtnClick() {
+    console.log("camera btn click");
+
+    if (isMobileDevice) {
+      const isARAvaiable = await checkARAvaiable();
+
+      if (isARAvaiable) {
+        startAR();
+      }
+    }
+  }
+
   return (
-    <PageTemplate
-      viewMode={viewMode}
-      header={<Header />}
-      mobileHeader={<MobileHeader />}
-      mobileNavigator={<MobileNavigator />}
-    >
-      <PageContent>
-        <ContentTop>
-          <LocationInfo areaName={data && data.myArea.name} />
-          <SeasonPicker
-            yearValueRef={yearValueRef}
-            seasonValueRef={seasonValueRef}
-          />
-          <StyledButton height={30} onClick={handleApplyBtnClick}>
-            적용
-          </StyledButton>
-        </ContentTop>
-        <PostList posts={mockPosts} />
-      </PageContent>
-      <Sider left={siderLeftPos}>
-        <FriendsList user={mockUser} />
-      </Sider>
-    </PageTemplate>
+    <>
+      <PageTemplate
+        viewMode={viewMode}
+        header={<Header />}
+        mobileHeader={<MobileHeader onCameraBtnClick={handleCameraBtnClick} />}
+        mobileNavigator={
+          <MobileNavigator onCameraBtnClick={handleCameraBtnClick} />
+        }
+      >
+        <PageContent>
+          <ContentTop>
+            <LocationInfo areaName={data && data.myArea.name} />
+            <SeasonPicker
+              yearValueRef={yearValueRef}
+              seasonValueRef={seasonValueRef}
+            />
+            <StyledButton height={30} onClick={handleApplyBtnClick}>
+              적용
+            </StyledButton>
+          </ContentTop>
+          <PostList posts={mockPosts} />
+        </PageContent>
+        <Sider left={siderLeftPos}>
+          <FriendsList user={mockUser} />
+        </Sider>
+      </PageTemplate>
+    </>
   );
 };
 
