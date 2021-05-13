@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { palette, size } from "styled-theme";
+import { palette } from "styled-theme";
 
 import PrimaryNavigation from "../../molecules/PrimaryNavigation";
 
@@ -12,10 +12,6 @@ const Wrapper = styled.div`
   background-color: ${palette("grayscale", 0, true)};
   border-bottom: 1px solid ${palette("grayscale", 5)};
   box-sizing: border-box;
-
-  @media screen and (max-width: ${size("mobileWidth")}) {
-    height: 2.75rem;
-  }
 `;
 
 const MobileNavigator = (props) => {
