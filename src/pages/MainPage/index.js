@@ -17,7 +17,6 @@ import Theme from "../../components/themes";
 import useViewMode from "../../hooks/useViewMode";
 import { locationVar } from "../../store";
 import calcAddPixel from "../../utils/calcAddPixel";
-import getGeolocation from "../../utils/getGeolocation";
 import { GET_MAINPAGE_LOAD_DATA } from "./query";
 
 const PageContent = styled.div`

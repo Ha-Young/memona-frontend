@@ -6,7 +6,7 @@ import checkMobileDevice from "../utils/checkMobileDevice";
 const useMobileDeviceCheck = () => {
   const isMobile = useReactiveVar(isMobileVar);
 
-  if (isMobile !== null) {
+  if (isMobile === null) {
     const _isMobile = checkMobileDevice();
     isMobileVar(_isMobile);
     return _isMobile;
