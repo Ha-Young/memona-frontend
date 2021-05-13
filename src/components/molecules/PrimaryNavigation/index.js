@@ -40,7 +40,7 @@ const PrimaryNavigation = ({ iconSize = 25, mobileType, ...props }) => {
       </li>
       {mobileType && (
         <li>
-          <Link to="/">
+          <Link to="/camera">
             <Icon icon="camera" size={iconSize} />
           </Link>
         </li>
