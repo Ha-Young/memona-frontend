@@ -38,13 +38,11 @@ const InnerWrapper = styled.div`
   }
 `;
 
-const MobileHeader = (props) => {
+const MobileHeader = ({ onCameraBtnClick, ...props }) => {
   return (
     <Wrapper {...props}>
       <InnerWrapper>
-        <Link to="/">
-          <Icon icon="camera" size={25}/>
-        </Link>
+        <Icon icon="camera" size={25} onClick={onCameraBtnClick}/>
         <Link to="/">
           <Heading level={1} margin={0}>
             Memona
