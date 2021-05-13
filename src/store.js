@@ -13,3 +13,5 @@ export const viewModeVar = makeVar({
 //   altitude,
 // }
 export const locationVar = makeVar(null);
+
+export const isMobileVar = makeVar(null);

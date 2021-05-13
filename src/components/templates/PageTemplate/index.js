@@ -66,7 +66,6 @@ const PageTemplate = ({
   mobileNavigator,
   children,
   footer,
-  onResize,
   ...props
 }) => {
   const viewType = viewMode.viewType;
