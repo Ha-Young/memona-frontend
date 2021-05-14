@@ -25,14 +25,14 @@ const StyledIcon = styled(Icon)`
 const Header = styled.header`
   display: flex;
   align-items: center;
-  padding: 0.5rem 0.5rem 1.5rem 2rem;
+  padding: 0.5rem 0.5rem 1.5rem 3rem;
   width: 100%;
   border-bottom: 1px solid ${palette("grayscale", 5)};
   font-size: 1.2rem;
   box-sizing: border-box;
   cursor: pointer;
   img {
-    margin-right: 30px;
+    margin-right: 50px;
   }
 `;
 
@@ -42,17 +42,21 @@ const UserName = styled.span`
 
 const FriendsList = ({ user, ...props }) => {
   return (
-    <Wrapper {...props}>
-      <Header>
-        {user ? (
-          <Avatar src={user.imageUrl} alt={user.username} size={"48px"}/>
-        ) : (
-          <StyledIcon icon="user" width={48} />
-        )}
-        <UserName>{user.username}</UserName>
-      </Header>
-      <FriendsEntry friends={user.friends} />
-    </Wrapper>
+    <>
+      {user ? (
+        <Wrapper {...props}>
+          <Header>
+            {user ? (
+              <Avatar src={user.imageUrl} alt={user.username} size={"48px"} />
+            ) : (
+              <StyledIcon icon="user" width={48} />
+            )}
+            <UserName>{user.username}</UserName>
+          </Header>
+          <FriendsEntry friends={user.friends} />
+        </Wrapper>
+      ) : null}
+    </>
   );
 };
 
