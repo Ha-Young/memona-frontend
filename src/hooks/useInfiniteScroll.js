@@ -1,8 +1,4 @@
-import { useEffect, useState } from "react";
-
-import throttleOnRendering from "../utils/throttleOnRendering";
-
-const THROTTLE_WAIT = 500;
+import { useCallback, useEffect, useState } from "react";
 
 const defaultOptions = {
   root: null,
@@ -17,14 +13,16 @@ function useInfiniteScroll(
 ) {
   const [isFetching, setIsFetching] = useState(false);
 
-  const intersectionCallbackFuncThrottle = throttleOnRendering(entries => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        setIsFetching(true);
-      }
-    });
-    setIsFetching(false);
-  }, THROTTLE_WAIT);
+  const intersectionCallbackFuncThrottle = useCallback((entries, observer) => {
+    if (entries) {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setIsFetching(true);
+        }
+      });
+      setIsFetching(false);
+    }
+  }, []);
 
   useEffect(() => {
     let observer;
@@ -34,7 +32,7 @@ function useInfiniteScroll(
       console.log("hi", targetElementRef.current);
       targetElement = targetElementRef.current;
       observer = new IntersectionObserver(intersectionCallbackFuncThrottle, options);
-      observer.observe(targetElementRef.current);
+      observer.observe(targetElement);
     }
 
     return () => observer?.disconnect(targetElement);

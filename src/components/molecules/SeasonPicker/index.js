@@ -14,6 +14,7 @@ const Wrapper = styled.div`
   max-width: 300px;
   background-color: ${palette("grayscale", 0, true)};
   z-index: 0;
+  overflow: hidden;
 
   @media screen and (max-width: ${size("maxWidth")}) {
     height: 180px;

@@ -72,6 +72,13 @@ const StyledButton = styled(Button)`
   }
 `;
 
+const Indicator = styled.div`
+  position: absolute;
+  bottom: -1rem;
+  width: 5px;
+  height: 5px;
+`;
+
 const LIMIT = 5;
 
 const MainPage = () => {
@@ -83,7 +90,7 @@ const MainPage = () => {
   const seasonValueRef = useRef();
   const lastElementRef = useRef();
   const [getLoadData, { called, loading, error, data, fetchMore }] = useLazyQuery(ONLOAD_QUERY);
-  // useInfiniteScroll(fetchPostMore, lastElementRef);
+  useInfiniteScroll(fetchPostMore, lastElementRef);
   console.log("mainpage data", data);
 
   useEffect(() => {
@@ -97,7 +104,9 @@ const MainPage = () => {
   }, [called, getLoadData, location]);
 
   function fetchPostMore() {
+    console.log("fetchPostMore", data?.posts?.hasNextPage, data?.posts?.nextPage);
     if (data?.posts?.hasNextPage) {
+      console.log("before fetchMore", fetchMore);
       fetchMore({
         variables: {
           page: data.posts.nextPage,
@@ -159,7 +168,7 @@ const MainPage = () => {
         <Sider left={siderLeftPos}>
           <FriendsList user={data?.loginUser} />
         </Sider>
-        <div ref={lastElementRef} />
+        <Indicator ref={lastElementRef} />
       </PageTemplate>
     </>
   );
