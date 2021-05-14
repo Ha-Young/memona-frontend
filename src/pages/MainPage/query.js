@@ -7,6 +7,7 @@ export const ONLOAD_QUERY = gql`
     }
     posts(page: $page, limit: $limit, lat: $latitude, lng: $longitude) {
       docs {
+        _id
         author {
           username
           email
@@ -16,7 +17,7 @@ export const ONLOAD_QUERY = gql`
         isAnonymous
         area
       }
-      hasPrevPage
+      nextPage
       hasNextPage
     }
     loginUser {
