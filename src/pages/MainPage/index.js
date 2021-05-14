@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { palette, size } from "styled-theme";
 
-import defaultImg from "../../assets/images/examplePostImage.jpeg";
 import Button from "../../components/atoms/Button";
 import LocationInfo from "../../components/molecules/LocationInfo";
 import SeasonPicker from "../../components/molecules/SeasonPicker";
@@ -14,13 +13,14 @@ import MobileNavigator from "../../components/organisms/MobileNavigator";
 import PostList from "../../components/organisms/PostList";
 import PageTemplate from "../../components/templates/PageTemplate";
 import Theme from "../../components/themes";
+import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import useMobileDeviceCheck from "../../hooks/useMobileDeviceCheck";
 import useViewMode from "../../hooks/useViewMode";
 import { locationVar } from "../../store";
 import calcAddPixel from "../../utils/calcAddPixel";
 import checkARAvaiable from "../../utils/checkARAvaiable";
 import startAR from "../../utils/startAR";
-import { GET_MAINPAGE_LOAD_DATA } from "./query";
+import { ONLOAD_QUERY } from "./query";
 
 const PageContent = styled.div`
   display: flex;
@@ -72,54 +72,7 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const mockPosts = [
-  {
-    _id: 1,
-    postDate: "2021-05-30",
-    author: {
-      imageUrl:
-        "https://lh3.googleusercontent.com/a/AATXAJwtCFYAlDYjooMIEVhBD8VZsJ35X164RKn034hc=s96-c",
-      postImageUrl: defaultImg,
-    },
-    content: "테스트입니다. 테스트 posts mock 데이터입니다",
-  },
-  {
-    _id: 2,
-    postDate: "2021-05-30",
-    author: {
-      imageUrl:
-        "https://lh3.googleusercontent.com/a/AATXAJwtCFYAlDYjooMIEVhBD8VZsJ35X164RKn034hc=s96-c",
-      postImageUrl: defaultImg,
-    },
-    content: "테스트입니다. 테스트 posts mock 데이터입니다",
-  }
-];
-
-const mockUser = {
-  username: "테스트유저",
-  imageUrl:
-    "https://lh3.googleusercontent.com/a/AATXAJwtCFYAlDYjooMIEVhBD8VZsJ35X164RKn034hc=s96-c",
-  friends: [
-    {
-      _id: 1,
-      username: "친구1",
-      imageUrl:
-        "https://lh3.googleusercontent.com/a/AATXAJyu9yYaEXDkC30xWzNlO59Uhzdyt_ELAuinPyY1=s96-c",
-    },
-    {
-      _id: 2,
-      username: "친구2입니다",
-      imageUrl:
-        "https://lh3.googleusercontent.com/a/AATXAJyu9yYaEXDkC30xWzNlO59Uhzdyt_ELAuinPyY1=s96-c",
-    },
-    {
-      _id: 3,
-      username: "친구3",
-      imageUrl:
-        "https://lh3.googleusercontent.com/a/AATXAJyu9yYaEXDkC30xWzNlO59Uhzdyt_ELAuinPyY1=s96-c",
-    }
-  ],
-};
+const LIMIT = 5;
 
 const MainPage = () => {
   const [siderLeftPos, setSiderLeftPos] = useState();
@@ -128,17 +81,31 @@ const MainPage = () => {
   const location = useReactiveVar(locationVar);
   const yearValueRef = useRef();
   const seasonValueRef = useRef();
-  const [getLoadData, { loading, data }] = useLazyQuery(GET_MAINPAGE_LOAD_DATA);
+  const lastElementRef = useRef();
+  const [getLoadData, { called, loading, error, data, fetchMore }] = useLazyQuery(ONLOAD_QUERY);
+  // useInfiniteScroll(fetchPostMore, lastElementRef);
+  console.log("mainpage data", data);
 
   useEffect(() => {
     setSiderPosition(viewMode.width);
   }, [viewMode]);
 
   useEffect(() => {
-    if (location) {
-      getLoadData({ variables: { ...location } });
+    if (location && !called) {
+      getLoadData({ variables: { ...location, page: 1, limit: LIMIT } });
     }
-  }, [getLoadData, location]);
+  }, [called, getLoadData, location]);
+
+  function fetchPostMore() {
+    if (data?.posts?.hasNextPage) {
+      fetchMore({
+        variables: {
+          page: data.posts.nextPage,
+          limit: LIMIT,
+        },
+      });
+    }
+  }
 
   function setSiderPosition(clientWidth) {
     const siderleftPos =
@@ -156,8 +123,6 @@ const MainPage = () => {
   }
 
   async function handleCameraBtnClick() {
-    console.log("camera btn click");
-
     if (isMobileDevice) {
       const isARAvaiable = await checkARAvaiable();
 
@@ -169,6 +134,7 @@ const MainPage = () => {
 
   return (
     <>
+      {(called && loading) && "Loading..."}
       <PageTemplate
         viewMode={viewMode}
         header={<Header />}
@@ -179,7 +145,7 @@ const MainPage = () => {
       >
         <PageContent>
           <ContentTop>
-            <LocationInfo areaName={data && data.myArea.name} />
+            <LocationInfo areaName={data?.myArea?.name} />
             <SeasonPicker
               yearValueRef={yearValueRef}
               seasonValueRef={seasonValueRef}
@@ -188,11 +154,12 @@ const MainPage = () => {
               적용
             </StyledButton>
           </ContentTop>
-          <PostList posts={mockPosts} />
+          <PostList posts={data?.posts?.docs} areaName={data?.myArea?.name}/>
         </PageContent>
         <Sider left={siderLeftPos}>
-          <FriendsList user={mockUser} />
+          <FriendsList user={data?.loginUser} />
         </Sider>
+        <div ref={lastElementRef} />
       </PageTemplate>
     </>
   );

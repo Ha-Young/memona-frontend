@@ -1,9 +1,33 @@
 import { gql } from "@apollo/client";
 
-export const GET_MAINPAGE_LOAD_DATA = gql`
-  query Query($latitude: Float, $longitude: Float) {
+export const ONLOAD_QUERY = gql`
+  query Query($latitude: Float, $longitude: Float, $page: Int!, $limit: Int!) {
     myArea(lat: $latitude, lng: $longitude) {
       name
+    }
+    posts(page: $page, limit: $limit, lat: $latitude, lng: $longitude) {
+      docs {
+        author {
+          username
+          email
+        }
+        content
+        postImageUrl
+        isAnonymous
+        area
+      }
+      hasPrevPage
+      hasNextPage
+    }
+    loginUser {
+      _id
+      username
+      imageUrl
+      friends {
+        _id
+        username
+        imageUrl
+      }
     }
   }
 `;
