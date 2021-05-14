@@ -45,5 +45,8 @@ const mockPosts = [
 
 storiesOf("PostList", module)
   .add("default", () => (
-    <PostList posts={mockPosts}/>
+    <PostList areaName="역삼동" posts={mockPosts}/>
+  ))
+  .add("empty post list", () => (
+    <PostList areaName="역삼동" posts={[]}/>
   ));
