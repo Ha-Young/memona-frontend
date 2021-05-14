@@ -2,7 +2,6 @@ import { useReactiveVar } from "@apollo/client";
 import { useEffect } from "react";
 
 import theme from "../components/themes";
-import config from "../config";
 import { viewType as viewTypeConstant } from "../constants";
 import { viewModeVar } from "../store";
 import throttleOnRendering from "../utils/throttleOnRendering";
@@ -22,7 +21,7 @@ function useViewMode() {
         width,
         viewType,
       });
-    }, config.resizeThrottleWaitTime);
+    });
 
     handleResize();
     window.addEventListener("resize", handleResize);

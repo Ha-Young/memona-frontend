@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.genericBackgroundColor};
 
   @media screen and (max-width: ${size("mobileWidth")}) {
-    padding: 2.75rem 0;
+    padding: 2.75rem 0 3.75rem;
   }
 `;
 
@@ -29,6 +29,7 @@ const Header = styled.header`
 `;
 
 const Content = styled.section`
+  position: relative;
   display: flex;
   width: 100%;
   box-sizing: border-box;
