@@ -75,7 +75,6 @@ function startAR() {
 
     await renderer.xr.setSession(session);
 
-    console.log(sessionInit.domOverlay);
     sessionInit.domOverlay.root.style.display = "";
 
     currentSession = session;

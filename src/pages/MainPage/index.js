@@ -86,12 +86,20 @@ const MainPage = () => {
   const viewMode = useViewMode();
   const isMobileDevice = useMobileDeviceCheck();
   const location = useReactiveVar(locationVar);
+  useInfiniteScroll(fetchPostMore, lastElementRef);
+
+  const [yearSeason, setYearSeason] = useState({
+    year: null,
+    season: null,
+  });
+
   const yearValueRef = useRef();
   const seasonValueRef = useRef();
   const lastElementRef = useRef();
-  const [getLoadData, { called, loading, error, data, fetchMore }] = useLazyQuery(ONLOAD_QUERY);
-  useInfiniteScroll(fetchPostMore, lastElementRef);
-  console.log("mainpage data", data);
+  const [
+    getLoadData,
+    { called, loading, error, data, fetchMore }
+  ] = useLazyQuery(ONLOAD_QUERY);
 
   useEffect(() => {
     setSiderPosition(viewMode.width);
@@ -104,13 +112,29 @@ const MainPage = () => {
   }, [called, getLoadData, location]);
 
   function fetchPostMore() {
-    console.log("fetchPostMore", data?.posts?.hasNextPage, data?.posts?.nextPage);
     if (data?.posts?.hasNextPage) {
-      console.log("before fetchMore", fetchMore);
       fetchMore({
         variables: {
-          page: data.posts.nextPage,
+          area: data?.myArea?.name,
+          page: data?.posts?.nextPage,
           limit: LIMIT,
+          year: yearSeason?.year,
+          season: yearSeason?.season,
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+
+          const mergingPosts = {
+            ...fetchMoreResult,
+            posts: {
+              ...fetchMoreResult.posts,
+              docs: prev.posts.docs
+                ? [...prev.posts.docs, ...fetchMoreResult.posts.docs]
+                : [...fetchMoreResult.posts.docs],
+            },
+          };
+
+          return mergingPosts;
         },
       });
     }
@@ -127,8 +151,31 @@ const MainPage = () => {
   }
 
   function handleApplyBtnClick() {
-    console.log(yearValueRef.current);
-    console.log(seasonValueRef.current);
+    const year = yearValueRef.current.toString();
+    const season = seasonValueRef.current.toLowerCase();
+
+    if (year && season) {
+      fetchMore({
+        variables: {
+          ...location,
+          page: 1,
+          limit: LIMIT,
+          area: data?.myArea?.name,
+          year,
+          season,
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+
+          return fetchMoreResult;
+        },
+      });
+
+      setYearSeason({
+        year,
+        season,
+      });
+    }
   }
 
   async function handleCameraBtnClick() {
@@ -143,7 +190,8 @@ const MainPage = () => {
 
   return (
     <>
-      {(called && loading) && "Loading..."}
+      {called && loading && "Loading..."}
+      {error && "Error..."}
       <PageTemplate
         viewMode={viewMode}
         header={<Header />}
@@ -163,7 +211,7 @@ const MainPage = () => {
               적용
             </StyledButton>
           </ContentTop>
-          <PostList posts={data?.posts?.docs} areaName={data?.myArea?.name}/>
+          <PostList posts={data?.posts?.docs} areaName={data?.myArea?.name} />
         </PageContent>
         <Sider left={siderLeftPos}>
           <FriendsList user={data?.loginUser} />

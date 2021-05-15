@@ -29,7 +29,6 @@ function useInfiniteScroll(
     let targetElement;
 
     if (targetElementRef.current) {
-      console.log("hi", targetElementRef.current);
       targetElement = targetElementRef.current;
       observer = new IntersectionObserver(intersectionCallbackFuncThrottle, options);
       observer.observe(targetElement);
