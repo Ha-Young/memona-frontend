@@ -45,18 +45,15 @@ const MainPage = () => {
   const { viewMode, siderLeftPos } = useViewModeWithSider();
   const isMobileDevice = useMobileDeviceCheck();
   const location = useReactiveVar(locationVar);
-  const yearValueRef = useRef();
-  const seasonValueRef = useRef();
   const lastElementRef = useRef();
-  const [
-    getLoadData,
-    { called, loading, error, data, fetchMore }
-  ] = useLazyQuery(ONLOAD_QUERY);
-
   const [yearSeason, setYearSeason] = useState({
     year: null,
     season: null,
   });
+  const [
+    getLoadData,
+    { called, loading, error, data, fetchMore }
+  ] = useLazyQuery(ONLOAD_QUERY);
 
   useInfiniteScroll(handleScrollEnd, lastElementRef);
 
@@ -92,10 +89,7 @@ const MainPage = () => {
     }
   }
 
-  function handleSeasonApplyBtnClick() {
-    const year = yearValueRef.current.toString();
-    const season = seasonValueRef.current.toLowerCase();
-
+  function handleSeasonApplyBtnClick({ year, season }) {
     if (year && season) {
       fetchMore({
         variables: {
@@ -144,8 +138,6 @@ const MainPage = () => {
         <PageContent>
           <LocationSeason
             areaName={data?.myArea?.name}
-            yearValueRef={yearValueRef}
-            seasonValueRef={seasonValueRef}
             onSeasonApplyBtnClick={handleSeasonApplyBtnClick}
           />
           <PostList

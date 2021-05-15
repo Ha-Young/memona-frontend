@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { palette, size } from "styled-theme";
 
@@ -41,7 +41,17 @@ const StyledButton = styled(Button)`
     font-size: 0.6rem;
   }
 `;
-const LocationSeason = ({ onSeasonApplyBtnClick, areaName, yearValueRef, seasonValueRef, ...props }) => {
+const LocationSeason = ({ onSeasonApplyBtnClick, areaName, ...props }) => {
+  const yearValueRef = useRef();
+  const seasonValueRef = useRef();
+
+  function handleApplyBtnClick() {
+    const year = yearValueRef.current.toString();
+    const season = seasonValueRef.current.toLowerCase();
+
+    onSeasonApplyBtnClick({ year, season });
+  }
+
   return (
     <ContentTop {...props}>
       <LocationInfo areaName={areaName} />
@@ -49,7 +59,7 @@ const LocationSeason = ({ onSeasonApplyBtnClick, areaName, yearValueRef, seasonV
         yearValueRef={yearValueRef}
         seasonValueRef={seasonValueRef}
       />
-      <StyledButton height={30} onClick={onSeasonApplyBtnClick}>
+      <StyledButton height={30} onClick={handleApplyBtnClick}>
         적용
       </StyledButton>
     </ContentTop>
