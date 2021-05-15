@@ -35,26 +35,7 @@ const authLink = setContext((_, { headers }) => {
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          posts: {
-            keyArgs: false,
-
-            merge(existing = {}, incoming) {
-              const mergingPosts = {
-                ...incoming,
-                docs: existing.docs ? [...existing.docs, ...incoming.docs] : [...incoming.docs],
-              };
-
-              return mergingPosts;
-            },
-          },
-        },
-      },
-    },
-  }),
+  cache: new InMemoryCache(),
 });
 
 const renderApp = () => (
