@@ -10,12 +10,10 @@ import MobileHeader from "../../components/organisms/MobileHeader";
 import MobileNavigator from "../../components/organisms/MobileNavigator";
 import PostList from "../../components/organisms/PostList";
 import PageTemplate from "../../components/templates/PageTemplate";
-import Theme from "../../components/themes";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import useMobileDeviceCheck from "../../hooks/useMobileDeviceCheck";
-import useViewMode from "../../hooks/useViewMode";
+import useViewModeWithSider from "../../hooks/useViewModeWithSider";
 import { locationVar } from "../../store";
-import calcAddPixel from "../../utils/calcAddPixel";
 import checkARAvaiable from "../../utils/checkARAvaiable";
 import startAR from "../../utils/startAR";
 import { ONLOAD_QUERY } from "./query";
@@ -44,8 +42,7 @@ const Indicator = styled.div`
 const LIMIT = 5;
 
 const MainPage = () => {
-  const [siderLeftPos, setSiderLeftPos] = useState();
-  const viewMode = useViewMode();
+  const { viewMode, siderLeftPos } = useViewModeWithSider();
   const isMobileDevice = useMobileDeviceCheck();
   const location = useReactiveVar(locationVar);
   const yearValueRef = useRef();
@@ -62,20 +59,6 @@ const MainPage = () => {
   });
 
   useInfiniteScroll(handleScrollEnd, lastElementRef);
-
-  function setSiderPosition(clientWidth) {
-    const siderleftPos =
-      calcAddPixel(
-        clientWidth,
-        Theme.sizes.postListWidth,
-        `-${Theme.sizes.friendsListWidth}`
-      ) / 2;
-    setSiderLeftPos(siderleftPos);
-  }
-
-  useEffect(() => {
-    setSiderPosition(viewMode.width);
-  }, [viewMode]);
 
   useEffect(() => {
     if (location && !called) {
