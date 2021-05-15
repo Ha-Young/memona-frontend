@@ -45,7 +45,7 @@ const MainPage = () => {
   const { viewMode, siderLeftPos } = useViewModeWithSider();
   const isMobileDevice = useMobileDeviceCheck();
   const location = useReactiveVar(locationVar);
-  const lastElementRef = useRef();
+  const { infiniteTargetElementRef } = useInfiniteScroll(handleScrollEnd);
   const [yearSeason, setYearSeason] = useState({
     year: null,
     season: null,
@@ -54,8 +54,6 @@ const MainPage = () => {
     getLoadData,
     { called, loading, error, data, fetchMore }
   ] = useLazyQuery(ONLOAD_QUERY);
-
-  useInfiniteScroll(handleScrollEnd, lastElementRef);
 
   useEffect(() => {
     if (location && !called) {
@@ -148,7 +146,7 @@ const MainPage = () => {
         <Sider left={siderLeftPos}>
           <FriendsList user={data?.loginUser} />
         </Sider>
-        <Indicator ref={lastElementRef} />
+        <Indicator ref={infiniteTargetElementRef} />
       </PageTemplate>
     </>
   );
