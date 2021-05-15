@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { size } from "styled-theme";
+import { prop } from "styled-tools";
 
 import Label from "../../atoms/Label";
 import PostCard from "../../molecules/PostCard";
@@ -8,6 +9,11 @@ import PostCard from "../../molecules/PostCard";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: ${prop("width", size("postMaxWidth"))};
+  box-sizing: border-box;
+  @media screen and (max-width: ${size("postMaxWidth")}) {
+    width: 100%;
+  }
 `;
 
 const PostItem = styled(PostCard)`
@@ -31,15 +37,33 @@ const EmptyPosts = styled.div`
   height: 150px;
 `;
 
-const PostList = ({ posts = [], areaName, ...props }) => {
+const PostList = ({ posts = [], fetchingOptions, ...props }) => {
+  const { areaName, year, season } = fetchingOptions;
+
   return (
     <Wrapper {...props}>
       {posts.length > 0 ? (
         posts.map((post) => <PostItem key={post._id} post={post} />)
       ) : (
         <EmptyPosts>
-          <Label>{ areaName ? <b>{areaName}</b> : ""} 에 대한 포스트는 아직 없습니다.</Label>
-          <Label>당신이 첫번째 포스트의 주인공이 되어보세요 :)</Label>
+          {year && season ? (
+            <>
+              <Label>
+                <b>{areaName}</b>에 {year}년 {season}에 대한 추억은
+              </Label>
+              <Label>
+                아쉽지만없습니다.
+              </Label>
+            </>
+          ) : (
+            <>
+              <Label>
+                {areaName ? <b>{areaName}</b> : ""} 에 대한 포스트는 아직
+                없습니다.
+              </Label>
+              <Label>당신이 첫번째 포스트의 주인공이 되어보세요 :)</Label>
+            </>
+          )}
         </EmptyPosts>
       )}
     </Wrapper>

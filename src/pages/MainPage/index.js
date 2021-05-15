@@ -1,13 +1,11 @@
 import { useLazyQuery, useReactiveVar } from "@apollo/client";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { palette, size } from "styled-theme";
+import { size } from "styled-theme";
 
-import Button from "../../components/atoms/Button";
-import LocationInfo from "../../components/molecules/LocationInfo";
-import SeasonPicker from "../../components/molecules/SeasonPicker";
 import FriendsList from "../../components/organisms/FriendsList";
 import Header from "../../components/organisms/Header";
+import LocationSeason from "../../components/organisms/LocationSeason";
 import MobileHeader from "../../components/organisms/MobileHeader";
 import MobileNavigator from "../../components/organisms/MobileNavigator";
 import PostList from "../../components/organisms/PostList";
@@ -36,42 +34,6 @@ const Sider = styled.div`
   }
 `;
 
-const ContentTop = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  margin-bottom: 2rem;
-  height: 200px;
-  background-color: ${palette("grayscale", 0, true)};
-  border: 1px solid ${palette("grayscale", 5)};
-
-  @media screen and (max-width: ${size("maxWidth")}) {
-    margin-bottom: 1.5rem;
-    padding: 0.5rem;
-  }
-
-  @media screen and (max-width: ${size("mobileWidth")}) {
-    margin-bottom: 1rem;
-    padding: 0;
-    height: 180px;
-  }
-`;
-
-const StyledButton = styled(Button)`
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  z-index: 1;
-
-  @media screen and (max-width: ${size("mobileWidth")}) {
-    height: 24px;
-    width: 28px;
-    font-size: 0.6rem;
-  }
-`;
-
 const Indicator = styled.div`
   position: absolute;
   bottom: -1rem;
@@ -86,13 +48,6 @@ const MainPage = () => {
   const viewMode = useViewMode();
   const isMobileDevice = useMobileDeviceCheck();
   const location = useReactiveVar(locationVar);
-  useInfiniteScroll(fetchPostMore, lastElementRef);
-
-  const [yearSeason, setYearSeason] = useState({
-    year: null,
-    season: null,
-  });
-
   const yearValueRef = useRef();
   const seasonValueRef = useRef();
   const lastElementRef = useRef();
@@ -101,44 +56,12 @@ const MainPage = () => {
     { called, loading, error, data, fetchMore }
   ] = useLazyQuery(ONLOAD_QUERY);
 
-  useEffect(() => {
-    setSiderPosition(viewMode.width);
-  }, [viewMode]);
+  const [yearSeason, setYearSeason] = useState({
+    year: null,
+    season: null,
+  });
 
-  useEffect(() => {
-    if (location && !called) {
-      getLoadData({ variables: { ...location, page: 1, limit: LIMIT } });
-    }
-  }, [called, getLoadData, location]);
-
-  function fetchPostMore() {
-    if (data?.posts?.hasNextPage) {
-      fetchMore({
-        variables: {
-          area: data?.myArea?.name,
-          page: data?.posts?.nextPage,
-          limit: LIMIT,
-          year: yearSeason?.year,
-          season: yearSeason?.season,
-        },
-        updateQuery: (prev, { fetchMoreResult }) => {
-          if (!fetchMoreResult) return prev;
-
-          const mergingPosts = {
-            ...fetchMoreResult,
-            posts: {
-              ...fetchMoreResult.posts,
-              docs: prev.posts.docs
-                ? [...prev.posts.docs, ...fetchMoreResult.posts.docs]
-                : [...fetchMoreResult.posts.docs],
-            },
-          };
-
-          return mergingPosts;
-        },
-      });
-    }
-  }
+  useInfiniteScroll(handleScrollEnd, lastElementRef);
 
   function setSiderPosition(clientWidth) {
     const siderleftPos =
@@ -150,7 +73,43 @@ const MainPage = () => {
     setSiderLeftPos(siderleftPos);
   }
 
-  function handleApplyBtnClick() {
+  useEffect(() => {
+    setSiderPosition(viewMode.width);
+  }, [viewMode]);
+
+  useEffect(() => {
+    if (location && !called) {
+      getLoadData({ variables: { ...location, page: 1, limit: LIMIT } });
+    }
+  }, [called, getLoadData, location]);
+
+  function handleScrollEnd() {
+    if (data?.posts?.hasNextPage) {
+      fetchMore({
+        variables: {
+          area: data?.myArea?.name,
+          page: data?.posts?.nextPage,
+          limit: LIMIT,
+          year: yearSeason?.year,
+          season: yearSeason?.season,
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+          return {
+            ...fetchMoreResult,
+            posts: {
+              ...fetchMoreResult.posts,
+              docs: prev.posts.docs
+                ? [...prev.posts.docs, ...fetchMoreResult.posts.docs]
+                : [...fetchMoreResult.posts.docs],
+            },
+          };
+        },
+      });
+    }
+  }
+
+  function handleSeasonApplyBtnClick() {
     const year = yearValueRef.current.toString();
     const season = seasonValueRef.current.toLowerCase();
 
@@ -166,7 +125,6 @@ const MainPage = () => {
         },
         updateQuery: (prev, { fetchMoreResult }) => {
           if (!fetchMoreResult) return prev;
-
           return fetchMoreResult;
         },
       });
@@ -201,17 +159,16 @@ const MainPage = () => {
         }
       >
         <PageContent>
-          <ContentTop>
-            <LocationInfo areaName={data?.myArea?.name} />
-            <SeasonPicker
-              yearValueRef={yearValueRef}
-              seasonValueRef={seasonValueRef}
-            />
-            <StyledButton height={30} onClick={handleApplyBtnClick}>
-              적용
-            </StyledButton>
-          </ContentTop>
-          <PostList posts={data?.posts?.docs} areaName={data?.myArea?.name} />
+          <LocationSeason
+            areaName={data?.myArea?.name}
+            yearValueRef={yearValueRef}
+            seasonValueRef={seasonValueRef}
+            onSeasonApplyBtnClick={handleSeasonApplyBtnClick}
+          />
+          <PostList
+            posts={data?.posts?.docs}
+            fetchingOptions={{ areaName: data?.myArea?.name, ...yearSeason }}
+          />
         </PageContent>
         <Sider left={siderLeftPos}>
           <FriendsList user={data?.loginUser} />
