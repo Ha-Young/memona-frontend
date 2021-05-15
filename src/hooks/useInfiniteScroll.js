@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const defaultOptions = {
   root: null,
@@ -6,12 +6,9 @@ const defaultOptions = {
   threshold: "0.1",
 };
 
-function useInfiniteScroll(
-  fetchCallback,
-  targetElementRef,
-  options = defaultOptions
-) {
+function useInfiniteScroll(fetchCallback, options = defaultOptions) {
   const [isFetching, setIsFetching] = useState(false);
+  const infiniteTargetElementRef = useRef();
 
   const intersectionCallbackFuncThrottle = useCallback((entries, observer) => {
     if (entries) {
@@ -28,14 +25,17 @@ function useInfiniteScroll(
     let observer;
     let targetElement;
 
-    if (targetElementRef.current) {
-      targetElement = targetElementRef.current;
-      observer = new IntersectionObserver(intersectionCallbackFuncThrottle, options);
+    if (infiniteTargetElementRef.current) {
+      targetElement = infiniteTargetElementRef.current;
+      observer = new IntersectionObserver(
+        intersectionCallbackFuncThrottle,
+        options
+      );
       observer.observe(targetElement);
     }
 
     return () => observer?.disconnect(targetElement);
-  }, [intersectionCallbackFuncThrottle, options, targetElementRef]);
+  }, [intersectionCallbackFuncThrottle, options, infiniteTargetElementRef]);
 
   useEffect(() => {
     if (!isFetching) {
@@ -44,7 +44,7 @@ function useInfiniteScroll(
     fetchCallback();
   }, [fetchCallback, isFetching]);
 
-  return [isFetching, setIsFetching];
+  return { isFetching, setIsFetching, infiniteTargetElementRef };
 }
 
 export default useInfiniteScroll;
