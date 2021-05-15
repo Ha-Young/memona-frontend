@@ -111,12 +111,16 @@ const MainPage = () => {
     }
   }
 
+  function handleARConfirmBtnClick() {
+    
+  }
+
   async function handleCameraBtnClick() {
     if (isMobileDevice) {
       const isARAvaiable = await checkARAvaiable();
 
       if (isARAvaiable) {
-        startAR();
+        startAR({ onARConfirmBtnClick: handleARConfirmBtnClick });
       }
     }
   }

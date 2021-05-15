@@ -14,7 +14,7 @@ import {
 
 import { TubePainter } from "./TubePainter";
 
-function startAR() {
+function startAR({ onARConfirmBtnClick }) {
   let currentSession = null;
   let hitTestSource = null;
   let hitTestSourceRequested = false;
@@ -34,12 +34,25 @@ function startAR() {
     drawingMode = "model";
   }
 
+  async function onConfirmBtnClick() {
+    console.log("confirm btn click");
+
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+    console.log("stream", stream);
+
+    // currentSession.end();
+    onARConfirmBtnClick();
+  }
+
   const container = document.createElement("div");
   const overlayElement = createOverlayElement({
     onCloseBtnClick,
     onPaintBtnClick,
     onModelBtnClick,
+    onConfirmBtnClick,
   });
+
   document.body.appendChild(container);
   document.body.appendChild(overlayElement);
 
@@ -115,7 +128,6 @@ function startAR() {
     if (userData.isSelecting === true) {
       if (userData.skipFrames >= 0) {
         // TODO(mrdoob) Revisit this
-
         userData.skipFrames--;
 
         painter.moveTo(cursor);
@@ -221,6 +233,7 @@ function createOverlayElement({
   onCloseBtnClick,
   onPaintBtnClick,
   onModelBtnClick,
+  onConfirmBtnClick,
 }) {
   const overlayElement = document.createElement("div");
   overlayElement.style.display = "none";
@@ -247,7 +260,7 @@ function createOverlayElement({
 
   const paintBtnElement = document.createElement("button");
   paintBtnElement.style.position = "fixed";
-  paintBtnElement.style.top = "60px";
+  paintBtnElement.style.top = "70px";
   paintBtnElement.style.left = "20px";
   paintBtnElement.style.width = "38px";
   paintBtnElement.style.height = "38px";
@@ -258,7 +271,7 @@ function createOverlayElement({
 
   const modelBtnElement = document.createElement("button");
   modelBtnElement.style.position = "fixed";
-  modelBtnElement.style.top = "120px";
+  modelBtnElement.style.top = "130px";
   modelBtnElement.style.left = "20px";
   modelBtnElement.style.width = "38px";
   modelBtnElement.style.height = "38px";
@@ -266,6 +279,18 @@ function createOverlayElement({
   modelBtnElement.addEventListener("click", onModelBtnClick);
 
   overlayElement.appendChild(modelBtnElement);
+
+  const captureBtnElement = document.createElement("button");
+  captureBtnElement.style.position = "fixed";
+  captureBtnElement.style.bottom = "30px";
+  captureBtnElement.style.left = "calc(50% - 25px)";
+  captureBtnElement.style.width = "50px";
+  captureBtnElement.style.height = "50px";
+  captureBtnElement.style.borderRadius = "50%";
+
+  captureBtnElement.addEventListener("click", onConfirmBtnClick);
+
+  overlayElement.appendChild(captureBtnElement);
 
   return overlayElement;
 }
