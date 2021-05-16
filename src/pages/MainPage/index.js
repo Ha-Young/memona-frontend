@@ -112,7 +112,7 @@ const MainPage = () => {
   }
 
   function handleARConfirmBtnClick() {
-    
+
   }
 
   async function handleCameraBtnClick() {

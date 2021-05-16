@@ -1,7 +1,7 @@
 async function checkARAvaiable() {
-  if ( "xr" in window.navigator ) {
+  if ("xr" in window.navigator ) {
     try {
-      return await window.navigator.xr.isSessionSupported( "immersive-ar" );
+      return await window.navigator.xr.isSessionSupported("immersive-ar");
     } catch {
       return false;
     }
