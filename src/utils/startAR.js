@@ -19,6 +19,7 @@ function startAR({ onARConfirmBtnClick }) {
   let hitTestSource = null;
   let hitTestSourceRequested = false;
   let drawingMode = "paint";
+  let curColor = "#ffffff";
 
   const container = document.createElement("div");
   const overlayElement = createOverlayElement({
@@ -26,6 +27,7 @@ function startAR({ onARConfirmBtnClick }) {
     onPaintBtnClick,
     onModelBtnClick,
     onConfirmBtnClick,
+    onColorChange,
   });
 
   document.body.appendChild(container);
@@ -52,7 +54,6 @@ function startAR({ onARConfirmBtnClick }) {
   const renderer = new WebGLRenderer({
     antialias: true,
     alpha: true,
-    preserveDrawingBuffer: true,
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -72,6 +73,10 @@ function startAR({ onARConfirmBtnClick }) {
 
   function onModelBtnClick() {
     drawingMode = "model";
+  }
+
+  function onColorChange(e) {
+    curColor = e.target.value;
   }
 
   function onConfirmBtnClick() {
@@ -127,7 +132,7 @@ function startAR({ onARConfirmBtnClick }) {
       if (userData.skipFrames >= 0) {
         // TODO(mrdoob) Revisit this
         userData.skipFrames--;
-
+        painter.setColor(curColor);
         painter.moveTo(cursor);
       } else {
         painter.lineTo(cursor);
@@ -230,6 +235,7 @@ function createOverlayElement({
   onPaintBtnClick,
   onModelBtnClick,
   onConfirmBtnClick,
+  onColorChange,
 }) {
   const overlayElement = document.createElement("div");
   overlayElement.style.display = "none";
@@ -287,6 +293,20 @@ function createOverlayElement({
   captureBtnElement.addEventListener("click", onConfirmBtnClick);
 
   overlayElement.appendChild(captureBtnElement);
+
+  const colorPicker = document.createElement("input");
+  colorPicker.id = "colorPicker";
+  colorPicker.type = "color";
+  colorPicker.value="#ffffff";
+  colorPicker.style.position = "fixed";
+  colorPicker.style.bottom = "60px";
+  colorPicker.style.left = "20px";
+  colorPicker.style.width = "50px";
+  colorPicker.style.height = "27px";
+
+  colorPicker.addEventListener("change", onColorChange);
+
+  overlayElement.appendChild(colorPicker);
 
   return overlayElement;
 }

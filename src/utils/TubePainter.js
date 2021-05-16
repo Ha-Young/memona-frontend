@@ -56,7 +56,7 @@ function TubePainter() {
   const vector3 = new Vector3();
   const vector4 = new Vector3();
 
-  const color = new Color(0xffffff);
+  let color = new Color(0xffffff);
   let size = 1;
 
   function stroke(position1, position2, matrix1, matrix2) {
@@ -146,6 +146,10 @@ function TubePainter() {
     size = value;
   }
 
+  function setColor(value) {
+    color = new Color(value);
+  }
+
   let count = 0;
 
   function update() {
@@ -170,11 +174,12 @@ function TubePainter() {
   }
 
   return {
-    mesh: mesh,
-    moveTo: moveTo,
-    lineTo: lineTo,
-    setSize: setSize,
-    update: update,
+    mesh,
+    moveTo,
+    lineTo,
+    setSize,
+    setColor,
+    update,
   };
 }
 
