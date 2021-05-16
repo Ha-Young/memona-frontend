@@ -46,10 +46,12 @@ const LocationSeason = ({ onSeasonApplyBtnClick, areaName, ...props }) => {
   const seasonValueRef = useRef();
 
   function handleApplyBtnClick() {
-    const year = yearValueRef.current.toString();
-    const season = seasonValueRef.current.toLowerCase();
+    const year = yearValueRef.current;
+    const season = seasonValueRef.current;
 
-    onSeasonApplyBtnClick({ year, season });
+    if (year && season) {
+      onSeasonApplyBtnClick({ year: year.toString(), season: season.toLowerCase() });
+    }
   }
 
   return (

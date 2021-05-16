@@ -20,31 +20,6 @@ function startAR({ onARConfirmBtnClick }) {
   let hitTestSourceRequested = false;
   let drawingMode = "paint";
 
-  const cursor = new Vector3();
-
-  function onCloseBtnClick() {
-    currentSession.end();
-  }
-
-  function onPaintBtnClick() {
-    drawingMode = "paint";
-  }
-
-  function onModelBtnClick() {
-    drawingMode = "model";
-  }
-
-  async function onConfirmBtnClick() {
-    console.log("confirm btn click");
-
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-
-    console.log("stream", stream);
-
-    // currentSession.end();
-    onARConfirmBtnClick();
-  }
-
   const container = document.createElement("div");
   const overlayElement = createOverlayElement({
     onCloseBtnClick,
@@ -74,12 +49,35 @@ function startAR({ onARConfirmBtnClick }) {
   light.position.set(0.5, 1, 0.25);
   scene.add(light);
 
-  const renderer = new WebGLRenderer({ antialias: true, alpha: true });
+  const renderer = new WebGLRenderer({
+    antialias: true,
+    alpha: true,
+    preserveDrawingBuffer: true,
+  });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.xr.enabled = true;
 
   container.appendChild(renderer.domElement);
+
+  const cursor = new Vector3();
+
+  function onCloseBtnClick() {
+    currentSession.end();
+  }
+
+  function onPaintBtnClick() {
+    drawingMode = "paint";
+  }
+
+  function onModelBtnClick() {
+    drawingMode = "model";
+  }
+
+  function onConfirmBtnClick() {
+    currentSession.end();
+    onARConfirmBtnClick();
+  }
 
   async function onSessionStarted(session) {
     session.addEventListener("end", onSessionEnded);
@@ -186,15 +184,13 @@ function startAR({ onARConfirmBtnClick }) {
         const session = renderer.xr.getSession();
 
         if (hitTestSourceRequested === false) {
-          session
-            .requestReferenceSpace("viewer")
-            .then((referenceSpace) => {
-              session
-                .requestHitTestSource({ space: referenceSpace })
-                .then((source) => {
-                  hitTestSource = source;
-                });
-            });
+          session.requestReferenceSpace("viewer").then((referenceSpace) => {
+            session
+              .requestHitTestSource({ space: referenceSpace })
+              .then((source) => {
+                hitTestSource = source;
+              });
+          });
 
           session.addEventListener("end", () => {
             hitTestSourceRequested = false;
