@@ -15,7 +15,7 @@ import useMobileDeviceCheck from "../../hooks/useMobileDeviceCheck";
 import useViewModeWithSider from "../../hooks/useViewModeWithSider";
 import { locationVar } from "../../store";
 import checkARAvaiable from "../../utils/checkARAvaiable";
-import startAR from "../../utils/startAR";
+import startAR from "../../utils/startAR/index";
 import { ONLOAD_QUERY } from "./query";
 
 const PageContent = styled.div`
