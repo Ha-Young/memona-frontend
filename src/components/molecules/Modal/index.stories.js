@@ -1,4 +1,3 @@
-import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import React from "react";
 
@@ -16,7 +15,7 @@ storiesOf("Modal", module)
     </Modal>
   ))
   .add("closeable", () => (
-    <Modal onClose={() => {console.log("onClose");}} closeable isOpen>
+    <Modal onClose={() => {console.log("onClose");}} title="Hello" closeable isOpen>
       Ullamco et reprehenderit magna cillum ullamco consectetur et enim aliqua.
     </Modal>
   ))

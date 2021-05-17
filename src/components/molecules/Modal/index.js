@@ -46,16 +46,17 @@ const ModalBox = styled(ReactModal)`
   min-width: 320px;
   max-width: calc(640px - 1rem);
   max-height: calc(100% - 1rem);
-  padding-top: ${({ hasHeader }) => (hasHeader ? 0 : "1rem")};
-  @media screen and (max-width: 640px) {
-    width: calc(100% - 1rem);
-    min-width: 0;
-  }
+
   &[class*="after-open"] {
     transform: translate(-50%, -50%);
   }
   &[class*="before-close"] {
     transform: translate(-50%, 100%);
+  }
+  @media screen and (max-width: 640px) {
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
   }
 `;
 
@@ -63,22 +64,49 @@ const Header = styled.header`
   display: flex;
   align-items: center;
   padding: 1rem;
-  > *:first-child {
-    flex: 1;
+  box-sizing: border-box;
+
+  @media screen and (max-width: 640px) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    width: 100%;
+    height: 40px;
   }
 `;
 
 const StyledHeading = styled(Heading)`
-  margin: 0 1rem 0 0;
+  margin: 0 1rem !important;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+
+  @media screen and (max-width: 640px) {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+`;
+
+const StyledIconButton = styled(IconButton)`
+  background-color: transparent;
+`;
+
+const OpacityIconButton = styled(IconButton)`
+  opacity: 0;
 `;
 
 const Content = styled.div`
   overflow: auto;
-  padding: 0 1rem;
-  margin-bottom: 1rem;
+
+  @media screen and (max-width: 640px) {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 100%;
+  }
 `;
 
 const StyledReactModal = styled(({ className, ...props }) => (
@@ -86,6 +114,8 @@ const StyledReactModal = styled(({ className, ...props }) => (
 ))`
   ${overlayStyles}
 `;
+
+ReactModal.setAppElement("#root");
 
 const Modal = ({ children, title, closeable, onClose, ...props }) => {
   const { reverse } = props;
@@ -99,17 +129,19 @@ const Modal = ({ children, title, closeable, onClose, ...props }) => {
     >
       {hasHeader && (
         <Header>
-          <StyledHeading level={2} reverse={reverse}>
-            {title}
-          </StyledHeading>
           {closeable && (
-            <IconButton
+            <StyledIconButton
               icon="close"
               onClick={onClose}
               palette="white"
+              height={24}
               reverse
             />
           )}
+          <StyledHeading level={2} reverse={reverse}>
+            {title}
+          </StyledHeading>
+          <OpacityIconButton height={24}/>
         </Header>
       )}
       <Content>{children}</Content>
