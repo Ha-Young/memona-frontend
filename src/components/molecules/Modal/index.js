@@ -103,9 +103,10 @@ const Content = styled.div`
 
   @media screen and (max-width: 640px) {
     position: absolute;
-    top: 40px;
+    top: ${({ isHeadless }) => isHeadless ? 0 : "40px"};
     left: 0;
     width: 100%;
+    height: ${({ isHeadless }) => isHeadless ? "100vh" : "calc(100vh - 40px)"};
   }
 `;
 
@@ -117,17 +118,17 @@ const StyledReactModal = styled(({ className, ...props }) => (
 
 ReactModal.setAppElement("#root");
 
-const Modal = ({ children, title, closeable, onClose, ...props }) => {
+const Modal = ({ children, title, headless, closeable, onClose, ...props }) => {
   const { reverse } = props;
-  const hasHeader = title || closeable;
+  const isHeadless = headless || !title || !closeable;
   return (
     <StyledReactModal
       contentLabel={title || "Modal"}
       onRequestClose={onClose}
-      hasHeader={hasHeader}
+      hasHeader={!isHeadless}
       {...props}
     >
-      {hasHeader && (
+      {!isHeadless && (
         <Header>
           {closeable && (
             <StyledIconButton
@@ -144,7 +145,7 @@ const Modal = ({ children, title, closeable, onClose, ...props }) => {
           <OpacityIconButton height={24}/>
         </Header>
       )}
-      <Content>{children}</Content>
+      <Content isHeadless>{children}</Content>
     </StyledReactModal>
   );
 };
