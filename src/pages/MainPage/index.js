@@ -61,6 +61,9 @@ const MainPage = () => {
     { called, loading, error, data, fetchMore }
   ] = useLazyQuery(ONLOAD_QUERY);
   const imageInputElement = useRef();
+  const [imageBlobUrl, setImageBlobUrl] = useState();
+
+  console.log("imageBlobUrl", imageBlobUrl);
 
   useEffect(() => {
     if (location && !called) {
@@ -140,6 +143,8 @@ const MainPage = () => {
 
     const blobUrl = window.URL.createObjectURL(file);
     console.log(blobUrl);
+
+    setImageBlobUrl(blobUrl);
   }
 
   return (
