@@ -1,18 +1,18 @@
 import {
-  CylinderGeometry,
   DoubleSide,
   FontLoader,
   HemisphereLight,
   Mesh,
-  MeshBasicMaterial,
   MeshPhongMaterial,
   PerspectiveCamera,
-  RingGeometry,
+  Raycaster,
   Scene,
   TextGeometry,
+  Vector2,
   Vector3,
   WebGLRenderer,
 } from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 import { TubePainter } from "../TubePainter";
 import DoHyeonFONT from "./fonts/Do_Hyeon_Regular.json";
@@ -23,6 +23,11 @@ function startAR({ onARConfirmBtnClick }) {
   let hitTestSourceRequested = false;
   let drawingMode = "paint";
   let curColor = "#ffffff";
+  let isOverayBtnClick = false;
+
+  const fontLoader = new FontLoader();
+
+  const modelLoader = new GLTFLoader();
 
   const container = document.createElement("div");
   const overlayElement = createOverlayElement({
@@ -66,6 +71,7 @@ function startAR({ onARConfirmBtnClick }) {
   container.appendChild(renderer.domElement);
 
   const cursor = new Vector3();
+  const controller = renderer.xr.getController(0);
 
   function onCloseBtnClick() {
     currentSession.end();
@@ -73,6 +79,7 @@ function startAR({ onARConfirmBtnClick }) {
 
   function onPaintBtnClick() {
     drawingMode = "paint";
+    isOverayBtnClick = true;
   }
 
   function onModelBtnClick() {
@@ -86,22 +93,24 @@ function startAR({ onARConfirmBtnClick }) {
   function onConfirmBtnClick() {
     currentSession.end();
     onARConfirmBtnClick();
+    isOverayBtnClick = true;
   }
 
   let addTextModeCancel;
   function onTextBtnClick() {
+    drawingMode = "text";
     const { handleCancelBtnClick } = createTextInputForm({
       onTextApplyBtnClick,
       parentElement: overlayElement,
     });
     addTextModeCancel = handleCancelBtnClick;
-    drawingMode = "text";
+    isOverayBtnClick = true;
   }
 
   function onTextApplyBtnClick(text) {
-    console.log("text", text);
     createText(text);
     addTextModeCancel();
+    drawingMode = "";
   }
 
   async function onSessionStarted(session) {
@@ -120,13 +129,20 @@ function startAR({ onARConfirmBtnClick }) {
     currentSession.removeEventListener("end", onSessionEnded);
     currentSession = null;
 
+    while (scene.children.length > 0) {
+      scene.remove(scene.children[0]);
+    }
+
+    renderer.setAnimationLoop(null);
+    renderer.clear();
+
     container.removeChild(renderer.domElement);
     document.body.removeChild(sessionInit.domOverlay.root);
     document.body.removeChild(container);
   }
 
   const painter = new TubePainter();
-  painter.setSize(0.4);
+  painter.setSize(0.3);
   painter.mesh.material.side = DoubleSide;
   scene.add(painter.mesh);
 
@@ -162,10 +178,8 @@ function startAR({ onARConfirmBtnClick }) {
   }
 
   function createText(text) {
-    const loader = new FontLoader();
-    console.log("hahaha");
-    const font = loader.parse(DoHyeonFONT);
-    console.log("font", font);
+    const font = fontLoader.parse(DoHyeonFONT);
+
     const textGeo = new TextGeometry(text, {
       font: font,
 
@@ -178,49 +192,55 @@ function startAR({ onARConfirmBtnClick }) {
       // bevelEnabled: true,
     });
 
-    textGeo.computeBoundingBox();
-    textGeo.center();
-
     const materials = [
-      new MeshPhongMaterial({ color: curColor, flatShading: true }), // front
+      new MeshPhongMaterial({ color: curColor, flatShading: true }),
       new MeshPhongMaterial({ color: curColor })
     ];
 
     const textMesh1 = new Mesh(textGeo, materials);
-    
 
-    textMesh1.position.set(0, 0, -0.25);
-
-    textMesh1.rotation.x = 0;
-    textMesh1.rotation.y = Math.PI * 2;
-    console.log(textMesh1);
+    if (camera.position) {
+      const raycaster = new Raycaster();
+      raycaster.setFromCamera(new Vector2(), camera);
+      const inFrontOfCamera = new Vector3();
+      const viewPosition = raycaster.ray.at(0.25, inFrontOfCamera);
+      textMesh1.position.set(
+        viewPosition.x,
+        viewPosition.y,
+        viewPosition.z
+      );
+    }
 
     scene.add(textMesh1);
   }
 
-  const geometry = new CylinderGeometry(0.1, 0.1, 0.2, 32).translate(0, 0.1, 0);
-
-  const reticle = new Mesh(
-    new RingGeometry(0.15, 0.2, 32).rotateX(-Math.PI / 2),
-    new MeshBasicMaterial()
+  let reticle;
+  modelLoader.load(
+    "https://immersive-web.github.io/webxr-samples/media/gltf/reticle/reticle.gltf",
+    (gltf) => {
+      reticle = gltf.scene;
+      reticle.visible = false;
+      scene.add(reticle);
+    }
   );
-  reticle.matrixAutoUpdate = false;
-  reticle.visible = false;
-  scene.add(reticle);
+
+  let flower;
+  modelLoader.load(
+    "https://immersive-web.github.io/webxr-samples/media/gltf/sunflower/sunflower.gltf",
+    (gltf) => {
+      flower = gltf.scene;
+    }
+  );
 
   function onSelect() {
-    if (reticle.visible) {
-      const material = new MeshPhongMaterial({
-        color: 0xffffff * Math.random(),
-      });
-      const mesh = new Mesh(geometry, material);
-      mesh.position.setFromMatrixPosition(reticle.matrix);
-      mesh.scale.y = Math.random() * 2 + 1;
-      scene.add(mesh);
+    if (reticle.visible && flower && !isOverayBtnClick) {
+      const clone = flower.clone();
+      clone.position.copy(reticle.position);
+      scene.add(clone);
     }
+    isOverayBtnClick = false;
   }
 
-  const controller = renderer.xr.getController(0);
   controller.addEventListener("selectstart", onSelectStart);
   controller.addEventListener("selectend", onSelectEnd);
   controller.addEventListener("select", onSelect);
@@ -235,9 +255,8 @@ function startAR({ onARConfirmBtnClick }) {
     currentSession.end();
   }
 
-  function render(timestamp, frame) {
-    if (drawingMode !== "model") {
-      reticle.matrixAutoUpdate = false;
+  async function render(timestamp, frame) {
+    if (drawingMode !== "model" && reticle) {
       reticle.visible = false;
     }
 
@@ -247,16 +266,14 @@ function startAR({ onARConfirmBtnClick }) {
 
     if (drawingMode === "model") {
       if (frame) {
-        const referenceSpace = renderer.xr.getReferenceSpace();
         const session = renderer.xr.getSession();
+        const referenceSpace = await session.requestReferenceSpace("local");
 
         if (hitTestSourceRequested === false) {
-          session.requestReferenceSpace("viewer").then((referenceSpace) => {
-            session
-              .requestHitTestSource({ space: referenceSpace })
-              .then((source) => {
-                hitTestSource = source;
-              });
+          const viewerSpace = await session.requestReferenceSpace("viewer");
+
+          hitTestSource = await session.requestHitTestSource({
+            space: viewerSpace,
           });
 
           session.addEventListener("end", () => {
@@ -270,13 +287,15 @@ function startAR({ onARConfirmBtnClick }) {
         if (hitTestSource) {
           const hitTestResults = frame.getHitTestResults(hitTestSource);
 
-          if (hitTestResults.length) {
-            const hit = hitTestResults[0];
-
+          if (hitTestResults.length > 0 && reticle) {
+            const hitPose = hitTestResults[0].getPose(referenceSpace);
             reticle.visible = true;
-            reticle.matrix.fromArray(
-              hit.getPose(referenceSpace).transform.matrix
+            reticle.position.set(
+              hitPose.transform.position.x,
+              hitPose.transform.position.y,
+              hitPose.transform.position.z
             );
+            reticle.updateMatrixWorld(true);
           } else {
             reticle.visible = false;
           }
