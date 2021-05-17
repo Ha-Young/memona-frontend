@@ -91,9 +91,14 @@ function startAR({ onARConfirmBtnClick }) {
   }
 
   function onConfirmBtnClick() {
-    currentSession.end();
-    onARConfirmBtnClick();
-    isOverayBtnClick = true;
+    for (const element of overlayElement.childNodes) {
+      element.style.display = "none";
+    }
+
+    window.setTimeout(() => {
+      currentSession.end();
+      onARConfirmBtnClick();
+    }, 3000);
   }
 
   let addTextModeCancel;

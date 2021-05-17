@@ -39,6 +39,12 @@ const Indicator = styled.div`
   height: 5px;
 `;
 
+const ImgUpload = styled.input`
+  opacity: 0;
+  width: 0;
+  height: 0;
+`;
+
 const LIMIT = 5;
 
 const MainPage = () => {
@@ -54,6 +60,7 @@ const MainPage = () => {
     getLoadData,
     { called, loading, error, data, fetchMore }
   ] = useLazyQuery(ONLOAD_QUERY);
+  const imageInputElement = useRef();
 
   useEffect(() => {
     if (location && !called) {
@@ -112,7 +119,7 @@ const MainPage = () => {
   }
 
   function handleARConfirmBtnClick() {
-
+    imageInputElement.current.click();
   }
 
   async function handleCameraBtnClick() {
@@ -120,15 +127,26 @@ const MainPage = () => {
       const isARAvaiable = await checkARAvaiable();
 
       if (isARAvaiable) {
-        startAR({ onARConfirmBtnClick: handleARConfirmBtnClick });
+        return startAR({ onARConfirmBtnClick: handleARConfirmBtnClick });
       }
     }
+
+    imageInputElement.current.click();
+  }
+
+  function onImgUpload(e) {
+    const files = imageInputElement.files || e.target.files;
+    const file = files[0];
+
+    const blobUrl = window.URL.createObjectURL(file);
+    console.log(blobUrl);
   }
 
   return (
     <>
       {called && loading && "Loading..."}
       {error && "Error..."}
+      <ImgUpload ref={imageInputElement} accept="image/jpeg" type="file" onChange={onImgUpload}/>
       <PageTemplate
         viewMode={viewMode}
         header={<Header />}
@@ -150,6 +168,7 @@ const MainPage = () => {
         <Sider left={siderLeftPos}>
           <FriendsList user={data?.loginUser} />
         </Sider>
+        
         <Indicator ref={infiniteTargetElementRef} />
       </PageTemplate>
     </>
