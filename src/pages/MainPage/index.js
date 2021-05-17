@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { size } from "styled-theme";
 
+import AddPostModalView from "../../components/molecules/AddPostModalView";
 import Modal from "../../components/molecules/Modal";
 import FriendsList from "../../components/organisms/FriendsList";
 import Header from "../../components/organisms/Header";
@@ -141,13 +142,16 @@ const MainPage = () => {
     const file = files[0];
 
     const blobUrl = window.URL.createObjectURL(file);
-    console.log(blobUrl);
 
     setImageBlobUrl(blobUrl);
   }
 
-  function handleModalClose() {
+  function handleModalCloseBtnClick() {
     setImageBlobUrl(null);
+  }
+
+  function handlePostBtnClick(data) {
+    console.log(data, imageBlobUrl);
   }
 
   return (
@@ -156,43 +160,56 @@ const MainPage = () => {
       {error && "Error..."}
       {imageBlobUrl && (
         <Modal
-          title="새로운 사진 게시글"
+          headless
+          onClose={handleModalCloseBtnClick}
           isOpen={!!imageBlobUrl}
-          closeable
-          onClose={handleModalClose}
         >
-          ㅇㄹㄴㅇㄹㅇㄴㄹㅇㄴㄹㅇㄴㄹㅇㄴㄹㅇㄴㄹㅇㄴㄹㅇㄴㄹ
+          <AddPostModalView
+            imageBlobUrl={imageBlobUrl}
+            loginUser={data.loginUser}
+            onPostBtnClick={handlePostBtnClick}
+            onCloseBtnClick={handleModalCloseBtnClick}
+          />
         </Modal>
       )}
-      <ImgUpload
-        ref={imageInputElement}
-        accept="image/jpeg"
-        type="file"
-        onChange={onImgUpload}
-      />
-      <PageTemplate
-        viewMode={viewMode}
-        header={<Header />}
-        mobileHeader={<MobileHeader onCameraBtnClick={handleCameraBtnClick} />}
-        mobileNavigator={
-          <MobileNavigator onCameraBtnClick={handleCameraBtnClick} />
-        }
-      >
-        <PageContent>
-          <LocationSeason
-            areaName={data?.myArea?.name}
-            onSeasonApplyBtnClick={handleSeasonApplyBtnClick}
-          />
-          <PostList
-            posts={data?.posts?.docs}
-            fetchingOptions={{ areaName: data?.myArea?.name, ...yearSeason }}
-          />
-        </PageContent>
-        <Sider left={siderLeftPos}>
-          <FriendsList user={data?.loginUser} />
-        </Sider>
-        <Indicator ref={infiniteTargetElementRef} />
-      </PageTemplate>
+      {!imageBlobUrl && (
+        <>
+          <PageTemplate
+            viewMode={viewMode}
+            header={<Header />}
+            mobileHeader={
+              <MobileHeader onCameraBtnClick={handleCameraBtnClick} />
+            }
+            mobileNavigator={
+              <MobileNavigator onCameraBtnClick={handleCameraBtnClick} />
+            }
+          >
+            <ImgUpload
+              ref={imageInputElement}
+              accept="image/jpeg"
+              type="file"
+              onChange={onImgUpload}
+            />
+            <PageContent>
+              <LocationSeason
+                areaName={data?.myArea?.name}
+                onSeasonApplyBtnClick={handleSeasonApplyBtnClick}
+              />
+              <PostList
+                posts={data?.posts?.docs}
+                fetchingOptions={{
+                  areaName: data?.myArea?.name,
+                  ...yearSeason,
+                }}
+              />
+            </PageContent>
+            <Sider left={siderLeftPos}>
+              <FriendsList user={data?.loginUser} />
+            </Sider>
+            <Indicator ref={infiniteTargetElementRef} />
+          </PageTemplate>
+        </>
+      )}
     </>
   );
 };

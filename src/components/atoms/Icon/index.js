@@ -9,6 +9,7 @@ import {
   RiChat3Line,
   RiCloseCircleLine,
   RiCompass3Line,
+  RiEdit2Line,
   RiGroupFill,
   RiHeartsFill,
   RiHeartsLine,
@@ -89,6 +90,9 @@ const Icon = ({ icon, ...props }) => {
       break;
     case "comment":
       svg = <RiChat3Line />;
+      break;
+    case "post":
+      svg = <RiEdit2Line />;
       break;
     default:
       svg = <RiCloseCircleLine />;
