@@ -1,6 +1,7 @@
 import {
   CylinderGeometry,
   DoubleSide,
+  FontLoader,
   HemisphereLight,
   Mesh,
   MeshBasicMaterial,
@@ -8,11 +9,13 @@ import {
   PerspectiveCamera,
   RingGeometry,
   Scene,
+  TextGeometry,
   Vector3,
   WebGLRenderer,
 } from "three";
 
-import { TubePainter } from "./TubePainter";
+import { TubePainter } from "../TubePainter";
+import DoHyeonFONT from "./fonts/Do_Hyeon_Regular.json";
 
 function startAR({ onARConfirmBtnClick }) {
   let currentSession = null;
@@ -26,6 +29,7 @@ function startAR({ onARConfirmBtnClick }) {
     onCloseBtnClick,
     onPaintBtnClick,
     onModelBtnClick,
+    onTextBtnClick,
     onConfirmBtnClick,
     onColorChange,
   });
@@ -82,6 +86,22 @@ function startAR({ onARConfirmBtnClick }) {
   function onConfirmBtnClick() {
     currentSession.end();
     onARConfirmBtnClick();
+  }
+
+  let addTextModeCancel;
+  function onTextBtnClick() {
+    const { handleCancelBtnClick } = createTextInputForm({
+      onTextApplyBtnClick,
+      parentElement: overlayElement,
+    });
+    addTextModeCancel = handleCancelBtnClick;
+    drawingMode = "text";
+  }
+
+  function onTextApplyBtnClick(text) {
+    console.log("text", text);
+    createText(text);
+    addTextModeCancel();
   }
 
   async function onSessionStarted(session) {
@@ -141,6 +161,43 @@ function startAR({ onARConfirmBtnClick }) {
     }
   }
 
+  function createText(text) {
+    const loader = new FontLoader();
+    console.log("hahaha");
+    const font = loader.parse(DoHyeonFONT);
+    console.log("font", font);
+    const textGeo = new TextGeometry(text, {
+      font: font,
+
+      size: 0.03,
+      height: 0.01,
+      curveSegments: 4,
+
+      bevelThickness: 2,
+      bevelSize: 1.5,
+      // bevelEnabled: true,
+    });
+
+    textGeo.computeBoundingBox();
+    textGeo.center();
+
+    const materials = [
+      new MeshPhongMaterial({ color: curColor, flatShading: true }), // front
+      new MeshPhongMaterial({ color: curColor })
+    ];
+
+    const textMesh1 = new Mesh(textGeo, materials);
+    
+
+    textMesh1.position.set(0, 0, -0.25);
+
+    textMesh1.rotation.x = 0;
+    textMesh1.rotation.y = Math.PI * 2;
+    console.log(textMesh1);
+
+    scene.add(textMesh1);
+  }
+
   const geometry = new CylinderGeometry(0.1, 0.1, 0.2, 32).translate(0, 0.1, 0);
 
   const reticle = new Mesh(
@@ -179,6 +236,11 @@ function startAR({ onARConfirmBtnClick }) {
   }
 
   function render(timestamp, frame) {
+    if (drawingMode !== "model") {
+      reticle.matrixAutoUpdate = false;
+      reticle.visible = false;
+    }
+
     if (drawingMode === "paint") {
       handleController(controller);
     }
@@ -234,6 +296,7 @@ function createOverlayElement({
   onCloseBtnClick,
   onPaintBtnClick,
   onModelBtnClick,
+  onTextBtnClick,
   onConfirmBtnClick,
   onColorChange,
 }) {
@@ -282,6 +345,17 @@ function createOverlayElement({
 
   overlayElement.appendChild(modelBtnElement);
 
+  const textBtnElement = document.createElement("button");
+  textBtnElement.style.position = "fixed";
+  textBtnElement.style.top = "190px";
+  textBtnElement.style.left = "20px";
+  textBtnElement.style.width = "38px";
+  textBtnElement.style.height = "38px";
+
+  textBtnElement.addEventListener("click", onTextBtnClick);
+
+  overlayElement.appendChild(textBtnElement);
+
   const captureBtnElement = document.createElement("button");
   captureBtnElement.style.position = "fixed";
   captureBtnElement.style.bottom = "30px";
@@ -297,9 +371,9 @@ function createOverlayElement({
   const colorPicker = document.createElement("input");
   colorPicker.id = "colorPicker";
   colorPicker.type = "color";
-  colorPicker.value="#ffffff";
+  colorPicker.value = "#ffffff";
   colorPicker.style.position = "fixed";
-  colorPicker.style.bottom = "60px";
+  colorPicker.style.bottom = "40px";
   colorPicker.style.left = "20px";
   colorPicker.style.width = "50px";
   colorPicker.style.height = "27px";
@@ -309,4 +383,73 @@ function createOverlayElement({
   overlayElement.appendChild(colorPicker);
 
   return overlayElement;
+}
+
+function createTextInputForm({ onTextApplyBtnClick, parentElement }) {
+  const textAddFormElement = document.createElement("div");
+  const textAddInputElement = document.createElement("textarea");
+  const textApplyBtnElement = document.createElement("div");
+  const textCancelBtnElement = document.createElement("div");
+
+  textApplyBtnElement.textContent = "적용";
+  textApplyBtnElement.style.position = "fixed";
+  textApplyBtnElement.style.top = "50px";
+  textApplyBtnElement.style.right = "20px";
+  textApplyBtnElement.style.fontSize = "20px";
+  textApplyBtnElement.style.fontWeight = "600";
+  textApplyBtnElement.style.backgroundColor = "transparent";
+  textApplyBtnElement.style.color = "white";
+  textApplyBtnElement.textContent = "적용";
+
+  textCancelBtnElement.textContent = "취소";
+  textCancelBtnElement.style.position = "fixed";
+  textCancelBtnElement.style.bottom = "40px";
+  textCancelBtnElement.style.right = "20px";
+  textCancelBtnElement.style.fontSize = "20px";
+  textCancelBtnElement.style.fontWeight = "600";
+  textCancelBtnElement.style.backgroundColor = "transparent";
+  textCancelBtnElement.style.color = "white";
+
+  textAddInputElement.style.background = "transparent";
+  textAddInputElement.style.fontSize = "30px";
+  textAddInputElement.style.width = "50vw";
+  textAddInputElement.style.color = "white";
+  textAddInputElement.style.wordWrap = "break-word";
+
+  textAddFormElement.style.position = "fixed";
+  textAddFormElement.style.left = "calc(50% - 150px)";
+  textAddFormElement.style.top = "calc(50% - 150px)";
+  textAddFormElement.style.display = "flex";
+  textAddFormElement.style.flexDirection = "column";
+  textAddFormElement.style.justifyContent = "center";
+  textAddFormElement.style.alignItems = "center";
+  textAddFormElement.style.width = "300px";
+  textAddFormElement.style.height = "300px";
+
+  function handleApplyBtnClick() {
+    onTextApplyBtnClick(textAddInputElement.value);
+  }
+
+  function handleCancelBtnClick() {
+    parentElement.removeChild(textAddFormElement);
+    parentElement.removeChild(textApplyBtnElement);
+    parentElement.removeChild(textCancelBtnElement);
+  }
+
+  textApplyBtnElement.addEventListener("click", handleApplyBtnClick);
+  textCancelBtnElement.addEventListener("click", handleCancelBtnClick);
+
+  textAddFormElement.appendChild(textAddInputElement);
+
+  parentElement.appendChild(textApplyBtnElement);
+  parentElement.appendChild(textCancelBtnElement);
+  parentElement.appendChild(textAddFormElement);
+
+  return {
+    textAddFormElement,
+    textAddInputElement,
+    textApplyBtnElement,
+    textCancelBtnElement,
+    handleCancelBtnClick,
+  };
 }
