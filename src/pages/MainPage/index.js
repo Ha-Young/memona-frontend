@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { size } from "styled-theme";
 
+import Modal from "../../components/molecules/Modal";
 import FriendsList from "../../components/organisms/FriendsList";
 import Header from "../../components/organisms/Header";
 import LocationSeason from "../../components/organisms/LocationSeason";
@@ -62,8 +63,6 @@ const MainPage = () => {
   ] = useLazyQuery(ONLOAD_QUERY);
   const imageInputElement = useRef();
   const [imageBlobUrl, setImageBlobUrl] = useState();
-
-  console.log("imageBlobUrl", imageBlobUrl);
 
   useEffect(() => {
     if (location && !called) {
@@ -147,11 +146,30 @@ const MainPage = () => {
     setImageBlobUrl(blobUrl);
   }
 
+  function handleModalClose() {
+    setImageBlobUrl(null);
+  }
+
   return (
     <>
       {called && loading && "Loading..."}
       {error && "Error..."}
-      <ImgUpload ref={imageInputElement} accept="image/jpeg" type="file" onChange={onImgUpload}/>
+      {imageBlobUrl && (
+        <Modal
+          title="새로운 사진 게시글"
+          isOpen={!!imageBlobUrl}
+          closeable
+          onClose={handleModalClose}
+        >
+          ㅇㄹㄴㅇㄹㅇㄴㄹㅇㄴㄹㅇㄴㄹㅇㄴㄹㅇㄴㄹㅇㄴㄹㅇㄴㄹ
+        </Modal>
+      )}
+      <ImgUpload
+        ref={imageInputElement}
+        accept="image/jpeg"
+        type="file"
+        onChange={onImgUpload}
+      />
       <PageTemplate
         viewMode={viewMode}
         header={<Header />}
@@ -173,7 +191,6 @@ const MainPage = () => {
         <Sider left={siderLeftPos}>
           <FriendsList user={data?.loginUser} />
         </Sider>
-        
         <Indicator ref={infiniteTargetElementRef} />
       </PageTemplate>
     </>
