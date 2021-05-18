@@ -56,7 +56,7 @@ const ModalBox = styled(ReactModal)`
   @media screen and (max-width: 640px) {
     width: 100vw;
     height: 100vh;
-    max-height: 100vh;
+    max-height: 100%;
   }
 `;
 
