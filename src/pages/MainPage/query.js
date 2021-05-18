@@ -32,3 +32,11 @@ export const ONLOAD_QUERY = gql`
     }
   }
 `;
+
+export const CREATE_POST = gql`
+  mutation Mutation($createPostInput: PostInput!) {
+    createPost(input: $createPostInput) {
+      _id
+    }
+  }
+`;

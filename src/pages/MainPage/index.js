@@ -1,4 +1,4 @@
-import { useLazyQuery, useReactiveVar } from "@apollo/client";
+import { useLazyQuery, useMutation, useReactiveVar } from "@apollo/client";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { size } from "styled-theme";
@@ -18,7 +18,7 @@ import useViewModeWithSider from "../../hooks/useViewModeWithSider";
 import { locationVar } from "../../store";
 import checkARAvaiable from "../../utils/checkARAvaiable";
 import startAR from "../../utils/startAR/index";
-import { ONLOAD_QUERY } from "./query";
+import { CREATE_POST, ONLOAD_QUERY } from "./query";
 
 const PageContent = styled.div`
   display: flex;
@@ -62,6 +62,14 @@ const MainPage = () => {
     getLoadData,
     { called, loading, error, data, fetchMore }
   ] = useLazyQuery(ONLOAD_QUERY);
+  const [createPost] = useMutation(CREATE_POST, {
+    onCompleted: () => {
+      console.log("success!");
+    },
+    onError: (err) => {
+      console.error("error!", err);
+    },
+  });
   const imageInputElement = useRef();
   const [imageBlobUrl, setImageBlobUrl] = useState();
 
@@ -150,8 +158,39 @@ const MainPage = () => {
     setImageBlobUrl(null);
   }
 
-  function handlePostBtnClick(data) {
-    console.log(data, imageBlobUrl);
+  function handlePostBtnClick(postData) {
+    console.log(postData, imageBlobUrl);
+
+    const locationGeoJson = {
+      type: "Point",
+      coordinates: [location.longitude, location.latitude],
+    };
+
+    console.log({
+      author: data.loginUser._id,
+      content: postData.content,
+      postImageFile: imageBlobUrl,
+      location: locationGeoJson,
+      isAnonymous: postData.isAnonymous,
+      area: data?.myArea?.name,
+      season: "spring",
+      year: "2021",
+    });
+
+    createPost({
+      variables: {
+        createPostInput: {
+          author: data.loginUser._id,
+          content: postData.content,
+          postImageFile: imageBlobUrl,
+          location: locationGeoJson,
+          isAnonymous: postData.isAnonymous,
+          area: data?.myArea?.name,
+          season: "spring",
+          year: "2021",
+        },
+      },
+    });
   }
 
   return (
