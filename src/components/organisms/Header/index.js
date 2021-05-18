@@ -27,7 +27,7 @@ const InnerWrapper = styled.div`
   }
 `;
 
-const Header = (props) => {
+const Header = ({ onImageUploadBtnClick, ...props }) => {
   return (
     <Wrapper {...props}>
       <InnerWrapper>
@@ -36,7 +36,7 @@ const Header = (props) => {
             Memona
           </Heading>
         </Link>
-        <PrimaryNavigation />
+        <PrimaryNavigation onImageUploadBtnClick={onImageUploadBtnClick}/>
       </InnerWrapper>
     </Wrapper>
   );
