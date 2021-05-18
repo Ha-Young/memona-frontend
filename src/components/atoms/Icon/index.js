@@ -14,6 +14,7 @@ import {
   RiHeartsFill,
   RiHeartsLine,
   RiHome4Fill,
+  RiImageAddFill,
   RiMap2Line,
   RiMapPin4Fill,
   RiUser3Fill,
@@ -93,6 +94,9 @@ const Icon = ({ icon, ...props }) => {
       break;
     case "post":
       svg = <RiEdit2Line />;
+      break;
+    case "imagePlus":
+      svg = <RiImageAddFill />;
       break;
     default:
       svg = <RiCloseCircleLine />;

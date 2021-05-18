@@ -216,6 +216,10 @@ const MainPage = () => {
     console.log("failure");
   }
 
+  function handleImageUploadBtnClick() {
+    imageInputElement.current.click();
+  }
+
   return (
     <>
       {called && loading && "Loading..."}
@@ -238,12 +242,12 @@ const MainPage = () => {
         <>
           <PageTemplate
             viewMode={viewMode}
-            header={<Header />}
+            header={<Header onImageUploadBtnClick={handleImageUploadBtnClick}/>}
             mobileHeader={
               <MobileHeader onCameraBtnClick={handleCameraBtnClick} />
             }
             mobileNavigator={
-              <MobileNavigator onCameraBtnClick={handleCameraBtnClick} />
+              <MobileNavigator onCameraBtnClick={handleCameraBtnClick} onImageUploadBtnClick={handleImageUploadBtnClick}/>
             }
           >
             <ImgUpload

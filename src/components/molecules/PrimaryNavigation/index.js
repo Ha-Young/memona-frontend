@@ -25,10 +25,15 @@ const Nav = styled.nav`
   }
 `;
 
+const PointerIcon = styled(Icon)`
+  cursor: pointer;
+`;
+
 const PrimaryNavigation = ({
   iconSize = 25,
   mobileType,
   onCameraBtnClick = () => {},
+  onImageUploadBtnClick = () => {},
   ...props
 }) => {
   return (
@@ -49,9 +54,7 @@ const PrimaryNavigation = ({
         </li>
       )}
       <li>
-        <Link to="/">
-          <Icon icon="map" size={iconSize} />
-        </Link>
+        <PointerIcon icon="imagePlus" size={iconSize} onClick={onImageUploadBtnClick}/>
       </li>
       <li>
         <Link to="/">

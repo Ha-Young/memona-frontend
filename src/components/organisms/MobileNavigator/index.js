@@ -14,10 +14,10 @@ const Wrapper = styled.div`
   box-sizing: border-box;
 `;
 
-const MobileNavigator = ({ onCameraBtnClick, ...props }) => {
+const MobileNavigator = ({ onCameraBtnClick, onImageUploadBtnClick, ...props }) => {
   return (
     <Wrapper {...props}>
-      <PrimaryNavigation onCameraBtnClick={onCameraBtnClick} mobileType />
+      <PrimaryNavigation onCameraBtnClick={onCameraBtnClick} onImageUploadBtnClick={onImageUploadBtnClick} mobileType />
     </Wrapper>
   );
 };
