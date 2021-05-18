@@ -7,6 +7,7 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { createUploadLink } from "apollo-upload-client";
 import React from "react";
 import { render } from "react-dom";
 import { BrowserRouter } from "react-router-dom";
