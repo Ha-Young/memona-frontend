@@ -9,9 +9,6 @@ import Label from "../../atoms/Label";
 import IconButton from "../IconButton";
 
 const Wrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
