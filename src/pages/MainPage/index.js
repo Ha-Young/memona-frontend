@@ -12,11 +12,13 @@ import MobileHeader from "../../components/organisms/MobileHeader";
 import MobileNavigator from "../../components/organisms/MobileNavigator";
 import PostList from "../../components/organisms/PostList";
 import PageTemplate from "../../components/templates/PageTemplate";
+import { filterMode as FILTER_MODE } from "../../constants";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import useMobileDeviceCheck from "../../hooks/useMobileDeviceCheck";
 import useViewModeWithSider from "../../hooks/useViewModeWithSider";
 import { locationVar } from "../../store";
 import checkARAvaiable from "../../utils/checkARAvaiable";
+import { getCurYearSeason, getFormatDate } from "../../utils/date";
 import startAR from "../../utils/startAR/index";
 import { CREATE_POST, ONLOAD_QUERY } from "./query";
 
@@ -63,26 +65,27 @@ const MainPage = () => {
     { called, loading, error, data, fetchMore }
   ] = useLazyQuery(ONLOAD_QUERY);
   const [createPost] = useMutation(CREATE_POST, {
-    onCompleted: () => {
-      console.log("success!");
-    },
-    onError: (err) => {
-      console.error("error!", err);
-    },
+    onCompleted: onCreatePostSuccess,
+    onError: onCreatePostError,
   });
+  const [filterMode, setFilterMode] = useState(FILTER_MODE.RANDOM);
   const imageInputElement = useRef();
   const [imageBlobUrl, setImageBlobUrl] = useState();
+  console.log(imageBlobUrl);
 
   useEffect(() => {
     if (location && !called) {
-      getLoadData({ variables: { ...location, page: 1, limit: LIMIT } });
+      getLoadData({
+        variables: { filter: filterMode, ...location, page: 1, limit: LIMIT },
+      });
     }
-  }, [called, getLoadData, location]);
+  }, [called, filterMode, getLoadData, location]);
 
   function handleScrollEnd() {
-    if (data?.posts?.hasNextPage) {
+    if (filterMode === FILTER_MODE.RANDOM || data?.posts?.hasNextPage) {
       fetchMore({
         variables: {
+          filter: filterMode,
           area: data?.myArea?.name,
           page: data?.posts?.nextPage,
           limit: LIMIT,
@@ -110,6 +113,7 @@ const MainPage = () => {
       fetchMore({
         variables: {
           ...location,
+          filter: filterMode,
           page: 1,
           limit: LIMIT,
           area: data?.myArea?.name,
@@ -155,42 +159,61 @@ const MainPage = () => {
   }
 
   function handleModalCloseBtnClick() {
+    URL.revokeObjectURL(imageBlobUrl);
     setImageBlobUrl(null);
   }
 
-  function handlePostBtnClick(postData) {
-    console.log(postData, imageBlobUrl);
+  async function handlePostBtnClick(postData) {
+    const { year, season, date } = getCurYearSeason();
+    const dateString = getFormatDate(date, true);
 
     const locationGeoJson = {
       type: "Point",
       coordinates: [location.longitude, location.latitude],
     };
 
-    console.log({
-      author: data.loginUser._id,
-      content: postData.content,
-      postImageFile: imageBlobUrl,
-      location: locationGeoJson,
-      isAnonymous: postData.isAnonymous,
-      area: data?.myArea?.name,
-      season: "spring",
-      year: "2021",
-    });
+    const imageBlob = await fetch(imageBlobUrl).then((r) => r.blob());
+    imageBlob.name = `${data.loginUser._id}-${dateString}`;
 
     createPost({
       variables: {
         createPostInput: {
           author: data.loginUser._id,
           content: postData.content,
-          postImageFile: imageBlobUrl,
           location: locationGeoJson,
           isAnonymous: postData.isAnonymous,
           area: data?.myArea?.name,
-          season: "spring",
-          year: "2021",
+          season,
+          year,
         },
+        file: imageBlob,
       },
     });
+  }
+
+  function onCreatePostSuccess() {
+    if (data?.posts?.length <= 5) {
+      fetchMore({
+        variables: {
+          filter: filterMode,
+          ...location,
+          page: 1,
+          limit: LIMIT,
+          area: data?.myArea?.name,
+          year: yearSeason?.year,
+          season: yearSeason?.season,
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+          return fetchMoreResult;
+        },
+      });
+    }
+    setImageBlobUrl("");
+  }
+
+  function onCreatePostError() {
+    console.log("failure");
   }
 
   return (

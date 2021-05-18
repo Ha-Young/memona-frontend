@@ -9,9 +9,13 @@ import Label from "../../atoms/Label";
 import IconButton from "../IconButton";
 
 const Wrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
   min-height: 100%;
   box-sizing: border-box;
   background-color: ${({ theme }) => theme.genericBackgroundColor};
@@ -21,6 +25,7 @@ const Wrapper = styled.div`
 const StyledImg = styled(Img)`
   padding: 0;
   max-width: 100vw;
+  max-height: 55vh;
   border-radius: 2px;
   margin-bottom: 0.5rem;
   border-top: 1px solid ${({ theme }) => theme.genericBorderColor};
@@ -117,6 +122,10 @@ const AddPostModalView = ({
     onPostBtnClick({ content, isAnonymous });
   }
 
+  function handleKeyDown(e) {
+    console.log(e.keyCode);
+  }
+
   return (
     <Wrapper {...props}>
       <Header>
@@ -139,6 +148,7 @@ const AddPostModalView = ({
             placeholder="문구 입력..."
             value={content}
             onChange={handleContentChange}
+            onKeyDown={handleKeyDown}
           />
         </Field>
         <FieldAligned>

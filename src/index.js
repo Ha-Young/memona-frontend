@@ -2,8 +2,8 @@ import "react-hot-loader/patch";
 
 import {
   ApolloClient,
+  ApolloLink,
   ApolloProvider,
-  createHttpLink,
   InMemoryCache,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
@@ -19,7 +19,7 @@ import GlobalStyle from "./components/themes/GlobalStyle";
 import { authPrefix, basename, gqlAPIUrl, tokenKey } from "./config";
 import { getStorage } from "./utils/localStorage";
 
-const httpLink = createHttpLink({
+const uploadLink = createUploadLink({
   uri: gqlAPIUrl,
 });
 
@@ -35,7 +35,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: ApolloLink.from([ authLink, uploadLink ]),
   cache: new InMemoryCache(),
 });
 

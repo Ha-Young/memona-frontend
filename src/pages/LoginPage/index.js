@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import React from "react";
 import { Redirect } from "react-router";
 import styled from "styled-components";
@@ -10,6 +10,7 @@ import AddToHomeForm from "../../components/molecules/AddToHomeForm";
 import LoginForm from "../../components/molecules/LoginForm";
 import GenericTemplate from "../../components/templates/GenericTemplate";
 import useToken from "../../hooks/useToken";
+import { LOGIN_USER } from "./query";
 
 const LandingImages = styled.div`
   @media screen and (max-width: ${size("mobileWidth")}) {
@@ -33,24 +34,8 @@ const LandingForms = styled.div`
   }
 `;
 
-const LOGIN_USER = gql`
-  mutation LoginMutation(
-    $type: String
-    $token: String
-    $email: String
-    $password: String
-  ) {
-    login(
-      type: $type
-      token: $token
-      email: $email
-      password: $password
-    )
-  }
-`;
-
 const LoginPage = () => {
-  const [login] = useMutation(LOGIN_USER, { onCompleted: handleLoginSuccess, onError: handleLoginFailure });
+  const [login, { error, loading }] = useMutation(LOGIN_USER, { onCompleted: handleLoginSuccess, onError: handleLoginFailure });
   const { token, setToken } = useToken();
 
   function handleLoginSuccess({ login }) {
