@@ -14,7 +14,7 @@ import { createHandlerBoundToURL, precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { StaleWhileRevalidate } from "workbox-strategies";
 
-import { GqlStaleWhileRevalidate } from "./serviceWorker/gqlCaching";
+import { GqlNetworkFirst, GqlStaleWhileRevalidate } from "./serviceWorker/gqlCaching";
 
 setCacheNameDetails({
   prefix: "memona",
@@ -104,14 +104,14 @@ registerRoute(
 registerRoute(
   ({ url, event }) => url.origin === process.env.REACT_APP_GRAPHQL_API_URI,
   ({ event }) => {
-    return GqlStaleWhileRevalidate(event);
+    return GqlNetworkFirst(event);
   },
   "POST"
 );
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method === "POST") {
-    event.respondWith(GqlStaleWhileRevalidate(event));
+    event.respondWith(GqlNetworkFirst(event));
   }
 });
 
