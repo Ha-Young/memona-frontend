@@ -19,6 +19,24 @@ export async function GqlStaleWhileRevalidate(event) {
   return cachedResponse ? Promise.resolve(cachedResponse) : fetchPromise;
 }
 
+export async function GqlNetworkFirst(event) {
+  try {
+    const response = await fetch(event.request.clone());
+
+    setCache(event.request.clone(), response.clone());
+
+    return response;
+  } catch {
+    if (!window.navigator.onLine) {
+      const cachedResponse = await getCache(event.request.clone());
+
+      return cachedResponse;
+    }
+
+    return null;
+  }
+}
+
 async function serializeResponse(response) {
   const serializedHeaders = {};
   for (let entry of response.headers.entries()) {
