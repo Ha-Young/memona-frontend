@@ -18,6 +18,7 @@ import theme from "./components/themes";
 import GlobalStyle from "./components/themes/GlobalStyle";
 import { authPrefix, basename, gqlAPIUrl, tokenKey } from "./config";
 import { getStorage } from "./utils/localStorage";
+import uniqBy from "./utils/uniqBy";
 
 const uploadLink = createUploadLink({
   uri: gqlAPIUrl,
@@ -35,8 +36,32 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const client = new ApolloClient({
-  link: ApolloLink.from([ authLink, uploadLink ]),
-  cache: new InMemoryCache(),
+  link: ApolloLink.from([authLink, uploadLink]),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          posts: {
+            keyArgs: false,
+            merge(existing = null, incoming) {
+              if (existing === null) {
+                return incoming;
+              }
+
+              const uniqDocs = uniqBy(incoming.docs, "__ref");
+
+              console.log(uniqDocs);
+
+              return {
+                ...incoming,
+                docs: uniqDocs,
+              };
+            },
+          },
+        },
+      },
+    },
+  }),
 });
 
 const renderApp = () => (

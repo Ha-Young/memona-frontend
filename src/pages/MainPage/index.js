@@ -71,7 +71,6 @@ const MainPage = () => {
   const [filterMode, setFilterMode] = useState(FILTER_MODE.RANDOM);
   const imageInputElement = useRef();
   const [imageBlobUrl, setImageBlobUrl] = useState();
-  console.log(imageBlobUrl);
 
   useEffect(() => {
     if (location && !called) {
