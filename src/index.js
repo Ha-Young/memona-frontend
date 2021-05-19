@@ -50,8 +50,6 @@ const client = new ApolloClient({
 
               const uniqDocs = uniqBy(incoming.docs, "__ref");
 
-              console.log(uniqDocs);
-
               return {
                 ...incoming,
                 docs: uniqDocs,
