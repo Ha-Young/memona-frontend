@@ -12,8 +12,9 @@ import { setCacheNameDetails } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";
 import { createHandlerBoundToURL, precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
-import { NetworkFirst } from "workbox-strategies";
 import { StaleWhileRevalidate } from "workbox-strategies";
+
+import { GqlStaleWhileRevalidate } from "./serviceWorker/gqlCaching";
 
 setCacheNameDetails({
   prefix: "memona",
@@ -77,26 +78,42 @@ registerRoute(
 
 registerRoute(
   ({ request }) =>
-    request.destination === "script" || request.destination === "style" || request.destination === "manifest" || new RegExp("\\.ico$"),
+    request.destination === "script" ||
+    request.destination === "style" ||
+    request.destination === "manifest" ||
+    new RegExp("\\.ico$"),
   new StaleWhileRevalidate({
     cacheName: "memona-static-resources",
   })
 );
 
+// registerRoute(
+//   ({ url }) => url.origin === "https://hacker-news.firebaseio.com",
+//   new NetworkFirst({
+//     networkTimeoutSeconds: 3,
+//     cacheName: "stories",
+//     plugins: [
+//       new ExpirationPlugin({
+//         maxEntries: 50,
+//         maxAgeSeconds: 5 * 60, // 5 minutes
+//       })
+//     ],
+//   })
+// );
 
 registerRoute(
-  ({ url }) => url.origin === "https://hacker-news.firebaseio.com",
-  new NetworkFirst({
-    networkTimeoutSeconds: 3,
-    cacheName: "stories",
-    plugins: [
-      new ExpirationPlugin({
-        maxEntries: 50,
-        maxAgeSeconds: 5 * 60, // 5 minutes
-      })
-    ],
-  })
+  ({ url, event }) => url.origin === process.env.REACT_APP_GRAPHQL_API_URI,
+  ({ event }) => {
+    return GqlStaleWhileRevalidate(event);
+  },
+  "POST"
 );
+
+self.addEventListener("fetch", (event) => {
+  if (event.request.method === "POST") {
+    event.respondWith(GqlStaleWhileRevalidate(event));
+  }
+});
 
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
