@@ -3,6 +3,7 @@ import { createStore, get, set } from "idb-keyval";
 import { Queue } from "workbox-background-sync";
 
 const gqlStore = createStore("GraphQL-Cache", "PostResponses");
+const queue = new Queue("PostSyncQueue");
 
 export async function GqlStaleWhileRevalidate(event) {
   const cachedResponse = await getCache(event.request.clone());
@@ -19,26 +20,15 @@ export async function GqlStaleWhileRevalidate(event) {
   return cachedResponse ? Promise.resolve(cachedResponse) : fetchPromise;
 }
 
-
-const queue = new Queue("PostSyncQueue");
-
 export async function GqlNetworkFirst(event) {
   try {
     const response = await fetch(event.request.clone());
-
     setCache(event.request.clone(), response.clone());
 
     return response;
 
-  } catch {
-    const checkMutation = event.request.clone();
-    const body = await checkMutation.json();
-    const isMutation = body.query.includes("mutation");
-
-    if (isMutation) {
-      return queue.pushRequest({ request: event.request });
-    }
-
+  } catch (err) {
+    queue.pushRequest({ request: event.request });
     const cachedResponse = await getCache(event.request.clone());
 
     return cachedResponse;
@@ -61,7 +51,8 @@ async function serializeResponse(response) {
 
 async function setCache(request, response) {
   const body = await request.json();
-  const id = MD5(body.query).toString();
+  const id = MD5(body.query + body.variables).toString();
+  console.log("setCache", body);
 
   const entry = {
     query: body.query,
@@ -75,7 +66,7 @@ async function setCache(request, response) {
 async function getCache(request) {
   try {
     const body = await request.json();
-    const id = MD5(body.query).toString();
+    const id = MD5(body.query + body.variables).toString();
     const data = await get(id, gqlStore);
     if (!data) return null;
 
