@@ -43,8 +43,7 @@ const ModalBox = styled(ReactModal)`
   transition: transform 250ms ease-in-out;
   outline: none;
   box-sizing: border-box;
-  min-width: 320px;
-  max-width: calc(640px - 1rem);
+  width: 800px;
   max-height: calc(100% - 1rem);
 
   &[class*="after-open"] {
