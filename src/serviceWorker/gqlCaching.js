@@ -1,6 +1,6 @@
 import MD5 from "crypto-js/md5";
 import { createStore, get, set } from "idb-keyval";
-import { BackgroundSyncPlugin } from "workbox-background-sync";
+import { Queue } from "workbox-background-sync";
 
 const gqlStore = createStore("GraphQL-Cache", "PostResponses");
 
@@ -19,6 +19,9 @@ export async function GqlStaleWhileRevalidate(event) {
   return cachedResponse ? Promise.resolve(cachedResponse) : fetchPromise;
 }
 
+
+const queue = new Queue("PostSyncQueue");
+
 export async function GqlNetworkFirst(event) {
   try {
     const response = await fetch(event.request.clone());
@@ -26,14 +29,19 @@ export async function GqlNetworkFirst(event) {
     setCache(event.request.clone(), response.clone());
 
     return response;
-  } catch {
-    if (!window.navigator.onLine) {
-      const cachedResponse = await getCache(event.request.clone());
 
-      return cachedResponse;
+  } catch {
+    const checkMutation = event.request.clone();
+    const body = await checkMutation.json();
+    const isMutation = body.query.includes("mutation");
+
+    if (isMutation) {
+      return queue.pushRequest({ request: event.request });
     }
 
-    return null;
+    const cachedResponse = await getCache(event.request.clone());
+
+    return cachedResponse;
   }
 }
 
