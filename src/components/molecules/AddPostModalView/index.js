@@ -119,10 +119,6 @@ const AddPostModalView = ({
     onPostBtnClick({ content, isAnonymous });
   }
 
-  function handleKeyDown(e) {
-    console.log(e.keyCode);
-  }
-
   return (
     <Wrapper {...props}>
       <Header>
@@ -145,7 +141,6 @@ const AddPostModalView = ({
             placeholder="문구 입력..."
             value={content}
             onChange={handleContentChange}
-            onKeyDown={handleKeyDown}
           />
         </Field>
         <FieldAligned>
