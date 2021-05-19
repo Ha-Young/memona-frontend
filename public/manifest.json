@@ -1,6 +1,6 @@
 {
   "short_name": "Memona",
-  "name": "Leave memories on the location",
+  "name": "Memona",
   "icons": [
     {
       "src": "/imgs/favicon.ico",
@@ -38,7 +38,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
