@@ -7,6 +7,7 @@
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
 
+import { BackgroundSyncPlugin, Queue } from "workbox-background-sync";
 import { clientsClaim } from "workbox-core";
 import { setCacheNameDetails } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";
@@ -114,6 +115,7 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(GqlNetworkFirst(event));
   }
 });
+
 
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
