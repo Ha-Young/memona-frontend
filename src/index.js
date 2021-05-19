@@ -17,6 +17,7 @@ import App from "./components/App";
 import theme from "./components/themes";
 import GlobalStyle from "./components/themes/GlobalStyle";
 import { authPrefix, basename, gqlAPIUrl, tokenKey } from "./config";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { getStorage } from "./utils/localStorage";
 import uniqBy from "./utils/uniqBy";
 
@@ -82,3 +83,5 @@ if (module.hot) {
     render(renderApp(), root);
   });
 }
+
+serviceWorkerRegistration.register();
