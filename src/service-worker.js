@@ -105,7 +105,11 @@ registerRoute(
 registerRoute(
   ({ url, event }) => url.origin === process.env.REACT_APP_GRAPHQL_API_URI,
   ({ event }) => {
-    return GqlNetworkFirst(event);
+    try {
+      return GqlNetworkFirst(event);
+    } catch (err) {
+      console.log(err);
+    }
   },
   "POST"
 );
