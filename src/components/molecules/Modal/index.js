@@ -2,7 +2,7 @@ import { styled } from "@storybook/theming";
 import PropTypes from "prop-types";
 import ReactModal from "react-modal";
 import { css } from "styled-components";
-import { font, palette } from "styled-theme";
+import { font, palette, size } from "styled-theme";
 
 import Heading from "../../atoms/Heading";
 import IconButton from "../IconButton";
@@ -43,7 +43,7 @@ const ModalBox = styled(ReactModal)`
   transition: transform 250ms ease-in-out;
   outline: none;
   box-sizing: border-box;
-  width: 800px;
+  width: 640px;
   max-height: calc(100% - 1rem);
 
   &[class*="after-open"] {
