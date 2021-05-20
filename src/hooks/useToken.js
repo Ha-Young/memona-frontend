@@ -1,20 +1,20 @@
 import { useState } from "react";
 
 import config from "../config";
-import { deleteStorage, getStorage, saveStorage } from "../utils/localStorage";
+import { deleteCookie, getCookie, saveCookie } from "../utils/cookieController";
 
 function useToken() {
-  const [token, setToken] = useState(getStorage(config.tokenKey));
+  const [token, setToken] = useState(getCookie(config.tokenKey));
 
   function saveToken(accessToken) {
     localStorage.setItem(config.tokenKey, JSON.stringify(accessToken));
 
-    saveStorage(config.tokenKey, accessToken);
+    saveCookie(config.tokenKey, accessToken, config.tokenExpiryDay);
     setToken(accessToken);
   }
 
   function deleteToken() {
-    deleteStorage(config.tokenKey);
+    deleteCookie(config.tokenKey);
   }
 
   return {
