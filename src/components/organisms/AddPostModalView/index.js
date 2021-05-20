@@ -135,7 +135,6 @@ const AddPostModalView = ({
       <Cropper
         style={{ maxHeight: "55vh", maxWidth: "100vw" }}
         initialAspectRatio={1}
-        dragMode="move"
         src={image}
         viewMode={1}
         guides={false}

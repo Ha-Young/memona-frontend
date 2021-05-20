@@ -18,7 +18,6 @@ import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import useMobileDeviceCheck from "../../hooks/useMobileDeviceCheck";
 import useViewModeWithSider from "../../hooks/useViewModeWithSider";
 import { locationVar } from "../../store";
-import base64ToBlob from "../../utils/base64ToBlob";
 import checkARAvaiable from "../../utils/checkARAvaiable";
 import { getCurYearSeason, getFormatDate } from "../../utils/date";
 import startAR from "../../utils/startAR/index";
