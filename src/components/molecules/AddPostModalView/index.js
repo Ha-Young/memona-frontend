@@ -1,10 +1,12 @@
+import "cropperjs/dist/cropper.css";
+
 import React, { useState } from "react";
+import Cropper from "react-cropper";
 import styled from "styled-components";
 import { palette } from "styled-theme";
 
 import Avatar from "../../atoms/Avatar";
 import Heading from "../../atoms/Heading";
-import Img from "../../atoms/Img";
 import Label from "../../atoms/Label";
 import IconButton from "../IconButton";
 
@@ -17,16 +19,6 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   background-color: ${({ theme }) => theme.genericBackgroundColor};
   overflow-y: scroll;
-`;
-
-const StyledImg = styled(Img)`
-  padding: 0;
-  max-width: 100vw;
-  max-height: 55vh;
-  border-radius: 2px;
-  margin-bottom: 0.5rem;
-  border-top: 1px solid ${({ theme }) => theme.genericBorderColor};
-  border-bottom: 1px solid ${({ theme }) => theme.genericBorderColor};
 `;
 
 const PostInfo = styled.div`
@@ -104,6 +96,8 @@ const AddPostModalView = ({
   onPostBtnClick,
   ...props
 }) => {
+  const [image, setImage] = useState(imageBlobUrl);
+  const [cropper, setCropper] = useState();
   const [content, setContent] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false);
 
@@ -116,7 +110,12 @@ const AddPostModalView = ({
   }
 
   function handlePostBtnClick() {
-    onPostBtnClick({ content, isAnonymous });
+    if (typeof cropper !== "undefined") {
+      cropper.getCroppedCanvas().toBlob((imageBlob) => {
+        onPostBtnClick({ content, isAnonymous, imageBlob });
+      }, "image/jpeg", 0.75);
+      // const croppedImageBlob = cropper.getCroppedCanvas().toDataURL("image/jpeg");
+    }
   }
 
   return (
@@ -133,7 +132,23 @@ const AddPostModalView = ({
         </StyledHeading>
         <ApplyIconButton icon="post" height={28} reverse onClick={handlePostBtnClick}/>
       </Header>
-      <StyledImg src={imageBlobUrl} alt="preview" />
+      <Cropper
+        style={{ maxHeight: "55vh", maxWidth: "100vw" }}
+        initialAspectRatio={1}
+        dragMode="move"
+        src={image}
+        viewMode={1}
+        guides={false}
+        minCropBoxHeight={300}
+        minCropBoxWidth={300}
+        background={false}
+        responsive={true}
+        autoCropArea={1}
+        checkOrientation={false}
+        onInitialized={(instance) => {
+          setCropper(instance);
+        }}
+      />
       <PostInfo>
         <Field>
           <Avatar src={loginUser.imageUrl} alt="user" />

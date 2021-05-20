@@ -18,6 +18,7 @@ import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import useMobileDeviceCheck from "../../hooks/useMobileDeviceCheck";
 import useViewModeWithSider from "../../hooks/useViewModeWithSider";
 import { locationVar } from "../../store";
+import base64ToBlob from "../../utils/base64ToBlob";
 import checkARAvaiable from "../../utils/checkARAvaiable";
 import { getCurYearSeason, getFormatDate } from "../../utils/date";
 import startAR from "../../utils/startAR/index";
@@ -168,8 +169,9 @@ const MainPage = () => {
     setImageBlobUrl(null);
   }
 
-  async function handlePostBtnClick(postData) {
+  function handlePostBtnClick(postData) {
     const { year, season, date } = getCurYearSeason();
+    const { content, isAnonymous, imageBlob } = postData;
     const dateString = getFormatDate(date, true);
 
     const locationGeoJson = {
@@ -177,17 +179,17 @@ const MainPage = () => {
       coordinates: [location.longitude, location.latitude],
     };
 
-    const imageBlob = await fetch(imageBlobUrl).then((r) => r.blob());
+    // const imageBlob = await fetch(imageBlobUrl).then((r) => r.blob());
     imageBlob.name = `${data.loginUser._id}-${dateString}`;
 
     createPost({
       variables: {
         createPostInput: {
           author: data.loginUser._id,
-          content: postData.content,
           location: locationGeoJson,
-          isAnonymous: postData.isAnonymous,
           area: data?.myArea?.name,
+          content,
+          isAnonymous,
           season,
           year,
         },
