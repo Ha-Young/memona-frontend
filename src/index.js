@@ -23,7 +23,6 @@ import uniqBy from "./utils/uniqBy";
 
 const uploadLink = createUploadLink({
   uri: gqlAPIUrl,
-  credentials: "include",
 });
 
 const authLink = setContext((_, { headers }) => {
