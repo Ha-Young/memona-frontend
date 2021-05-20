@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { palette, size } from "styled-theme";
 import { ifProp } from "styled-tools";
 
+import useToken from "../../../hooks/useToken";
 import Icon from "../../atoms/Icon";
 
 const Nav = styled.nav`
@@ -36,6 +37,11 @@ const PrimaryNavigation = ({
   onImageUploadBtnClick = () => {},
   ...props
 }) => {
+  const { deleteToken } = useToken();
+  function handleLogoutBtnClick() {
+    deleteToken();
+  }
+
   return (
     <Nav mobileType={mobileType} {...props}>
       <li>
@@ -57,9 +63,7 @@ const PrimaryNavigation = ({
         <PointerIcon icon="imagePlus" size={iconSize} onClick={onImageUploadBtnClick}/>
       </li>
       <li>
-        <Link to="/">
-          <Icon icon="user" size={iconSize} />
-        </Link>
+        <Icon icon="user" size={iconSize} onClick={handleLogoutBtnClick}/>
       </li>
     </Nav>
   );
