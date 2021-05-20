@@ -7,6 +7,7 @@ import { size } from "styled-theme";
 import defaultImage from "../../assets/images/landingPhone.png";
 import Img from "../../components/atoms/Img";
 import AddToHomeForm from "../../components/molecules/AddToHomeForm";
+import Loading from "../../components/molecules/Loading";
 import LoginForm from "../../components/molecules/LoginForm";
 import GenericTemplate from "../../components/templates/GenericTemplate";
 import useToken from "../../hooks/useToken";
@@ -85,6 +86,7 @@ const LoginPage = () => {
 
   return (
     <>
+      {loading && <Loading />}
       <GenericTemplate>
         <LandingImages>
           <Img alt="landingPhone" src={defaultImage} />
