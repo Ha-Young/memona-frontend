@@ -54,7 +54,6 @@ const LoginPage = () => {
   }
 
   async function handleAddToHomeBtnClick() {
-    console.log("here");
     const deferredInstallPrompt = deferredInstallPromptRef.current;
 
     if (deferredInstallPrompt) {
@@ -72,9 +71,8 @@ const LoginPage = () => {
   }
 
   useEffect(() => {
-    console.log("9");
     function handleBeforeInstallPrompt(evt) {
-      console.log("hoho", evt);
+      console.log("ready to installprompt");
       deferredInstallPromptRef.current = evt;
     }
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);

@@ -7,7 +7,6 @@ const defaultOptions = {
 };
 
 function useInfiniteScroll(fetchCallback, options = defaultOptions) {
-  console.log("useInfiniteScroll");
   const [isFetching, setIsFetching] = useState(false);
   const infiniteTargetElementRef = useRef();
 
@@ -23,13 +22,10 @@ function useInfiniteScroll(fetchCallback, options = defaultOptions) {
   }, []);
 
   useEffect(() => {
-    console.log("reEffect");
     let observer;
     let targetElement;
 
     if (infiniteTargetElementRef.current) {
-      console.log("create observer");
-
       targetElement = infiniteTargetElementRef.current;
       observer = new IntersectionObserver(
         intersectionCallbackFuncThrottle,
@@ -39,7 +35,6 @@ function useInfiniteScroll(fetchCallback, options = defaultOptions) {
     }
 
     return () => {
-      console.log("disconnect observer");
       observer?.disconnect(targetElement);
     };
   }, [intersectionCallbackFuncThrottle, options]);
