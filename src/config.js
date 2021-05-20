@@ -10,6 +10,7 @@ const config = {
     gqlAPIUrl: process.env.REACT_APP_GRAPHQL_API_URI,
     tokenKey: "authorization",
     authPrefix: "Bearer",
+    tokenExpiryDay: 1,
   },
   test: {},
   development: {},
