@@ -3,9 +3,9 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { size } from "styled-theme";
 
-import AddPostModalView from "../../components/molecules/AddPostModalView";
 import Loading from "../../components/molecules/Loading";
 import Modal from "../../components/molecules/Modal";
+import AddPostModalView from "../../components/organisms/AddPostModalView";
 import FriendsList from "../../components/organisms/FriendsList";
 import Header from "../../components/organisms/Header";
 import LocationSeason from "../../components/organisms/LocationSeason";

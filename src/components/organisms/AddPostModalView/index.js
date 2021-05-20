@@ -8,7 +8,7 @@ import { palette } from "styled-theme";
 import Avatar from "../../atoms/Avatar";
 import Heading from "../../atoms/Heading";
 import Label from "../../atoms/Label";
-import IconButton from "../IconButton";
+import IconButton from "../../molecules/IconButton";
 
 const Wrapper = styled.div`
   display: flex;
