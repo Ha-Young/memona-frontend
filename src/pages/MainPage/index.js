@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { size } from "styled-theme";
 
 import AddPostModalView from "../../components/molecules/AddPostModalView";
+import Loading from "../../components/molecules/Loading";
 import Modal from "../../components/molecules/Modal";
 import FriendsList from "../../components/organisms/FriendsList";
 import Header from "../../components/organisms/Header";
@@ -63,7 +64,9 @@ const MainPage = () => {
   const [
     getLoadData,
     { called, loading, error, data, fetchMore }
-  ] = useLazyQuery(ONLOAD_QUERY);
+  ] = useLazyQuery(ONLOAD_QUERY, {
+    notifyOnNetworkStatusChange: true,
+  });
   const [createPost, { loading: createLoading, error: createError }] = useMutation(CREATE_POST, {
     onCompleted: onCreatePostSuccess,
     onError: onCreatePostError,
@@ -224,7 +227,7 @@ const MainPage = () => {
 
   return (
     <>
-      {called && (loading || createLoading) && "Loading..."}
+      {called && (loading || createLoading) && <Loading />}
       {(error || createError) && "Error..."}
       {imageBlobUrl && (
         <Modal
