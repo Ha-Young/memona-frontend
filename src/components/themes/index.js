@@ -2,6 +2,7 @@ import { reversePalette } from "styled-theme/composer";
 
 const theme = {
   genericBackgroundColor: "#fafafa",
+  loadingBackgroundColor: "#dbdbdba0",
   genericBorderColor: "#dbdbdb",
 };
 

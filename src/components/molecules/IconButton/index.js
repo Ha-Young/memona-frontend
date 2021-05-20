@@ -40,7 +40,7 @@ const StyledButton = styled(Button)`
   ${ifProp(
     "responsive",
     css`
-      @media screen and (max-width: ${prop("breakpoint")}px) {
+      @media screen and (max-width: ${prop("mobileWidth")}px) {
         width: auto;
         flex: 0 !important;
       }
@@ -50,7 +50,7 @@ const StyledButton = styled(Button)`
 
 const Text = styled.span`
   padding: 0.4375em;
-  @media screen and (max-width: ${prop("breakpoint")}px) {
+  @media screen and (max-width: ${prop("mobileWidth")}px) {
     display: ${ifProp("responsive", "none !important")};
   }
 `;

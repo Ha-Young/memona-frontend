@@ -1,8 +1,9 @@
 import React from "react";
 import Lottie from "react-lottie";
 import styled from "styled-components";
+import { size } from "styled-theme";
 
-import LoadingAnim from "./loadingaAnimation.json";
+import LoadingAnim from "./loadingAnimation.json";
 
 const LoadingWrapper = styled.div`
   position: fixed;
@@ -19,8 +20,12 @@ const LoadingWrapper = styled.div`
 `;
 
 const StyledLoading = styled.div`
-  width: 7vw;
-  height: 7vw;
+  width: 20vw;
+  height: 20vw;
+  @media screen and (max-width: ${size("mobileWidth")}) {
+    width: 30vw;
+    height: 30vw;
+  }
 `;
 
 const lottieOptions = {
