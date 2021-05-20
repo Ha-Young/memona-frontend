@@ -33,7 +33,6 @@ const StyledButton = styled(Button)`
   position: absolute;
   bottom: 5px;
   right: 5px;
-  z-index: 1;
 
   @media screen and (max-width: ${size("mobileWidth")}) {
     height: 24px;
@@ -41,6 +40,7 @@ const StyledButton = styled(Button)`
     font-size: 0.6rem;
   }
 `;
+
 const LocationSeason = ({ onSeasonApplyBtnClick, areaName, ...props }) => {
   const yearValueRef = useRef();
   const seasonValueRef = useRef();

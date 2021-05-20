@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Redirect } from "react-router";
 import styled from "styled-components";
 import { size } from "styled-theme";
@@ -37,6 +37,7 @@ const LandingForms = styled.div`
 const LoginPage = () => {
   const [login, { error, loading }] = useMutation(LOGIN_USER, { onCompleted: handleLoginSuccess, onError: handleLoginFailure });
   const { token, setToken } = useToken();
+  const deferredInstallPromptRef = useRef(null);
 
   function handleLoginSuccess({ login }) {
     setToken(login);
@@ -50,6 +51,37 @@ const LoginPage = () => {
     // todo. error handling
     console.log(error);
   }
+
+  async function handleAddToHomeBtnClick() {
+    console.log("here");
+    const deferredInstallPrompt = deferredInstallPromptRef.current;
+
+    if (deferredInstallPrompt) {
+      deferredInstallPrompt.prompt();
+
+      const choice = await deferredInstallPrompt.userChoice;
+
+      if (choice.outcome === "accepted") {
+        console.log("User accepted the A2HS prompt", choice);
+      } else {
+        console.log("User dismissed the A2HS prompt", choice);
+      }
+      deferredInstallPrompt.userChoice = null;
+    }
+  }
+
+  useEffect(() => {
+    console.log("9");
+    function handleBeforeInstallPrompt(evt) {
+      console.log("hoho", evt);
+      deferredInstallPromptRef.current = evt;
+    }
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    };
+  });
 
   return (
     <>
@@ -65,7 +97,7 @@ const LoginPage = () => {
             onLogin={handleLogin}
             onLoginFailure={handleLoginFailure}
           />
-          <AddToHomeForm height="180px" />
+          <AddToHomeForm height="180px" onAddToHomeBtnClick={handleAddToHomeBtnClick}/>
         </LandingForms>
       </GenericTemplate>
       {token && <Redirect to="/" />}

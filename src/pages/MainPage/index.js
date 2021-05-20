@@ -81,6 +81,9 @@ const MainPage = () => {
   }, [called, filterMode, getLoadData, location]);
 
   function handleScrollEnd() {
+    console.log("scrollEnd");
+    console.log("filterMode", filterMode);
+    console.log("data", data);
     if (filterMode === FILTER_MODE.RANDOM || data?.posts?.hasNextPage) {
       fetchMore({
         variables: {
@@ -213,6 +216,7 @@ const MainPage = () => {
 
   function onCreatePostError() {
     console.log("failure");
+    setImageBlobUrl("");
   }
 
   function handleImageUploadBtnClick() {

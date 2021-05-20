@@ -8,7 +8,7 @@ import { viewType as viewTypeConstant } from "../../../constants";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 3.75rem;
+  padding: 3.75rem 0;
   min-height: 100vh;
   box-sizing: border-box;
   background-color: ${({ theme }) => theme.genericBackgroundColor};

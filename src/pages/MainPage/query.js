@@ -9,6 +9,8 @@ export const ONLOAD_QUERY = gql`
       docs {
         _id
         author {
+          _id
+          imageUrl
           username
           email
         }
@@ -16,6 +18,8 @@ export const ONLOAD_QUERY = gql`
         postImageUrl
         isAnonymous
         area
+        year
+        season
       }
       nextPage
       hasNextPage
