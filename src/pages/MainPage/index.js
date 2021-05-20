@@ -64,7 +64,7 @@ const MainPage = () => {
     getLoadData,
     { called, loading, error, data, fetchMore }
   ] = useLazyQuery(ONLOAD_QUERY);
-  const [createPost] = useMutation(CREATE_POST, {
+  const [createPost, { loading: createLoading, error: createError }] = useMutation(CREATE_POST, {
     onCompleted: onCreatePostSuccess,
     onError: onCreatePostError,
   });
@@ -81,10 +81,10 @@ const MainPage = () => {
   }, [called, filterMode, getLoadData, location]);
 
   function handleScrollEnd() {
-    console.log("scrollEnd");
-    console.log("filterMode", filterMode);
-    console.log("data", data);
-    if (filterMode === FILTER_MODE.RANDOM || data?.posts?.hasNextPage) {
+    if (
+      (filterMode === FILTER_MODE.RANDOM || data?.posts?.hasNextPage) &&
+      fetchMore
+    ) {
       fetchMore({
         variables: {
           filter: filterMode,
@@ -99,8 +99,8 @@ const MainPage = () => {
           return {
             ...fetchMoreResult,
             posts: {
-              ...fetchMoreResult.posts,
-              docs: prev.posts.docs
+              ...fetchMoreResult?.posts,
+              docs: prev?.posts?.docs
                 ? [...prev.posts.docs, ...fetchMoreResult.posts.docs]
                 : [...fetchMoreResult.posts.docs],
             },
@@ -215,7 +215,6 @@ const MainPage = () => {
   }
 
   function onCreatePostError() {
-    console.log("failure");
     setImageBlobUrl("");
   }
 
@@ -225,8 +224,8 @@ const MainPage = () => {
 
   return (
     <>
-      {called && loading && "Loading..."}
-      {error && "Error..."}
+      {called && (loading || createLoading) && "Loading..."}
+      {(error || createError) && "Error..."}
       {imageBlobUrl && (
         <Modal
           headless
@@ -241,44 +240,41 @@ const MainPage = () => {
           />
         </Modal>
       )}
-      {!imageBlobUrl && (
-        <>
-          <PageTemplate
-            viewMode={viewMode}
-            header={<Header onImageUploadBtnClick={handleImageUploadBtnClick}/>}
-            mobileHeader={
-              <MobileHeader onCameraBtnClick={handleCameraBtnClick} />
-            }
-            mobileNavigator={
-              <MobileNavigator onCameraBtnClick={handleCameraBtnClick} onImageUploadBtnClick={handleImageUploadBtnClick}/>
-            }
-          >
-            <ImgUpload
-              ref={imageInputElement}
-              accept="image/jpeg"
-              type="file"
-              onChange={onImgUpload}
-            />
-            <PageContent>
-              <LocationSeason
-                areaName={data?.myArea?.name}
-                onSeasonApplyBtnClick={handleSeasonApplyBtnClick}
-              />
-              <PostList
-                posts={data?.posts?.docs}
-                fetchingOptions={{
-                  areaName: data?.myArea?.name,
-                  ...yearSeason,
-                }}
-              />
-            </PageContent>
-            <Sider left={siderLeftPos}>
-              <FriendsList user={data?.loginUser} />
-            </Sider>
-            <Indicator ref={infiniteTargetElementRef} />
-          </PageTemplate>
-        </>
-      )}
+      <PageTemplate
+        viewMode={viewMode}
+        header={<Header onImageUploadBtnClick={handleImageUploadBtnClick} />}
+        mobileHeader={<MobileHeader onCameraBtnClick={handleCameraBtnClick} />}
+        mobileNavigator={
+          <MobileNavigator
+            onCameraBtnClick={handleCameraBtnClick}
+            onImageUploadBtnClick={handleImageUploadBtnClick}
+          />
+        }
+      >
+        <ImgUpload
+          ref={imageInputElement}
+          accept="image/jpeg"
+          type="file"
+          onChange={onImgUpload}
+        />
+        <PageContent>
+          <LocationSeason
+            areaName={data?.myArea?.name}
+            onSeasonApplyBtnClick={handleSeasonApplyBtnClick}
+          />
+          <PostList
+            posts={data?.posts?.docs}
+            fetchingOptions={{
+              areaName: data?.myArea?.name,
+              ...yearSeason,
+            }}
+          />
+        </PageContent>
+        <Sider left={siderLeftPos}>
+          <FriendsList user={data?.loginUser} />
+        </Sider>
+        <Indicator ref={infiniteTargetElementRef} />
+      </PageTemplate>
     </>
   );
 };
