@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { palette, size } from "styled-theme";
 import { ifProp } from "styled-tools";
@@ -38,8 +38,10 @@ const PrimaryNavigation = ({
   ...props
 }) => {
   const { deleteToken } = useToken();
+  const history = useHistory();
   function handleLogoutBtnClick() {
     deleteToken();
+    history.push("/login");
   }
 
   return (
