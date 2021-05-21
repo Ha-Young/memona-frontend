@@ -1,7 +1,8 @@
-import React from 'react'
-import { shallow } from 'enzyme'
-import LoginPage from '.'
+import { shallow } from "enzyme";
+import React from "react";
 
-it('renders', () => {
-  shallow(<LoginPage />)
-})
+import LoginPage from ".";
+
+it("renders", () => {
+  shallow(<LoginPage />);
+});

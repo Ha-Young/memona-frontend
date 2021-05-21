@@ -9,7 +9,10 @@ export const MY_POSTS_QUERY = gql`
     docs {
       content
       author {
+        _id
+        imageUrl
         username
+        email
       }
       postImageUrl
       isAnonymous

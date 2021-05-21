@@ -1,6 +1,8 @@
 export function saveCookie(key, value, expiryDay) {
   const date = new Date();
-  date.setTime(date.getTime() + expiryDay * 60 * 60 * 24);
+  console.log(date.getDate() + expiryDay);
+  date.setDate(date.getDate() + expiryDay);
+  console.log("date", date);
   document.cookie =
     key + "=" + value + ";expires=" + date.toUTCString() + ";path=/";
 }

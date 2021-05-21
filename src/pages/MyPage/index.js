@@ -58,8 +58,6 @@ const MyPage = () => {
       limit: LIMIT,
     },
   });
-  console.log("my page data", data);
-  console.log("my page location", location);
 
   function handleScrollEnd() {
     if (data && data?.myPosts?.hasNextPage && fetchMore) {
