@@ -35,7 +35,6 @@ const Indicator = styled.div`
   height: 5px;
 `;
 
-
 const LIMIT = 5;
 
 const MainPage = () => {

@@ -133,7 +133,7 @@ const AddPostModalView = ({
         <ApplyIconButton icon="post" height={28} reverse onClick={handlePostBtnClick}/>
       </Header>
       <Cropper
-        style={{ minHeight: "55vh", maxWidth: "100vw" }}
+        style={{ height: "55vh", maxWidth: "100vw" }}
         initialAspectRatio={1}
         src={image}
         viewMode={1}
