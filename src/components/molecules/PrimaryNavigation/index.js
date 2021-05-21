@@ -50,7 +50,7 @@ const PrimaryNavigation = ({
         </Link>
       </li>
       <li>
-        <Link to="/">
+        <Link to="/my-posts">
           <Icon icon="compas" size={iconSize} />
         </Link>
       </li>

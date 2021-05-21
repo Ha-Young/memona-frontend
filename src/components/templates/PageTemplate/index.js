@@ -1,4 +1,4 @@
-import { useMutation, useReactiveVar } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import PropTypes from "prop-types";
 import React from "react";
 import { useRef } from "react";
@@ -8,7 +8,6 @@ import { palette, size } from "styled-theme";
 
 import { viewType as viewTypeConstant } from "../../../constants";
 import useMobileDeviceCheck from "../../../hooks/useMobileDeviceCheck";
-import { CREATE_POST } from "../../../pages/MyPage/query";
 import checkARAvaiable from "../../../utils/checkARAvaiable";
 import { getCurYearSeason, getFormatDate } from "../../../utils/date";
 import startAR from "../../../utils/startAR";
@@ -17,6 +16,7 @@ import AddPostModalView from "../../organisms/AddPostModalView";
 import Header from "../../organisms/Header";
 import MobileHeader from "../../organisms/MobileHeader";
 import MobileNavigator from "../../organisms/MobileNavigator";
+import { CREATE_POST } from "./query";
 
 const Wrapper = styled.div`
   display: flex;

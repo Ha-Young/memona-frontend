@@ -36,11 +36,3 @@ export const ONLOAD_QUERY = gql`
     }
   }
 `;
-
-export const CREATE_POST = gql`
-  mutation Mutation($createPostInput: PostInput!, $file: Upload) {
-    createPost(input: $createPostInput, file: $file) {
-      _id
-    }
-  }
-`;
