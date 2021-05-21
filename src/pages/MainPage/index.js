@@ -1,27 +1,18 @@
-import { useLazyQuery, useMutation, useReactiveVar } from "@apollo/client";
-import React, { useEffect, useRef, useState } from "react";
+import { useLazyQuery, useReactiveVar } from "@apollo/client";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { size } from "styled-theme";
 
 import Loading from "../../components/molecules/Loading";
-import Modal from "../../components/molecules/Modal";
-import AddPostModalView from "../../components/organisms/AddPostModalView";
 import FriendsList from "../../components/organisms/FriendsList";
-import Header from "../../components/organisms/Header";
 import LocationSeason from "../../components/organisms/LocationSeason";
-import MobileHeader from "../../components/organisms/MobileHeader";
-import MobileNavigator from "../../components/organisms/MobileNavigator";
 import PostList from "../../components/organisms/PostList";
 import PageTemplate from "../../components/templates/PageTemplate";
 import { filterMode as FILTER_MODE } from "../../constants";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
-import useMobileDeviceCheck from "../../hooks/useMobileDeviceCheck";
 import useViewModeWithSider from "../../hooks/useViewModeWithSider";
 import { locationVar } from "../../store";
-import checkARAvaiable from "../../utils/checkARAvaiable";
-import { getCurYearSeason, getFormatDate } from "../../utils/date";
-import startAR from "../../utils/startAR/index";
-import { CREATE_POST, ONLOAD_QUERY } from "./query";
+import { ONLOAD_QUERY } from "./query";
 
 const PageContent = styled.div`
   display: flex;
@@ -44,17 +35,11 @@ const Indicator = styled.div`
   height: 5px;
 `;
 
-const ImgUpload = styled.input`
-  opacity: 0;
-  width: 0;
-  height: 0;
-`;
 
 const LIMIT = 5;
 
 const MainPage = () => {
   const { viewMode, siderLeftPos } = useViewModeWithSider();
-  const isMobileDevice = useMobileDeviceCheck();
   const location = useReactiveVar(locationVar);
   const { infiniteTargetElementRef } = useInfiniteScroll(handleScrollEnd);
   const [yearSeason, setYearSeason] = useState({
@@ -67,13 +52,8 @@ const MainPage = () => {
   ] = useLazyQuery(ONLOAD_QUERY, {
     notifyOnNetworkStatusChange: true,
   });
-  const [createPost, { loading: createLoading, error: createError }] = useMutation(CREATE_POST, {
-    onCompleted: onCreatePostSuccess,
-    onError: onCreatePostError,
-  });
+
   const [filterMode, setFilterMode] = useState(FILTER_MODE.RANDOM);
-  const imageInputElement = useRef();
-  const [imageBlobUrl, setImageBlobUrl] = useState();
 
   useEffect(() => {
     if (location && !called) {
@@ -138,66 +118,7 @@ const MainPage = () => {
     }
   }
 
-  function handleARConfirmBtnClick() {
-    imageInputElement.current.click();
-  }
-
-  async function handleCameraBtnClick() {
-    if (isMobileDevice) {
-      const isARAvaiable = await checkARAvaiable();
-
-      if (isARAvaiable) {
-        return startAR({ onARConfirmBtnClick: handleARConfirmBtnClick });
-      }
-    }
-
-    imageInputElement.current.click();
-  }
-
-  function onImgUpload(e) {
-    const files = imageInputElement.files || e.target.files;
-    const file = files[0];
-
-    const blobUrl = window.URL.createObjectURL(file);
-
-    setImageBlobUrl(blobUrl);
-  }
-
-  function handleModalCloseBtnClick() {
-    URL.revokeObjectURL(imageBlobUrl);
-    setImageBlobUrl(null);
-  }
-
-  function handlePostBtnClick(postData) {
-    const { year, season, date } = getCurYearSeason();
-    const { content, isAnonymous, imageBlob } = postData;
-    const dateString = getFormatDate(date, true);
-
-    const locationGeoJson = {
-      type: "Point",
-      coordinates: [location.longitude, location.latitude],
-    };
-
-    // const imageBlob = await fetch(imageBlobUrl).then((r) => r.blob());
-    imageBlob.name = `${data.loginUser._id}-${dateString}`;
-
-    createPost({
-      variables: {
-        createPostInput: {
-          author: data.loginUser._id,
-          location: locationGeoJson,
-          area: data?.myArea?.name,
-          content,
-          isAnonymous,
-          season,
-          year,
-        },
-        file: imageBlob,
-      },
-    });
-  }
-
-  function onCreatePostSuccess() {
+  function handleCreatePostSuccess() {
     if (data?.posts?.length <= 5) {
       fetchMore({
         variables: {
@@ -215,52 +136,19 @@ const MainPage = () => {
         },
       });
     }
-    setImageBlobUrl("");
-  }
-
-  function onCreatePostError() {
-    setImageBlobUrl("");
-  }
-
-  function handleImageUploadBtnClick() {
-    imageInputElement.current.click();
   }
 
   return (
     <>
-      {called && (loading || createLoading) && <Loading />}
-      {(error || createError) && "Error..."}
-      {imageBlobUrl && (
-        <Modal
-          headless
-          onClose={handleModalCloseBtnClick}
-          isOpen={!!imageBlobUrl}
-        >
-          <AddPostModalView
-            imageBlobUrl={imageBlobUrl}
-            loginUser={data.loginUser}
-            onPostBtnClick={handlePostBtnClick}
-            onCloseBtnClick={handleModalCloseBtnClick}
-          />
-        </Modal>
-      )}
+      {called && (loading) && <Loading />}
+      {(error) && "Error..."}
       <PageTemplate
         viewMode={viewMode}
-        header={<Header onImageUploadBtnClick={handleImageUploadBtnClick} />}
-        mobileHeader={<MobileHeader onCameraBtnClick={handleCameraBtnClick} />}
-        mobileNavigator={
-          <MobileNavigator
-            onCameraBtnClick={handleCameraBtnClick}
-            onImageUploadBtnClick={handleImageUploadBtnClick}
-          />
-        }
+        user={data?.loginUser}
+        area={data?.myArea}
+        location={location}
+        onCreatePostSuccess={handleCreatePostSuccess}
       >
-        <ImgUpload
-          ref={imageInputElement}
-          accept="image/jpeg"
-          type="file"
-          onChange={onImgUpload}
-        />
         <PageContent>
           <LocationSeason
             areaName={data?.myArea?.name}
