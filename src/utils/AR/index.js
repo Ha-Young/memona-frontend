@@ -23,8 +23,6 @@ function startAR({ onARConfirmBtnClick }) {
   const { fontLoader, modelLoader } = createLoaders();
   const { scene, camera, renderer } = createARThreeCores();
 
-  const container = document.createElement("div");
-
   const overlayElement = createOverlayElement({
     onCloseBtnClick,
     onPaintBtnClick,
@@ -34,7 +32,6 @@ function startAR({ onARConfirmBtnClick }) {
     onColorChange,
   });
 
-  document.body.appendChild(container);
   document.body.appendChild(overlayElement);
 
   const sessionInit = {
@@ -42,8 +39,6 @@ function startAR({ onARConfirmBtnClick }) {
     optionalFeatures: ["dom-overlay"],
     domOverlay: { root: overlayElement },
   };
-
-  container.appendChild(renderer.domElement);
 
   const cursor = new Vector3();
   const controller = renderer.xr.getController(0);
@@ -116,9 +111,7 @@ function startAR({ onARConfirmBtnClick }) {
     renderer.setAnimationLoop(null);
     renderer.clear();
 
-    container.removeChild(renderer.domElement);
     document.body.removeChild(sessionInit.domOverlay.root);
-    document.body.removeChild(container);
   }
 
   const painter = new TubePainter();

@@ -1,6 +1,11 @@
-import { FontLoader, HemisphereLight, PerspectiveCamera, Scene, WebGLRenderer } from "three";
+import {
+  FontLoader,
+  HemisphereLight,
+  PerspectiveCamera,
+  Scene,
+  WebGLRenderer,
+} from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-
 
 function createARScene() {
   const scene = new Scene();
