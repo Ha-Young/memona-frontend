@@ -10,7 +10,7 @@ import {
 
 import DoHyeonFONT from "./fonts/Do_Hyeon_Regular.json";
 import { TubePainter } from "./modules/draw/TubePainter";
-import { createARThreeCores, createLoaders } from "./modules/three";
+import { createARThreeCores, createCursor, createLoaders, setARControllerEvents } from "./modules/three";
 
 function startAR({ onARConfirmBtnClick }) {
   let currentSession = null;
@@ -21,7 +21,9 @@ function startAR({ onARConfirmBtnClick }) {
   let isOverayBtnClick = false;
 
   const { fontLoader, modelLoader } = createLoaders();
-  const { scene, camera, renderer } = createARThreeCores();
+  const { scene, camera, renderer, arController } = createARThreeCores();
+  const paintCursor = createCursor();
+  setARControllerEvents({ arController, onSelectStart, onSelect, onSelectEnd });
 
   const overlayElement = createOverlayElement({
     onCloseBtnClick,
@@ -32,16 +34,11 @@ function startAR({ onARConfirmBtnClick }) {
     onColorChange,
   });
 
-  document.body.appendChild(overlayElement);
-
   const sessionInit = {
     requiredFeatures: ["hit-test"],
     optionalFeatures: ["dom-overlay"],
     domOverlay: { root: overlayElement },
   };
-
-  const cursor = new Vector3();
-  const controller = renderer.xr.getController(0);
 
   function onCloseBtnClick() {
     currentSession.end();
@@ -135,16 +132,16 @@ function startAR({ onARConfirmBtnClick }) {
   function handleController(controller) {
     const userData = controller.userData;
 
-    cursor.set(0, 0, -0.2).applyMatrix4(controller.matrixWorld);
+    paintCursor.set(0, 0, -0.2).applyMatrix4(controller.matrixWorld);
 
     if (userData.isSelecting === true) {
       if (userData.skipFrames >= 0) {
         // TODO(mrdoob) Revisit this
         userData.skipFrames--;
         painter.setColor(curColor);
-        painter.moveTo(cursor);
+        painter.moveTo(paintCursor);
       } else {
-        painter.lineTo(cursor);
+        painter.lineTo(paintCursor);
         painter.update();
       }
     }
@@ -214,12 +211,6 @@ function startAR({ onARConfirmBtnClick }) {
     isOverayBtnClick = false;
   }
 
-  controller.addEventListener("selectstart", onSelectStart);
-  controller.addEventListener("selectend", onSelectEnd);
-  controller.addEventListener("select", onSelect);
-  controller.userData.skipFrames = 0;
-  scene.add(controller);
-
   if (currentSession === null) {
     navigator.xr
       .requestSession("immersive-ar", sessionInit)
@@ -234,7 +225,7 @@ function startAR({ onARConfirmBtnClick }) {
     }
 
     if (drawingMode === "paint") {
-      handleController(controller);
+      handleController(arController);
     }
 
     if (drawingMode === "model") {
@@ -294,6 +285,7 @@ function createOverlayElement({
 }) {
   const overlayElement = document.createElement("div");
   overlayElement.style.display = "none";
+  document.body.appendChild(overlayElement);
 
   const closeBtnElement = document.createElementNS(
     "http://www.w3.org/2000/svg",

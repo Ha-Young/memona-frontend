@@ -3,6 +3,7 @@ import {
   HemisphereLight,
   PerspectiveCamera,
   Scene,
+  Vector3,
   WebGLRenderer,
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -39,16 +40,37 @@ function createARRenderer() {
   return renderer;
 }
 
+function getARController({ renderer, scene }) {
+  const controller = renderer.xr.getController(0);
+  scene.add(controller);
+
+  return controller;
+}
+
 export function createARThreeCores() {
   const scene = createARScene();
   const camera = createARCamera();
   const renderer = createARRenderer();
+  const arController = getARController({ scene, renderer });
 
-  return { scene, camera, renderer };
+  return { scene, camera, renderer, arController };
 }
 
 export function createLoaders() {
   const fontLoader = new FontLoader();
   const modelLoader = new GLTFLoader();
   return { fontLoader, modelLoader };
+}
+
+export function createCursor() {
+  return new Vector3();
+}
+
+export function setARControllerEvents({ arController, onSelectStart, onSelect, onSelectEnd }) {
+  arController.addEventListener("selectstart", onSelectStart);
+  arController.addEventListener("selectend", onSelectEnd);
+  arController.addEventListener("select", onSelect);
+  arController.userData.skipFrames = 0;
+
+  return arController;
 }
