@@ -1,21 +1,16 @@
 import {
   DoubleSide,
-  FontLoader,
-  HemisphereLight,
   Mesh,
   MeshPhongMaterial,
-  PerspectiveCamera,
   Raycaster,
-  Scene,
   TextGeometry,
   Vector2,
   Vector3,
-  WebGLRenderer,
 } from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 import DoHyeonFONT from "./fonts/Do_Hyeon_Regular.json";
 import { TubePainter } from "./modules/draw/TubePainter";
+import { createARThreeCores, createLoaders } from "./modules/three";
 
 function startAR({ onARConfirmBtnClick }) {
   let currentSession = null;
@@ -25,8 +20,8 @@ function startAR({ onARConfirmBtnClick }) {
   let curColor = "#ffffff";
   let isOverayBtnClick = false;
 
-  const fontLoader = new FontLoader();
-  const modelLoader = new GLTFLoader();
+  const { fontLoader, modelLoader } = createLoaders();
+  const { scene, camera, renderer } = createARThreeCores();
 
   const container = document.createElement("div");
 
@@ -47,27 +42,6 @@ function startAR({ onARConfirmBtnClick }) {
     optionalFeatures: ["dom-overlay"],
     domOverlay: { root: overlayElement },
   };
-  // scene
-  const scene = new Scene();
-  // camera
-  const camera = new PerspectiveCamera(
-    70,
-    window.innerWidth / window.innerHeight,
-    0.01,
-    20
-  );
-  // light
-  const light = new HemisphereLight(0xffffff, 0xbbbbff, 1);
-  light.position.set(0.5, 1, 0.25);
-  scene.add(light);
-  //renderer
-  const renderer = new WebGLRenderer({
-    antialias: true,
-    alpha: true,
-  });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.xr.enabled = true;
 
   container.appendChild(renderer.domElement);
 
