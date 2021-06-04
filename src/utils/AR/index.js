@@ -14,8 +14,8 @@ import {
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
-import { TubePainter } from "../TubePainter";
 import DoHyeonFONT from "./fonts/Do_Hyeon_Regular.json";
+import { TubePainter } from "./modules/draw/TubePainter";
 
 function startAR({ onARConfirmBtnClick }) {
   let currentSession = null;
@@ -26,10 +26,10 @@ function startAR({ onARConfirmBtnClick }) {
   let isOverayBtnClick = false;
 
   const fontLoader = new FontLoader();
-
   const modelLoader = new GLTFLoader();
 
   const container = document.createElement("div");
+
   const overlayElement = createOverlayElement({
     onCloseBtnClick,
     onPaintBtnClick,
@@ -47,19 +47,20 @@ function startAR({ onARConfirmBtnClick }) {
     optionalFeatures: ["dom-overlay"],
     domOverlay: { root: overlayElement },
   };
-
+  // scene
   const scene = new Scene();
+  // camera
   const camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     0.01,
     20
   );
-
+  // light
   const light = new HemisphereLight(0xffffff, 0xbbbbff, 1);
   light.position.set(0.5, 1, 0.25);
   scene.add(light);
-
+  //renderer
   const renderer = new WebGLRenderer({
     antialias: true,
     alpha: true,

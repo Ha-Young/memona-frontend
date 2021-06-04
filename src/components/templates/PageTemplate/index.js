@@ -8,9 +8,9 @@ import { palette, size } from "styled-theme";
 
 import { viewType as viewTypeConstant } from "../../../constants";
 import useMobileDeviceCheck from "../../../hooks/useMobileDeviceCheck";
+import startAR from "../../../utils/AR";
 import checkARAvaiable from "../../../utils/checkARAvaiable";
 import { getCurYearSeason, getFormatDate } from "../../../utils/date";
-import startAR from "../../../utils/startAR";
 import Modal from "../../molecules/Modal";
 import AddPostModalView from "../../organisms/AddPostModalView";
 import Header from "../../organisms/Header";
