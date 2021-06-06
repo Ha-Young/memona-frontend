@@ -3,7 +3,6 @@ import {
   HemisphereLight,
   PerspectiveCamera,
   Scene,
-  Vector3,
   WebGLRenderer,
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -47,11 +46,13 @@ function getARController({ renderer, scene }) {
   return controller;
 }
 
-export function createARThreeCores() {
+export function createARThreeCores({ onARViewSelectStart, onARViewSelect, onARViewSelectEnd }) {
   const scene = createARScene();
   const camera = createARCamera();
   const renderer = createARRenderer();
   const arController = getARController({ scene, renderer });
+
+  setARControllerEvents({ arController, onARViewSelectStart, onARViewSelect, onARViewSelectEnd });
 
   return { scene, camera, renderer, arController };
 }
@@ -60,10 +61,6 @@ export function createLoaders() {
   const fontLoader = new FontLoader();
   const modelLoader = new GLTFLoader();
   return { fontLoader, modelLoader };
-}
-
-export function createCursor() {
-  return new Vector3();
 }
 
 export function setARControllerEvents({ arController, onSelectStart, onSelect, onSelectEnd }) {

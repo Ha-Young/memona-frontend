@@ -11,7 +11,7 @@ import {
 import DoHyeonFONT from "./fonts/Do_Hyeon_Regular.json";
 import { createOverlayElement, createTextInputForm } from "./modules/domOverlay";
 import { TubePainter } from "./modules/draw/TubePainter";
-import { createARThreeCores, createCursor, createLoaders, setARControllerEvents } from "./modules/three";
+import { createARThreeCores, createLoaders } from "./modules/three";
 
 function startAR({ onARConfirmBtnClick }) {
   let currentSession = null;
@@ -23,7 +23,6 @@ function startAR({ onARConfirmBtnClick }) {
 
   const { fontLoader, modelLoader } = createLoaders();
   const { scene, camera, renderer, arController } = createARThreeCores({ onARViewSelectStart, onARViewSelect, onARViewSelectEnd });
-  const paintCursor = createCursor();
 
   const overlayElement = createOverlayElement({
     onCloseBtnClick,
@@ -129,24 +128,6 @@ function startAR({ onARConfirmBtnClick }) {
     }
   }
 
-  function handlePainter(controller) {
-    const userData = controller.userData;
-
-    paintCursor.set(0, 0, -0.2).applyMatrix4(controller.matrixWorld);
-
-    if (userData.isSelecting === true) {
-      if (userData.skipFrames >= 0) {
-        // TODO(mrdoob) Revisit this
-        userData.skipFrames--;
-        painter.setColor(curColor);
-        painter.moveTo(paintCursor);
-      } else {
-        painter.lineTo(paintCursor);
-        painter.update();
-      }
-    }
-  }
-
   function createText(text) {
     const font = fontLoader.parse(DoHyeonFONT);
 
@@ -225,7 +206,7 @@ function startAR({ onARConfirmBtnClick }) {
     }
 
     if (drawingMode === "paint") {
-      handlePainter(arController);
+      painter.drawStart(arController);
     }
 
     if (drawingMode === "model") {

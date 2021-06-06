@@ -12,6 +12,8 @@ import {
 function TubePainter() {
   const BUFFER_SIZE = 1000000 * 3;
 
+  const paintCursor = new Vector3();
+
   const positions = new BufferAttribute(new Float32Array(BUFFER_SIZE), 3);
   positions.usage = DynamicDrawUsage;
 
@@ -173,6 +175,24 @@ function TubePainter() {
     count = geometry.drawRange.count;
   }
 
+  function drawStart(controller, curColor) {
+    const userData = controller.userData;
+
+    paintCursor.set(0, 0, -0.2).applyMatrix4(controller.matrixWorld);
+
+    if (userData.isSelecting === true) {
+      if (userData.skipFrames >= 0) {
+        // TODO(mrdoob) Revisit this
+        userData.skipFrames--;
+        this.setColor(curColor);
+        this.moveTo(paintCursor);
+      } else {
+        this.lineTo(paintCursor);
+        this.update();
+      }
+    }
+  }
+
   return {
     mesh,
     moveTo,
@@ -180,6 +200,7 @@ function TubePainter() {
     setSize,
     setColor,
     update,
+    drawStart,
   };
 }
 
