@@ -22,9 +22,8 @@ function startAR({ onARConfirmBtnClick }) {
   let isOverayBtnClick = false;
 
   const { fontLoader, modelLoader } = createLoaders();
-  const { scene, camera, renderer, arController } = createARThreeCores();
+  const { scene, camera, renderer, arController } = createARThreeCores({ onARViewSelectStart, onARViewSelect, onARViewSelectEnd });
   const paintCursor = createCursor();
-  setARControllerEvents({ arController, onSelectStart, onSelect, onSelectEnd });
 
   const overlayElement = createOverlayElement({
     onCloseBtnClick,
@@ -117,20 +116,20 @@ function startAR({ onARConfirmBtnClick }) {
   painter.mesh.material.side = DoubleSide;
   scene.add(painter.mesh);
 
-  function onSelectStart() {
+  function onARViewSelectStart() {
     if (drawingMode === "paint") {
       this.userData.isSelecting = true;
       this.userData.skipFrames = 2;
     }
   }
 
-  function onSelectEnd() {
+  function onARViewSelectEnd() {
     if (drawingMode === "paint") {
       this.userData.isSelecting = false;
     }
   }
 
-  function handleController(controller) {
+  function handlePainter(controller) {
     const userData = controller.userData;
 
     paintCursor.set(0, 0, -0.2).applyMatrix4(controller.matrixWorld);
@@ -203,7 +202,7 @@ function startAR({ onARConfirmBtnClick }) {
     }
   );
 
-  function onSelect() {
+  function onARViewSelect() {
     if (reticle.visible && flower && !isOverayBtnClick) {
       const clone = flower.clone();
       clone.position.copy(reticle.position);
@@ -226,7 +225,7 @@ function startAR({ onARConfirmBtnClick }) {
     }
 
     if (drawingMode === "paint") {
-      handleController(arController);
+      handlePainter(arController);
     }
 
     if (drawingMode === "model") {
