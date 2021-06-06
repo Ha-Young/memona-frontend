@@ -9,9 +9,9 @@ import {
 } from "three";
 
 import DoHyeonFONT from "./fonts/Do_Hyeon_Regular.json";
+import ThreeAR from "./modules/core";
 import { createOverlayElement, createTextInputForm } from "./modules/domOverlay";
 import { TubePainter } from "./modules/draw/TubePainter";
-import { createARThreeCores, createLoaders } from "./modules/three";
 
 function startAR({ onARConfirmBtnClick }) {
   let currentSession = null;
@@ -21,8 +21,7 @@ function startAR({ onARConfirmBtnClick }) {
   let curColor = "#ffffff";
   let isOverayBtnClick = false;
 
-  const { fontLoader, modelLoader } = createLoaders();
-  const { scene, camera, renderer, arController } = createARThreeCores({ onARViewSelectStart, onARViewSelect, onARViewSelectEnd });
+  const threeAR = new ThreeAR({ onARViewSelect, onARViewSelectStart, onARViewSelectEnd });
 
   const overlayElement = createOverlayElement({
     onCloseBtnClick,
@@ -87,9 +86,9 @@ function startAR({ onARConfirmBtnClick }) {
   async function onSessionStarted(session) {
     session.addEventListener("end", onSessionEnded);
 
-    renderer.xr.setReferenceSpaceType("local");
+    threeAR.renderer.xr.setReferenceSpaceType("local");
 
-    await renderer.xr.setSession(session);
+    await threeAR.renderer.xr.setSession(session);
 
     sessionInit.domOverlay.root.style.display = "";
 
@@ -100,12 +99,12 @@ function startAR({ onARConfirmBtnClick }) {
     currentSession.removeEventListener("end", onSessionEnded);
     currentSession = null;
 
-    while (scene.children.length > 0) {
-      scene.remove(scene.children[0]);
+    while (threeAR.scene.children.length > 0) {
+      threeAR.scene.remove(threeAR.scene.children[0]);
     }
 
-    renderer.setAnimationLoop(null);
-    renderer.clear();
+    threeAR.renderer.setAnimationLoop(null);
+    threeAR.renderer.clear();
 
     document.body.removeChild(sessionInit.domOverlay.root);
   }
@@ -113,7 +112,7 @@ function startAR({ onARConfirmBtnClick }) {
   const painter = new TubePainter();
   painter.setSize(0.3);
   painter.mesh.material.side = DoubleSide;
-  scene.add(painter.mesh);
+  threeAR.scene.add(painter.mesh);
 
   function onARViewSelectStart() {
     if (drawingMode === "paint") {
@@ -129,7 +128,7 @@ function startAR({ onARConfirmBtnClick }) {
   }
 
   function createText(text) {
-    const font = fontLoader.parse(DoHyeonFONT);
+    const font = threeAR.loaders.fontLoader.parse(DoHyeonFONT);
 
     const textGeo = new TextGeometry(text, {
       font: font,
@@ -150,9 +149,9 @@ function startAR({ onARConfirmBtnClick }) {
 
     const textMesh1 = new Mesh(textGeo, materials);
 
-    if (camera.position) {
+    if (threeAR.camera.position) {
       const raycaster = new Raycaster();
-      raycaster.setFromCamera(new Vector2(), camera);
+      raycaster.setFromCamera(new Vector2(), threeAR.camera);
       const inFrontOfCamera = new Vector3();
       const viewPosition = raycaster.ray.at(0.25, inFrontOfCamera);
       textMesh1.position.set(
@@ -162,21 +161,21 @@ function startAR({ onARConfirmBtnClick }) {
       );
     }
 
-    scene.add(textMesh1);
+    threeAR.scene.add(textMesh1);
   }
 
   let reticle;
-  modelLoader.load(
+  threeAR.loaders.modelLoader.load(
     "https://immersive-web.github.io/webxr-samples/media/gltf/reticle/reticle.gltf",
     (gltf) => {
       reticle = gltf.scene;
       reticle.visible = false;
-      scene.add(reticle);
+      threeAR.scene.add(reticle);
     }
   );
 
   let flower;
-  modelLoader.load(
+  threeAR.loaders.modelLoader.load(
     "https://immersive-web.github.io/webxr-samples/media/gltf/sunflower/sunflower.gltf",
     (gltf) => {
       flower = gltf.scene;
@@ -187,7 +186,7 @@ function startAR({ onARConfirmBtnClick }) {
     if (reticle.visible && flower && !isOverayBtnClick) {
       const clone = flower.clone();
       clone.position.copy(reticle.position);
-      scene.add(clone);
+      threeAR.scene.add(clone);
     }
     isOverayBtnClick = false;
   }
@@ -206,12 +205,12 @@ function startAR({ onARConfirmBtnClick }) {
     }
 
     if (drawingMode === "paint") {
-      painter.drawStart(arController);
+      painter.drawStart(threeAR.controller);
     }
 
     if (drawingMode === "model") {
       if (frame) {
-        const session = renderer.xr.getSession();
+        const session = threeAR.renderer.xr.getSession();
         const referenceSpace = await session.requestReferenceSpace("local");
 
         if (hitTestSourceRequested === false) {
@@ -248,10 +247,10 @@ function startAR({ onARConfirmBtnClick }) {
       }
     }
 
-    renderer.render(scene, camera);
+    threeAR.renderFrame();
   }
 
-  renderer.setAnimationLoop(render);
+  threeAR.render(render);
 }
 
 export default startAR;

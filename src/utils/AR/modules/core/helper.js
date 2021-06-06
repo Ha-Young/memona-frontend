@@ -7,7 +7,7 @@ import {
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
-function createARScene() {
+export function createARScene() {
   const scene = new Scene();
 
   const light = new HemisphereLight(0xffffff, 0xbbbbff, 1);
@@ -17,7 +17,7 @@ function createARScene() {
   return scene;
 }
 
-function createARCamera() {
+export function createARCamera() {
   return new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
@@ -26,7 +26,7 @@ function createARCamera() {
   );
 }
 
-function createARRenderer() {
+export function createARRenderer() {
   const renderer = new WebGLRenderer({
     antialias: true,
     alpha: true,
@@ -39,35 +39,15 @@ function createARRenderer() {
   return renderer;
 }
 
-function getARController({ renderer, scene }) {
+export function getARController({ renderer, scene }) {
   const controller = renderer.xr.getController(0);
   scene.add(controller);
 
   return controller;
 }
 
-export function createARThreeCores({ onARViewSelectStart, onARViewSelect, onARViewSelectEnd }) {
-  const scene = createARScene();
-  const camera = createARCamera();
-  const renderer = createARRenderer();
-  const arController = getARController({ scene, renderer });
-
-  setARControllerEvents({ arController, onARViewSelectStart, onARViewSelect, onARViewSelectEnd });
-
-  return { scene, camera, renderer, arController };
-}
-
 export function createLoaders() {
   const fontLoader = new FontLoader();
   const modelLoader = new GLTFLoader();
   return { fontLoader, modelLoader };
-}
-
-export function setARControllerEvents({ arController, onSelectStart, onSelect, onSelectEnd }) {
-  arController.addEventListener("selectstart", onSelectStart);
-  arController.addEventListener("selectend", onSelectEnd);
-  arController.addEventListener("select", onSelect);
-  arController.userData.skipFrames = 0;
-
-  return arController;
 }

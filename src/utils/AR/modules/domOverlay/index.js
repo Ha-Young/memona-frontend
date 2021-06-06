@@ -92,7 +92,7 @@ export function createOverlayElement({
   return overlayElement;
 }
 
-function createTextInputForm({ onTextApplyBtnClick, parentElement }) {
+export function createTextInputForm({ onTextApplyBtnClick, parentElement }) {
   const textAddFormElement = document.createElement("div");
   const textAddInputElement = document.createElement("textarea");
   const textApplyBtnElement = document.createElement("div");
