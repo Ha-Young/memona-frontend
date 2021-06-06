@@ -14,7 +14,6 @@ import { createOverlayElement, createTextInputForm } from "./modules/domOverlay"
 import { TubePainter } from "./modules/draw/TubePainter";
 
 function startAR({ onARConfirmBtnClick }) {
-  let currentSession = null;
   let hitTestSource = null;
   let hitTestSourceRequested = false;
   let drawingMode = "paint";
@@ -23,7 +22,7 @@ function startAR({ onARConfirmBtnClick }) {
 
   const threeAR = new ThreeAR({ onARViewSelect, onARViewSelectStart, onARViewSelectEnd });
 
-  const overlayElement = createOverlayElement({
+  const domOverlayElement = createOverlayElement({
     onCloseBtnClick,
     onPaintBtnClick,
     onModelBtnClick,
@@ -32,14 +31,10 @@ function startAR({ onARConfirmBtnClick }) {
     onColorChange,
   });
 
-  const sessionInit = {
-    requiredFeatures: ["hit-test"],
-    optionalFeatures: ["dom-overlay"],
-    domOverlay: { root: overlayElement },
-  };
+  threeAR.startAR({ domOverlayElement });
 
   function onCloseBtnClick() {
-    currentSession.end();
+    threeAR.closeAR();
   }
 
   function onPaintBtnClick() {
@@ -56,12 +51,12 @@ function startAR({ onARConfirmBtnClick }) {
   }
 
   function onConfirmBtnClick() {
-    for (const element of overlayElement.childNodes) {
+    for (const element of domOverlayElement.childNodes) {
       element.style.display = "none";
     }
 
     window.setTimeout(() => {
-      currentSession.end();
+      threeAR.closeAR();
       onARConfirmBtnClick();
     }, 3000);
   }
@@ -71,7 +66,7 @@ function startAR({ onARConfirmBtnClick }) {
     drawingMode = "text";
     const { handleCancelBtnClick } = createTextInputForm({
       onTextApplyBtnClick,
-      parentElement: overlayElement,
+      parentElement: domOverlayElement,
     });
     addTextModeCancel = handleCancelBtnClick;
     isOverayBtnClick = true;
@@ -81,32 +76,6 @@ function startAR({ onARConfirmBtnClick }) {
     createText(text);
     addTextModeCancel();
     drawingMode = "";
-  }
-
-  async function onSessionStarted(session) {
-    session.addEventListener("end", onSessionEnded);
-
-    threeAR.renderer.xr.setReferenceSpaceType("local");
-
-    await threeAR.renderer.xr.setSession(session);
-
-    sessionInit.domOverlay.root.style.display = "";
-
-    currentSession = session;
-  }
-
-  function onSessionEnded() {
-    currentSession.removeEventListener("end", onSessionEnded);
-    currentSession = null;
-
-    while (threeAR.scene.children.length > 0) {
-      threeAR.scene.remove(threeAR.scene.children[0]);
-    }
-
-    threeAR.renderer.setAnimationLoop(null);
-    threeAR.renderer.clear();
-
-    document.body.removeChild(sessionInit.domOverlay.root);
   }
 
   const painter = new TubePainter();
@@ -189,14 +158,6 @@ function startAR({ onARConfirmBtnClick }) {
       threeAR.scene.add(clone);
     }
     isOverayBtnClick = false;
-  }
-
-  if (currentSession === null) {
-    navigator.xr
-      .requestSession("immersive-ar", sessionInit)
-      .then(onSessionStarted);
-  } else {
-    currentSession.end();
   }
 
   async function render(timestamp, frame) {

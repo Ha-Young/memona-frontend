@@ -6,8 +6,15 @@ import {
   getARController,
 } from "./helper";
 
+const defaultSessionOption = {
+  requiredFeatures: ["hit-test"],
+  optionalFeatures: ["dom-overlay"],
+};
+
 class ThreeAR {
   constructor({ onARViewSelect, onARViewSelectStart, onARViewSelectEnd }) {
+    this.session = null;
+    this.sessionInit = defaultSessionOption;
     this.scene = createARScene();
     this.camera = createARCamera();
     this.renderer = createARRenderer();
@@ -24,6 +31,32 @@ class ThreeAR {
     });
   }
 
+  async onSessionStarted(session) {
+    session.addEventListener("end", this.onSessionEnded.bind(this));
+
+    this.renderer.xr.setReferenceSpaceType("local");
+
+    await this.renderer.xr.setSession(session);
+
+    this.sessionInit.domOverlay.root.style.display = "";
+
+    this.session = session;
+  }
+
+  onSessionEnded() {
+    this.session.removeEventListener("end", this.onSessionEnded);
+    this.session = null;
+
+    while (this.scene.children.length > 0) {
+      this.scene.remove(this.scene.children[0]);
+    }
+
+    this.renderer.setAnimationLoop(null);
+    this.renderer.clear();
+
+    document.body.removeChild(this.sessionInit.domOverlay.root);
+  }
+
   setARControllerEvents({
     onControllerSelect,
     onControllerSelectStart,
@@ -33,6 +66,27 @@ class ThreeAR {
     this.controller.addEventListener("selectstart", onControllerSelectStart);
     this.controller.addEventListener("selectend", onControllerSelectEnd);
     this.controller.userData.skipFrames = 0;
+  }
+
+  startAR({ domOverlayElement }) {
+    if (this.session === null) {
+      this.sessionInit = {
+        ...this.sessionInit,
+        domOverlay: domOverlayElement && { root: domOverlayElement },
+      };
+
+      navigator.xr
+        .requestSession("immersive-ar", this.sessionInit)
+        .then(this.onSessionStarted.bind(this));
+    } else {
+      this.session.end();
+    }
+  }
+
+  closeAR() {
+    if (this.session) {
+      this.session.end();
+    }
   }
 
   renderFrame() {
