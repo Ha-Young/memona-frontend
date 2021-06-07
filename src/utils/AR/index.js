@@ -9,17 +9,29 @@ import {
 
 import DoHyeonFONT from "./fonts/Do_Hyeon_Regular.json";
 import ThreeAR from "./modules/core";
-import { createOverlayElement, createTextInputForm } from "./modules/domOverlay";
+import {
+  createOverlayElement,
+  createTextInputForm,
+} from "./modules/domOverlay";
+import Modeler from "./modules/draw/Modeler";
 import { TubePainter } from "./modules/draw/TubePainter";
 
+const FLOWER_MODEL =
+  "https://immersive-web.github.io/webxr-samples/media/gltf/sunflower/sunflower.gltf";
+
+const MODELS = [FLOWER_MODEL];
+
 function startAR({ onARConfirmBtnClick }) {
-  let hitTestSource = null;
-  let hitTestSourceRequested = false;
+  let addTextModeCancel;
+  let modelIdx = 0;
   let drawingMode = "paint";
   let curColor = "#ffffff";
-  let isOverayBtnClick = false;
 
-  const threeAR = new ThreeAR({ onARViewSelect, onARViewSelectStart, onARViewSelectEnd });
+  const threeAR = new ThreeAR({
+    onARViewSelect,
+    onARViewSelectStart,
+    onARViewSelectEnd,
+  });
 
   const domOverlayElement = createOverlayElement({
     onCloseBtnClick,
@@ -34,6 +46,14 @@ function startAR({ onARConfirmBtnClick }) {
   painter.setSize(0.3);
   threeAR.scene.add(painter.mesh);
 
+  const modeler = new Modeler({
+    modelLoader: threeAR.loaders.modelLoader,
+    models: MODELS,
+    onModelLoadSuccess: () => {
+      threeAR.scene.add(modeler.reticle);
+    },
+  });
+
   threeAR.startAR({ domOverlayElement });
 
   function onCloseBtnClick() {
@@ -42,7 +62,6 @@ function startAR({ onARConfirmBtnClick }) {
 
   function onPaintBtnClick() {
     drawingMode = "paint";
-    isOverayBtnClick = true;
   }
 
   function onModelBtnClick() {
@@ -64,7 +83,6 @@ function startAR({ onARConfirmBtnClick }) {
     }, 3000);
   }
 
-  let addTextModeCancel;
   function onTextBtnClick() {
     drawingMode = "text";
     const { handleCancelBtnClick } = createTextInputForm({
@@ -72,7 +90,6 @@ function startAR({ onARConfirmBtnClick }) {
       parentElement: domOverlayElement,
     });
     addTextModeCancel = handleCancelBtnClick;
-    isOverayBtnClick = true;
   }
 
   function onTextApplyBtnClick(text) {
@@ -119,46 +136,22 @@ function startAR({ onARConfirmBtnClick }) {
       raycaster.setFromCamera(new Vector2(), threeAR.camera);
       const inFrontOfCamera = new Vector3();
       const viewPosition = raycaster.ray.at(0.25, inFrontOfCamera);
-      textMesh1.position.set(
-        viewPosition.x,
-        viewPosition.y,
-        viewPosition.z
-      );
+      textMesh1.position.set(viewPosition.x, viewPosition.y, viewPosition.z);
     }
 
     threeAR.scene.add(textMesh1);
   }
 
-  let reticle;
-  threeAR.loaders.modelLoader.load(
-    "https://immersive-web.github.io/webxr-samples/media/gltf/reticle/reticle.gltf",
-    (gltf) => {
-      reticle = gltf.scene;
-      reticle.visible = false;
-      threeAR.scene.add(reticle);
-    }
-  );
-
-  let flower;
-  threeAR.loaders.modelLoader.load(
-    "https://immersive-web.github.io/webxr-samples/media/gltf/sunflower/sunflower.gltf",
-    (gltf) => {
-      flower = gltf.scene;
-    }
-  );
-
   function onARViewSelect() {
-    if (reticle.visible && flower && !isOverayBtnClick) {
-      const clone = flower.clone();
-      clone.position.copy(reticle.position);
-      threeAR.scene.add(clone);
+    if (modeler.checkAvailable() && drawingMode === "model") {
+      const newModel = modeler.createModelOnHitPosition(modelIdx);
+      threeAR.scene.add(newModel);
     }
-    isOverayBtnClick = false;
   }
 
   async function render(timestamp, frame) {
-    if (drawingMode !== "model" && reticle) {
-      reticle.visible = false;
+    if (drawingMode !== "model" && modeler.checkAvailable()) {
+      modeler.viewReticle(false);
     }
 
     if (drawingMode === "paint") {
@@ -167,47 +160,20 @@ function startAR({ onARConfirmBtnClick }) {
 
     if (drawingMode === "model") {
       if (frame) {
-        const session = threeAR.renderer.xr.getSession();
-        const referenceSpace = await session.requestReferenceSpace("local");
+        const hitPosition = await threeAR.hitTest(frame);
 
-        if (hitTestSourceRequested === false) {
-          const viewerSpace = await session.requestReferenceSpace("viewer");
-
-          hitTestSource = await session.requestHitTestSource({
-            space: viewerSpace,
-          });
-
-          session.addEventListener("end", () => {
-            hitTestSourceRequested = false;
-            hitTestSource = null;
-          });
-
-          hitTestSourceRequested = true;
-        }
-
-        if (hitTestSource) {
-          const hitTestResults = frame.getHitTestResults(hitTestSource);
-
-          if (hitTestResults.length > 0 && reticle) {
-            const hitPose = hitTestResults[0].getPose(referenceSpace);
-            reticle.visible = true;
-            reticle.position.set(
-              hitPose.transform.position.x,
-              hitPose.transform.position.y,
-              hitPose.transform.position.z
-            );
-            reticle.updateMatrixWorld(true);
-          } else {
-            reticle.visible = false;
-          }
+        if (hitPosition) {
+          modeler.viewReticle(true, hitPosition);
+        } else {
+          modeler.viewReticle(false);
         }
       }
     }
 
-    threeAR.renderFrame();
+    threeAR.frameRender();
   }
 
-  threeAR.render(render);
+  threeAR.loopRender(render);
 }
 
 export default startAR;

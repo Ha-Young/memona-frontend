@@ -12,9 +12,16 @@ const defaultSessionInitOption = {
 };
 
 class ThreeAR {
-  constructor({ onARViewSelect, onARViewSelectStart, onARViewSelectEnd, sessionInitOption }) {
+  constructor({
+    onARViewSelect,
+    onARViewSelectStart,
+    onARViewSelectEnd,
+    sessionInitOption,
+  }) {
     this.session = null;
-    this.sessionInit = sessionInitOption ? sessionInitOption : defaultSessionInitOption;
+    this.sessionInit = sessionInitOption
+      ? sessionInitOption
+      : defaultSessionInitOption;
     this.scene = createARScene();
     this.camera = createARCamera();
     this.renderer = createARRenderer();
@@ -29,6 +36,8 @@ class ThreeAR {
       onControllerSelectStart: onARViewSelectStart,
       onControllerSelectEnd: onARViewSelectEnd,
     });
+
+    this.hitTestSource = null;
   }
 
   async onSessionStarted(session) {
@@ -44,6 +53,8 @@ class ThreeAR {
   }
 
   onSessionEnded() {
+    this.hitTestSource = null;
+
     this.session.removeEventListener("end", this.onSessionEnded);
     this.session = null;
 
@@ -88,12 +99,52 @@ class ThreeAR {
     }
   }
 
-  renderFrame() {
+  frameRender() {
     this.renderer.render(this.scene, this.camera);
   }
 
-  render(renderFunc) {
+  loopRender(renderFunc) {
     this.renderer.setAnimationLoop(renderFunc);
+  }
+
+  getReferenceSpace() {
+    return this.session.requestReferenceSpace("local");
+  }
+
+  getViewerSpace() {
+    return this.session.requestReferenceSpace("viewer");
+  }
+
+  async getHitTestSource() {
+    if (this.hitTestSource) {
+      return this.hitTestSource;
+    }
+
+    const session = this.session;
+
+    const viewerSpace = await this.getViewerSpace();
+
+    this.hitTestSource = await session.requestHitTestSource({
+      space: viewerSpace,
+    });
+
+    return this.hitTestSource;
+  }
+
+  async hitTest(renderFrame) {
+    const hitTestSource = await this.getHitTestSource();
+    if (hitTestSource) {
+      const hitTestResults = renderFrame.getHitTestResults(hitTestSource);
+
+      if (hitTestResults.length > 0) {
+        const referenceSpace = await this.getReferenceSpace();
+        const hitPosition = hitTestResults[0].getPose(referenceSpace).transform.position;
+
+        return hitPosition;
+      }
+    }
+
+    return false;
   }
 }
 
