@@ -1,12 +1,3 @@
-import {
-  Mesh,
-  MeshPhongMaterial,
-  Raycaster,
-  TextGeometry,
-  Vector2,
-  Vector3,
-} from "three";
-
 import DoHyeonFONT from "./fonts/Do_Hyeon_Regular.json";
 import ThreeAR from "./modules/core";
 import {
@@ -14,6 +5,7 @@ import {
   createTextInputForm,
 } from "./modules/domOverlay";
 import Modeler from "./modules/draw/Modeler";
+import TextWriter from "./modules/draw/TextWriter";
 import { TubePainter } from "./modules/draw/TubePainter";
 
 const FLOWER_MODEL =
@@ -22,10 +14,10 @@ const FLOWER_MODEL =
 const MODELS = [FLOWER_MODEL];
 
 function startAR({ onARConfirmBtnClick }) {
-  let addTextModeCancel;
   let modelIdx = 0;
   let drawingMode = "paint";
   let curColor = "#ffffff";
+  let textInputModalClose;
 
   const threeAR = new ThreeAR({
     onARViewSelect,
@@ -52,6 +44,10 @@ function startAR({ onARConfirmBtnClick }) {
     onModelLoadSuccess: () => {
       threeAR.scene.add(modeler.reticle);
     },
+  });
+
+  const testWriter = new TextWriter({
+    font: threeAR.loaders.fontLoader.parse(DoHyeonFONT),
   });
 
   threeAR.startAR({ domOverlayElement });
@@ -89,12 +85,16 @@ function startAR({ onARConfirmBtnClick }) {
       onTextApplyBtnClick,
       parentElement: domOverlayElement,
     });
-    addTextModeCancel = handleCancelBtnClick;
+    textInputModalClose = handleCancelBtnClick;
   }
 
   function onTextApplyBtnClick(text) {
-    createText(text);
-    addTextModeCancel();
+    const viewPosition = threeAR.getViewPosition(0.25);
+
+    const newTextMesh = testWriter.createText({ text, position: viewPosition, color: curColor });
+    threeAR.scene.add(newTextMesh);
+
+    textInputModalClose && textInputModalClose();
     drawingMode = "";
   }
 
@@ -108,38 +108,6 @@ function startAR({ onARConfirmBtnClick }) {
     if (drawingMode === "paint") {
       painter.paintStop();
     }
-  }
-
-  function createText(text) {
-    const font = threeAR.loaders.fontLoader.parse(DoHyeonFONT);
-
-    const textGeo = new TextGeometry(text, {
-      font: font,
-
-      size: 0.03,
-      height: 0.01,
-      curveSegments: 4,
-
-      bevelThickness: 2,
-      bevelSize: 1.5,
-    });
-
-    const materials = [
-      new MeshPhongMaterial({ color: curColor, flatShading: true }),
-      new MeshPhongMaterial({ color: curColor })
-    ];
-
-    const textMesh1 = new Mesh(textGeo, materials);
-
-    if (threeAR.camera.position) {
-      const raycaster = new Raycaster();
-      raycaster.setFromCamera(new Vector2(), threeAR.camera);
-      const inFrontOfCamera = new Vector3();
-      const viewPosition = raycaster.ray.at(0.25, inFrontOfCamera);
-      textMesh1.position.set(viewPosition.x, viewPosition.y, viewPosition.z);
-    }
-
-    threeAR.scene.add(textMesh1);
   }
 
   function onARViewSelect() {

@@ -4,6 +4,7 @@ import {
   createARScene,
   createLoaders,
   getARController,
+  getPositionAwayFromCamera,
 } from "./helper";
 
 const defaultSessionInitOption = {
@@ -145,6 +146,10 @@ class ThreeAR {
     }
 
     return false;
+  }
+
+  getViewPosition(distance) {
+    return getPositionAwayFromCamera(distance, this.camera);
   }
 }
 

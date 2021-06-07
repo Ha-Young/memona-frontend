@@ -2,7 +2,10 @@ import {
   FontLoader,
   HemisphereLight,
   PerspectiveCamera,
+  Raycaster,
   Scene,
+  Vector2,
+  Vector3,
   WebGLRenderer,
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -50,4 +53,11 @@ export function createLoaders() {
   const fontLoader = new FontLoader();
   const modelLoader = new GLTFLoader();
   return { fontLoader, modelLoader };
+}
+
+export function getPositionAwayFromCamera(distance, camera) {
+  const raycaster = new Raycaster();
+  raycaster.setFromCamera(new Vector2(), camera);
+  const inFrontOfCamera = new Vector3();
+  return raycaster.ray.at(distance, inFrontOfCamera);
 }
