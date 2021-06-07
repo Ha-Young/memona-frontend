@@ -1,5 +1,4 @@
 import {
-  DoubleSide,
   Mesh,
   MeshPhongMaterial,
   Raycaster,
@@ -30,6 +29,10 @@ function startAR({ onARConfirmBtnClick }) {
     onConfirmBtnClick,
     onColorChange,
   });
+
+  const painter = new TubePainter();
+  painter.setSize(0.3);
+  threeAR.scene.add(painter.mesh);
 
   threeAR.startAR({ domOverlayElement });
 
@@ -78,21 +81,15 @@ function startAR({ onARConfirmBtnClick }) {
     drawingMode = "";
   }
 
-  const painter = new TubePainter();
-  painter.setSize(0.3);
-  painter.mesh.material.side = DoubleSide;
-  threeAR.scene.add(painter.mesh);
-
   function onARViewSelectStart() {
     if (drawingMode === "paint") {
-      this.userData.isSelecting = true;
-      this.userData.skipFrames = 2;
+      painter.paintStart();
     }
   }
 
   function onARViewSelectEnd() {
     if (drawingMode === "paint") {
-      this.userData.isSelecting = false;
+      painter.paintStop();
     }
   }
 
@@ -108,7 +105,6 @@ function startAR({ onARConfirmBtnClick }) {
 
       bevelThickness: 2,
       bevelSize: 1.5,
-      // bevelEnabled: true,
     });
 
     const materials = [
@@ -166,7 +162,7 @@ function startAR({ onARConfirmBtnClick }) {
     }
 
     if (drawingMode === "paint") {
-      painter.drawStart(threeAR.controller);
+      painter.draw(threeAR.controller, curColor);
     }
 
     if (drawingMode === "model") {

@@ -2,6 +2,7 @@ import {
   BufferAttribute,
   BufferGeometry,
   Color,
+  DoubleSide,
   DynamicDrawUsage,
   Matrix4,
   Mesh,
@@ -35,6 +36,7 @@ function TubePainter() {
 
   const mesh = new Mesh(geometry, material);
   mesh.frustumCulled = false;
+  mesh.material.side = DoubleSide;
 
   function getPoints(size) {
     const PI2 = Math.PI * 2;
@@ -175,15 +177,24 @@ function TubePainter() {
     count = geometry.drawRange.count;
   }
 
-  function drawStart(controller, curColor) {
-    const userData = controller.userData;
+  let isSelecting = false;
+  let skipFrames = 0;
 
+  function paintStart() {
+    isSelecting = true;
+    skipFrames = 2;
+  }
+
+  function paintStop() {
+    isSelecting = false;
+  }
+
+  function draw(controller, curColor) {
     paintCursor.set(0, 0, -0.2).applyMatrix4(controller.matrixWorld);
 
-    if (userData.isSelecting === true) {
-      if (userData.skipFrames >= 0) {
-        // TODO(mrdoob) Revisit this
-        userData.skipFrames--;
+    if (isSelecting === true) {
+      if (skipFrames >= 0) {
+        skipFrames--;
         this.setColor(curColor);
         this.moveTo(paintCursor);
       } else {
@@ -200,7 +211,9 @@ function TubePainter() {
     setSize,
     setColor,
     update,
-    drawStart,
+    draw,
+    paintStart,
+    paintStop,
   };
 }
 

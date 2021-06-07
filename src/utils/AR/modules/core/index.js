@@ -6,15 +6,15 @@ import {
   getARController,
 } from "./helper";
 
-const defaultSessionOption = {
+const defaultSessionInitOption = {
   requiredFeatures: ["hit-test"],
   optionalFeatures: ["dom-overlay"],
 };
 
 class ThreeAR {
-  constructor({ onARViewSelect, onARViewSelectStart, onARViewSelectEnd }) {
+  constructor({ onARViewSelect, onARViewSelectStart, onARViewSelectEnd, sessionInitOption }) {
     this.session = null;
-    this.sessionInit = defaultSessionOption;
+    this.sessionInit = sessionInitOption ? sessionInitOption : defaultSessionInitOption;
     this.scene = createARScene();
     this.camera = createARCamera();
     this.renderer = createARRenderer();
@@ -65,7 +65,6 @@ class ThreeAR {
     this.controller.addEventListener("select", onControllerSelect);
     this.controller.addEventListener("selectstart", onControllerSelectStart);
     this.controller.addEventListener("selectend", onControllerSelectEnd);
-    this.controller.userData.skipFrames = 0;
   }
 
   startAR({ domOverlayElement }) {
