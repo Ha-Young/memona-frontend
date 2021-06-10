@@ -14,7 +14,7 @@
       + [🚗 Motivation](#-motivation)
       + [🍁 Memona - 내 추억과 기억을 그 위치에 저장하는 SNS](#-memona---내-추억과-기억을-그-위치에-저장하는-sns)
       + [📌 Feature](#-feature)
-    - [🔧 Stack](#-stack)
+        + [🔧 Stack](#-stack)
       + [🎯 Requirements](#-requirements)
       + [💿 Installation](#-installation)
         - [FrontEnd](#frontend)
@@ -36,7 +36,7 @@
       + [GeoJson Polygon Generator](#geojson-polygon-generator)
   - [🎇 마무리하며...](#-마무리하며)
 
-
+<br>
 
 ## 🔗 관련 링크
 
@@ -51,7 +51,7 @@
 
   > 최종 프로젝트 발표 영상 Youtube **3:53:36** 부터 시작
 
-
+<br>
 
 ## 💡Introduce Project
 
@@ -68,7 +68,7 @@
 
 그렇게 `Atomic Design Pattern`, `GraphQL`, `Storybook`, `PWA`, `AR(WebXR)` 등 프론트엔드에서 나름 인정받는 최신 기술 스택들과 동시에 저의 감성이 더해져 **Memona**가 탄생하였습니다.
 
-
+<br>
 
 ### 🍁 Memona - 내 추억과 기억을 그 위치에 저장하는 SNS
 
@@ -108,9 +108,9 @@ Memona의 **Catch Phrase**는 `당신의 추억과 기억을 그 위치에 기�
   - 페인트와 3D Text 색상 변경
 - 내가 올린 추억들을 모아 볼 수 있습니다.
 
+<br>
 
-
-## 🔧 Stack
+### 🔧 Stack
 
 **Front-end**
 
@@ -142,7 +142,7 @@ Memona의 **Catch Phrase**는 `당신의 추억과 기억을 그 위치에 기�
 - AWS-S3
 - Google-auth
 
-
+<br>
 
 ### 🎯 Requirements
 
@@ -150,7 +150,7 @@ Memona의 **Catch Phrase**는 `당신의 추억과 기억을 그 위치에 기�
 - Browser - Chrome, Chrome-Android
 - Node Version - v12.22.1
 
-
+<br>
 
 ### 💿 Installation
 
@@ -172,13 +172,13 @@ REACT_APP_GOOGLE_CLIENT_ID=<YOUR_GOOGLE_CLIENT_ID>
 REACT_APP_GRAPHQL_API_URI=<YOUR_GRAPHQL_SERVER_URI>
 ```
 
-**Guide**
-
-- REACT_APP_GOOGLE_CLIENT_ID: [Goolge API](https://console.cloud.google.com/apis/credentials?folder=&hl=ko&organizationId=&project=memona)의 OAuth 2.0 클라이언트 ID
-
-- REACT_APP_GRAPHQL_API_URI: GraphQL 서버 URI
-
-  > ex) http://localhost:5000
+> **Guide**
+>
+> - REACT_APP_GOOGLE_CLIENT_ID: [Goolge API](https://console.cloud.google.com/apis/credentials?folder=&hl=ko&organizationId=&project=memona)의 OAuth 2.0 클라이언트 ID
+>
+> - REACT_APP_GRAPHQL_API_URI: GraphQL 서버 URI
+>
+>   > ex) http://localhost:5000
 
 
 
@@ -211,35 +211,35 @@ AWS_S3_REGION=<YOUR_S3_REGION>
 AWS_S3_IMAGE_BUCKET_NAME=<YOUR_S3_BUCKET_NAME>
 ```
 
-**Guide**
+>  **Guide**
+>
+> - STAGE: 서버 Stage 설정
+>
+>   > `development` OR ` production`
+>
+> - MONGO_ENDPOINT: MongoDB Cloud Database URL
+>
+>   - [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+>
+> - JWT_TOKEN_SECRET: JWT Token을 만드는데 필요한 키 값
+>
+> - GOOGLE_CLIENT_ID: [Goolge API](https://console.cloud.google.com/apis/credentials?folder=&hl=ko&organizationId=&project=memona)의 OAuth 2.0 클라이언트 ID
+>
+> - KAKAO_REST_API_KEY: KAKAO REST API KEY
+>
+>   - [KAKAO Developers](https://developers.kakao.com/)
+>
+> - AWS_ACCESS_KEY: AWS ACCESS KEY
+>
+> - AWS_SECRET_ACCESS_KEY: AWS SECRET ACCESS KEY
+>
+> - AWS_S3_REGION: AWS S3 지역 코드
+>
+>   > ex) ap-northeast-2
+>
+> - AWS_S3_IMAGE_BUCKET_NAME: S3 Bucket 이름
 
-- STAGE: 서버 Stage 설정
-
-  > `development` OR ` production`
-
-- MONGO_ENDPOINT: MongoDB Cloud Database URL
-
-  - [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-
-- JWT_TOKEN_SECRET: JWT Token을 만드는데 필요한 키 값
-
-- GOOGLE_CLIENT_ID: [Goolge API](https://console.cloud.google.com/apis/credentials?folder=&hl=ko&organizationId=&project=memona)의 OAuth 2.0 클라이언트 ID
-
-- KAKAO_REST_API_KEY: KAKAO REST API KEY
-
-  - [KAKAO Developers](https://developers.kakao.com/)
-
-- AWS_ACCESS_KEY: AWS ACCESS KEY
-
-- AWS_SECRET_ACCESS_KEY: AWS SECRET ACCESS KEY
-
-- AWS_S3_REGION: AWS S3 지역 코드
-
-  > ex) ap-northeast-2
-
-- AWS_S3_IMAGE_BUCKET_NAME: S3 Bucket 이름
-
-
+<br>
 
 # 🧩 저는 이렇게 개발했습니다.
 
@@ -265,7 +265,7 @@ AWS_S3_IMAGE_BUCKET_NAME=<YOUR_S3_BUCKET_NAME>
 
   `Atomic Design` 구조가 아니라도 StoryBook은 개발과 협업에 큰 도움이 될 것 같다는 느낌을 받았습니다.
 
-  
+<br>
 
 ## 2. Responsive Development
 
@@ -277,7 +277,7 @@ AWS_S3_IMAGE_BUCKET_NAME=<YOUR_S3_BUCKET_NAME>
 
 ![sizzy](./asset/sizzy.png)
 
-
+<br>
 
 ## 3. 커스터마이징 지역
 
@@ -291,7 +291,7 @@ AWS_S3_IMAGE_BUCKET_NAME=<YOUR_S3_BUCKET_NAME>
 
   ![geoJson_Polygon_Generator](./asset/geoJson_Polygon_Generator.png)
 
-  
+<br>
 
 # 🚀 도전했던 기술과 어려웠던 점
 
@@ -317,6 +317,8 @@ Apollo-Client 같은 경우는 별도의 전역상태 상태관리를 할 수 �
 
 query를 처리하는 hook의 사용법도 너무 편리했었으나 단점으로는 GraphQL query를 여러번 사용해야 하는 경우(Infinity scroll)에는 별도 방법을 사용해야 하고(fetchMore) 캐싱 정책도 정해주는 등의 번거로움이 조금 있었습니다.
 
+<br>
+
 ## 2. 위치기반
 
 [Geospatial Queries - MongoDB Manual](https://docs.mongodb.com/manual/geospatial-queries/)
@@ -330,6 +332,8 @@ query를 처리하는 hook의 사용법도 너무 편리했었으나 단점으�
 geoJson 형태로 데이터를 만드는건 쉬웠으나 정교하게 데이터를 생성하고 빠른 생성이 어려워서 커스터마이징 지역이 아닌 곳은 kakao API를 사용하여 행정구역의 가장 작은 단위로 가져올 수 있도록 처리하였습니다.
 
 이를 통해 쉽고 효율적으로 커스텀 지역을 만들 수 있었으며, 지도 API를 React와 함께 사용하는 경험을 할 수 있었습니다.
+
+<br>
 
 ## 3. PWA
 
@@ -354,7 +358,7 @@ manifest, 정적데이터 캐싱은 workBox를 사용하여 쉽게 구현할 수
 
 > 위 영상은 오프라인 상태에서 4개의 포스트를 올린 후 다시 온라인 전환시 올렸던 4개의 포스트가 다시 전송되는 것을 보여주고 있습니다.  <우측 개발자 도구 Network 탭 확인>
 
-
+<br>
 
 ## 4. AR
 
@@ -378,7 +382,7 @@ WebXR AR모드 자체에서 캡처기능을 제공하지 않고, AR모드 내부
 
    이 방법은 도중에 시간소모가 너무 큰 것같아 중단하였지만 이후에 시도해보려고 합니다.
 
-
+<br>
 
 # 🛠 서브 프로젝트
 
@@ -411,7 +415,7 @@ WebXR AR모드 자체에서 캡처기능을 제공하지 않고, AR모드 내부
 
 링크: https://github.com/Ha-Young/GeoJsonPolygonGenerator
 
-
+<br>
 
 # 🎇 마무리하며...
 
