@@ -5,13 +5,9 @@
 ## Summary
 
 - 위치기반 SNS
-
 - `AR` 을 활용한 포스팅 올리기 기능
-
 - PWA - 앱 다운, 스플레쉬 화면, 오프라인 처리 지원
-
 - Atomic Design Structure, GraphQL, StoryBook
-
 - 더 궁금하다면? 👇
     - [🔗 관련 링크](#-관련-링크)
     - [💡Introduce Project](#introduce-project)
@@ -40,19 +36,20 @@
       + [GeoJson Polygon Generator](#geojson-polygon-generator)
   - [🎇 마무리하며...](#-마무리하며)
 
-  
-
-
-
 
 
 ## 🔗 관련 링크
 
 - **Deploy Site** : **https://memona.site**
+
 - **Github Repositories**
+
   - FrontEnd : **https://github.com/Ha-Young/memona-frontend**
   - BackEnd : **https://github.com/Ha-Young/memona-backend**
-- **Presentation Link https://www.youtube.com/watch?v=F8OHnevCS30&t=15631s**
+
+- **Presentation Link https://youtu.be/F8OHnevCS30?t=14015**
+
+  > 최종 프로젝트 발표 영상 Youtube **3:53:36** 부터 시작
 
 
 
@@ -83,7 +80,7 @@ Memona의 **Catch Phrase**는 `당신의 추억과 기억을 그 위치에 기�
 
 기본적으로 내가 있는 위치에 대한 글만 보고 쓸 수 있으며 년도와 계절을 설정해 그 때 어떤 추억들이 있는지 볼 수 있습니다.
 
-![시연 영상](./asset/demonstrations.png)
+![시연 영상](./asset/demonstrations.gif)
 
 
 
@@ -298,7 +295,7 @@ AWS_S3_IMAGE_BUCKET_NAME=<YOUR_S3_BUCKET_NAME>
 
 # 🚀 도전했던 기술과 어려웠던 점
 
-<img src="./asset/challenges.png" alt="도전" style="zoom: 25%;" />
+<center><img src="./asset/challenges.png" alt="challenge" width="500" /></center>
 
 ## 1. GraphQL
 
@@ -353,9 +350,9 @@ manifest, 정적데이터 캐싱은 workBox를 사용하여 쉽게 구현할 수
 
 데이터 전송 Sync는 위의 networkFirst전략이 실패하고 캐싱처리된 값도 없을 때, workBox의 `workbox-background-sync` 의 `Queue` 에 request를 넣어서 network상태가 되었을 때 자동으로 `Queue` 에 있는 request 요청을 보내 Sync를 맞추도록 하였습니다.
 
-![이미지 업로드오프라인 싱크](./asset/offlineSync.png)
+![Project Name](./asset/offlineSync.png)
 
-> 위 영상은 오프라인 상태에서 4개의 포스트를 올린 후 다시 온라인 전환시 올렸던 4개의 포스트가 다시 전송되는 것을 보여주고 있습니다. 
+> 위 영상은 오프라인 상태에서 4개의 포스트를 올린 후 다시 온라인 전환시 올렸던 4개의 포스트가 다시 전송되는 것을 보여주고 있습니다.  <우측 개발자 도구 Network 탭 확인>
 
 
 
@@ -424,13 +421,11 @@ WebXR AR모드 자체에서 캡처기능을 제공하지 않고, AR모드 내부
 
 그렇게 개발업계를 바꿔야겠다고 마음을 먹고, 다양한 공부를 하던 중 프론트엔드에 매료되어 프론트엔드 개발자가 되기로 마음먹어 지금 이렇게 서 있게 되었습니다. 달려오는 동안 프론트엔드에 대한 열정은 식지 않았고 오히려 더 커진 것 같습니다.
 
-처음 바닐라코딩을 등록하던 날을 기억합니다. 전공자에 개발 경험까지 있던 제가 바닐라코딩을 선택한 이유는 오로지 빠르게 웹 개발 실력을 올리고 싶었기 때문입니다. 돌이켜보면 정말 잘 한 결정 같습니다. 등록 전후를 비교하자면, 전보다 개발능력도 향상된 것은 둘 제치고 백엔드 개발에도 흥미를 붙였다는 것입니다.
+처음 바닐라코딩을 등록하던 날을 기억합니다. 전공자에 개발 경험까지 있던 제가 바닐라코딩을 선택한 이유는 오로지 빠르게 웹 개발 실력을 올리고 싶었기 때문입니다. 돌이켜보면 정말 잘 한 결정 같습니다. 등록 전후를 비교하자면, 전보다 개발능력도 향상된 것은 둘째 치고 백엔드 개발에도 흥미를 붙였다는 것입니다.
 
 이제는 웹 개발이 좋습니다. Javascript와 Node.JS를 이용한 프론트, 백엔드 모든 개발이 좋습니다.
 
 이 프로젝트는 제가 프론트엔드로 왜 오고 싶어 했는지, 왜 프론트엔드가 미래라고 생각했는지 잘 보여준다고 생각합니다.
 
-이 프로젝트로 개발에 대한 저의 열정을 느껴주시기를 바랍니다.
-
-
+이 프로젝트로 웹 개발에 대한 저의 열정을 마음껏 느껴주시기를 바랍니다.
 
