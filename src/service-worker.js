@@ -1,13 +1,12 @@
 /* eslint-disable no-restricted-globals */
 
-import { clientsClaim } from "workbox-core";
-import { setCacheNameDetails } from "workbox-core";
+import { clientsClaim, setCacheNameDetails } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";
 import { createHandlerBoundToURL, precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { StaleWhileRevalidate } from "workbox-strategies";
 
-import { GqlNetworkFirst, GqlStaleWhileRevalidate } from "./serviceWorker/gqlCaching";
+import { GqlNetworkFirst } from "./serviceWorker/gqlCaching";
 
 setCacheNameDetails({
   prefix: "memona",
