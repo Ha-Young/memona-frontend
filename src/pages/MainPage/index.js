@@ -67,7 +67,6 @@ const MainPage = () => {
       data && (filterMode === FILTER_MODE.RANDOM || data?.posts?.hasNextPage) &&
       fetchMore
     ) {
-      console.log("handleScrollEnd data", data);
       fetchMore({
         variables: {
           filter: filterMode,

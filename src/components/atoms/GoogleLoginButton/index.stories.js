@@ -6,8 +6,6 @@ import GoogleLogin from ".";
 
 const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
-console.log(clientId);
-
 const options = {
   None: null,
   Blue: "dark",
