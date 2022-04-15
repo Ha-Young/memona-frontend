@@ -47,10 +47,6 @@
   - FrontEnd : **https://github.com/Ha-Young/memona-frontend**
   - BackEnd : **https://github.com/Ha-Young/memona-backend**
 
-- **Presentation Link https://youtu.be/F8OHnevCS30?t=14015**
-
-  > 최종 프로젝트 발표 영상 Youtube **3:53:36** 부터 시작
-
 <br>
 
 ## 💡Introduce Project
