@@ -34,7 +34,6 @@
       + [Apollo Server Standalone Boiler (Apollo Server v2)](#apollo-server-standalone-boiler-apollo-server-v2)
       + [Apollo Client Standalone Boiler (Apollo Client-React v3)](#apollo-client-standalone-boiler-apollo-client-react-v3)
       + [GeoJson Polygon Generator](#geojson-polygon-generator)
-  - [🎇 마무리하며...](#-마무리하며)
 
 <br>
 
@@ -82,7 +81,7 @@ Memona의 **Catch Phrase**는 `당신의 추억과 기억을 그 위치에 기�
 
 ### 📌 Feature
 
-- 모바일 앱보다 더 모바일 앱 같은 `웹 앱` 입니다.
+- 모바일 앱보다 더 모바일 앱 같은 `웹 앱` 입니다. (PWA)
   - 스플래시 화면 지원
   - 홈 화면에 등록시 앱처럼 앱 목록에서 사용할 수 있습니다. (안드로이드 한정)
   - 오프라인 서비스를 지원합니다. (`ServiceWorker` `WorkBox`)
@@ -409,22 +408,4 @@ WebXR AR모드 자체에서 캡처기능을 제공하지 않고, AR모드 내부
 앞서 설명했던 geoJson Polygon 데이터 생성기입니다.
 
 링크: https://github.com/Ha-Young/GeoJsonPolygonGenerator
-
-<br>
-
-# 🎇 마무리하며...
-
-프론트엔드 개발자가 되어야겠다고 마음먹은 지가 이제 근 1년이 다 되어갑니다. 본격적으로 시작한 것은 작년 10월 바닐라코딩과 만나면서부터인 것 같은데 참 시간이 빠르네요.
-
-저는 C++, C#을 활용해서 Windows Application 앱을 만드는 개발자였습니다. 이 일은 학창 시절 Android Application을 주로 개발하고 창업에까지 도전했었던 저에게는 매우 따분한 일이었고, 예전의 창업에 도전했을 때의 열정과 그 문화를 다시금 느껴보고 싶었습니다. 특히 회사와 함께 성장하는 기분들 다시 한번 느껴보고 싶었습니다.
-
-그렇게 개발업계를 바꿔야겠다고 마음을 먹고, 다양한 공부를 하던 중 프론트엔드에 매료되어 프론트엔드 개발자가 되기로 마음먹어 지금 이렇게 서 있게 되었습니다. 달려오는 동안 프론트엔드에 대한 열정은 식지 않았고 오히려 더 커진 것 같습니다.
-
-처음 바닐라코딩을 등록하던 날을 기억합니다. 전공자에 개발 경험까지 있던 제가 바닐라코딩을 선택한 이유는 오로지 빠르게 웹 개발 실력을 올리고 싶었기 때문입니다. 돌이켜보면 정말 잘 한 결정 같습니다. 등록 전후를 비교하자면, 전보다 개발능력도 향상된 것은 둘째 치고 백엔드 개발에도 흥미를 붙였다는 것입니다.
-
-이제는 웹 개발이 좋습니다. Javascript와 Node.JS를 이용한 프론트, 백엔드 모든 개발이 좋습니다.
-
-이 프로젝트는 제가 프론트엔드로 왜 오고 싶어 했는지, 왜 프론트엔드가 미래라고 생각했는지 잘 보여준다고 생각합니다.
-
-이 프로젝트로 웹 개발에 대한 저의 열정을 마음껏 느껴주시기를 바랍니다.
 
